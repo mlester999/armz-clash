@@ -8,6 +8,7 @@ export default defineConfig({
     include: [
       'packages/**/src/**/*.{test,spec}.ts',
       'services/**/src/**/*.{test,spec}.ts',
+      'apps/**/src/**/*.{test,spec}.ts',
       'scripts/**/*.{test,spec}.ts',
       // Pure policy regressions co-located with E2E helpers (not browser specs).
       'tests/e2e/helpers.test.ts',
