@@ -29,7 +29,10 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // next dev compiles routes on demand; parallel projects thrash under load.
+  workers: process.env.CI ? 1 : 2,
+  timeout: 60_000,
+  expect: { timeout: 20_000 },
   reporter: [['list'], ['html', { open: 'never', outputFolder: 'playwright-report' }]],
   outputDir: 'test-results',
   use: {
@@ -72,6 +75,9 @@ export default defineConfig({
         ...process.env,
         ...apiEnv,
         ARMZ_API_PORT: String(apiPort),
+        // Prefer in-process demo store when Phase 3 tables are not yet migrated.
+        // Hosted migrate removes the need for this; memory is still safe for foundation CI.
+        ARMZ_DEMO_FORCE_MEMORY: process.env.ARMZ_DEMO_FORCE_MEMORY ?? 'true',
       },
     },
     {
