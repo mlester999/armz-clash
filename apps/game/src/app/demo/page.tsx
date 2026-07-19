@@ -3,10 +3,20 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Badge, Button, Card, PageContainer, Section, Stack } from '@armz-clash/ui';
+import {
+  Badge,
+  Button,
+  Card,
+  Cluster,
+  PageContainer,
+  PageHero,
+  Section,
+  Stack,
+} from '@armz-clash/ui';
 import { demoApi, type DemoPublicPayload } from '../../features/demo/api';
 import { DemoDisclosure } from '../../features/demo/components/DemoDisclosure';
 import { ArmzReveal } from '../../features/demo/components/ArmzReveal';
+import { ArmzPortrait, AutomatonPortrait } from '../../features/demo/art/ArmzPortrait';
 
 type Phase = 'landing' | 'disclosure' | 'reveal' | 'ready' | 'unavailable' | 'error';
 
@@ -58,39 +68,92 @@ export default function DemoEntryPage() {
 
   return (
     <PageContainer width="2xl">
-      <Section className="pt-2">
-        <Stack gap="lg">
-          <div className="space-y-3">
-            <div className="flex flex-wrap gap-2">
-              <Badge variant="warning">Demo Mode</Badge>
-              <Badge variant="success">No wallet required</Badge>
-              <Badge variant="muted">Simulated only</Badge>
-            </div>
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Play Demo</h1>
-            <p className="max-w-2xl text-[var(--armz-text-secondary)]">
-              Receive a temporary Level 1 Common ARMZ and fight the Easy Practice Automaton. Battles
-              are simulated on the server. Rewards have no monetary value and cannot be claimed.
-            </p>
-          </div>
+      <Section className="pt-1">
+        <Stack gap="md">
+          <PageHero
+            kicker="Demo Mode"
+            title="Play Demo"
+            description="Receive a temporary Level 1 Common ARMZ and clash with the Easy Practice Automaton. Battles are simulated on the server. Rewards have no monetary value and cannot be claimed."
+            badges={
+              <>
+                <Badge variant="warning">Demo Mode</Badge>
+                <Badge variant="success">No wallet required</Badge>
+                <Badge variant="muted">Simulated only</Badge>
+              </>
+            }
+          />
 
-          {phase === 'landing' && (
-            <Card className="space-y-4 p-6">
-              <p className="text-sm text-[var(--armz-text-secondary)]">
-                Demo Mode is free practice for Armz Clash. No blockchain transaction. No real $ARMZ.
-              </p>
-              <Button
-                onClick={() => setPhase('disclosure')}
-                loading={busy}
-                data-testid="play-demo-button"
-              >
-                Play Demo
-              </Button>
-              <p className="text-xs text-[var(--armz-text-muted)]">
-                <Link href="/" className="underline">
-                  Back to game shell
-                </Link>
-              </p>
-            </Card>
+          {(phase === 'landing' || phase === 'disclosure') && (
+            <div className="grid items-stretch gap-4 lg:grid-cols-[1.15fr_0.85fr]">
+              <Card premium className="flex flex-col gap-5 p-5 sm:p-6">
+                <div className="space-y-3">
+                  <h2 className="text-xl font-semibold">Free practice. Zero real value.</h2>
+                  <p className="text-sm leading-relaxed text-[var(--armz-text-secondary)]">
+                    Demo Mode is a polished training slice of Armz Clash — no blockchain
+                    transaction, no real $ARMZ, no claim path.
+                  </p>
+                  <Cluster>
+                    <Button
+                      size="lg"
+                      type="button"
+                      onClick={() => setPhase('disclosure')}
+                      loading={busy}
+                      data-testid="play-demo-button"
+                    >
+                      Play Demo
+                    </Button>
+                    <Link
+                      href="/"
+                      className="cursor-pointer text-sm font-medium text-[var(--armz-cyan)] underline-offset-4 hover:underline"
+                    >
+                      Back to game shell
+                    </Link>
+                  </Cluster>
+                  <ol className="grid gap-2 sm:grid-cols-2">
+                    {[
+                      'Receive a temporary Common ARMZ',
+                      'Inspect collection & stats',
+                      'Fight Practice Automaton',
+                      'See simulated outcome',
+                    ].map((step, i) => (
+                      <li
+                        key={step}
+                        className="flex gap-2 rounded-[var(--armz-radius-md)] border border-[var(--armz-border)] bg-[rgba(0,0,0,0.25)] px-3 py-2 text-sm"
+                      >
+                        <span className="font-bold text-[var(--armz-accent)]">
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
+                        <span className="text-[var(--armz-text-secondary)]">{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              </Card>
+
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+                <Card className="space-y-2 p-3">
+                  <p className="armz-kicker">Your temporary ARMZ</p>
+                  <ArmzPortrait
+                    presetKey="street_challenger"
+                    displayName="Street Challenger"
+                    palette={{
+                      skinTone: 'a86b4a',
+                      primaryCloth: '1a1f2a',
+                      accent: '4ecdc4',
+                      glove: '2c3344',
+                    }}
+                    size="md"
+                  />
+                  <p className="text-xs text-[var(--armz-text-muted)]">
+                    One of six Common visual identities — rolled per session.
+                  </p>
+                </Card>
+                <Card className="space-y-2 p-3">
+                  <p className="armz-kicker">Easy opponent</p>
+                  <AutomatonPortrait size="md" />
+                </Card>
+              </div>
+            </div>
           )}
 
           {phase === 'unavailable' && (
@@ -127,18 +190,30 @@ export default function DemoEntryPage() {
           )}
 
           {phase === 'ready' && payload?.armz && (
-            <Card className="space-y-4 p-6">
-              <h2 className="text-xl font-semibold">Demo session ready</h2>
-              <p className="text-sm text-[var(--armz-text-secondary)]">
-                Your temporary ARMZ is {payload.armz.displayName}. Continue to collection or fight.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <Button onClick={() => router.push('/demo/collection')}>Demo Collection</Button>
-                <Button variant="ghost" onClick={() => router.push('/demo/fight')}>
-                  Fight Easy
-                </Button>
-              </div>
-            </Card>
+            <div className="grid items-stretch gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+              <ArmzPortrait
+                presetKey={payload.armz.presetKey}
+                displayName={payload.armz.displayName}
+                palette={payload.armz.palette}
+                size="lg"
+              />
+              <Card premium className="flex flex-col justify-center space-y-4 p-6">
+                <div className="space-y-2">
+                  <Badge variant="success">Session ready</Badge>
+                  <h2 className="text-2xl font-semibold">{payload.armz.displayName}</h2>
+                  <p className="text-sm text-[var(--armz-text-secondary)]">
+                    Your temporary Common is loaded. Inspect the collection or challenge the
+                    Practice Automaton.
+                  </p>
+                </div>
+                <Cluster>
+                  <Button onClick={() => router.push('/demo/collection')}>Demo Collection</Button>
+                  <Button variant="secondary" onClick={() => router.push('/demo/fight')}>
+                    Fight Easy
+                  </Button>
+                </Cluster>
+              </Card>
+            </div>
           )}
         </Stack>
       </Section>
