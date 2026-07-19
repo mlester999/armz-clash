@@ -17,11 +17,21 @@ Phase 4 is **not** started (no real ARMZ inventory/energy).
 
 ```bash
 ARMZ_DEMO_MODE_ENABLED=true
+NEXT_PUBLIC_ARMZ_DEMO_MODE_ENABLED=true
 ```
 
 When `false`, demo endpoints return `503 demo_mode_disabled` and the UI shows an unavailable state.
 
 All real-value flags remain `false`.
+
+## Local connectivity (Phase 3.0A)
+
+- Browser and API must share hostname **`127.0.0.1`** (not `localhost`).
+- Game calls `NEXT_PUBLIC_ARMZ_API_URL` (default `http://127.0.0.1:4000`) with `credentials: 'include'`.
+- Strict CORS allows only player origins (`ARMZ_WEB_ORIGIN`, `ARMZ_GAME_ORIGIN`).
+- If the API is down, the UI shows a clear message naming the API URL (not a bare `Failed to fetch`).
+- Start: `pnpm dev:api` + `pnpm dev:game`, then open `http://127.0.0.1:3001/demo`.
+- Validate: `pnpm doctor`.
 
 ## Demo session security
 

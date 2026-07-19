@@ -2,6 +2,23 @@
 
 Play Demo Mode on `http://127.0.0.1:3001/demo` (API on `:4000`).
 
+## Prerequisites (Phase 3.0A)
+
+```bash
+pnpm doctor
+# Terminal 1
+pnpm dev:api
+# Terminal 2
+pnpm dev:game
+```
+
+- [ ] Doctor reports Reown Project ID configured (when set in root `.env`)
+- [ ] Doctor reports API reachable and game origin allowed
+- [ ] Browser uses `http://127.0.0.1:3001` (not `localhost`)
+- [ ] Reown warning is **absent** when Project ID is configured
+- [ ] Connect Wallet opens Reown modal (web or game chrome)
+- [ ] Demo Mode does **not** show bare `Failed to fetch`
+
 ## Flow
 
 - [ ] Open game without connecting a wallet
@@ -23,6 +40,8 @@ Play Demo Mode on `http://127.0.0.1:3001/demo` (API on `:4000`).
 - [ ] No staking surface
 - [ ] No real mint / claim / withdraw language
 - [ ] Real-value feature flags remain disabled
+- [ ] Mainnet remains disabled
+- [ ] Phase 4 systems (real inventory, energy, minting) remain unstarted
 
 ## Owner-only
 

@@ -45,13 +45,31 @@ Do not invent production secrets. Leave optional Phase 2+ credentials empty for 
 
 ## Development
 
+Use **`127.0.0.1`** for all local URLs (do not mix with `localhost` under strict CORS).
+
 ```bash
-pnpm dev:web      # http://127.0.0.1:3000
-pnpm dev:game     # http://127.0.0.1:3001
-pnpm dev:admin    # http://127.0.0.1:3002
-pnpm dev:api      # http://127.0.0.1:4000
-pnpm dev:worker   # health http://127.0.0.1:4002
+pnpm doctor        # local env + connectivity checks (no secrets printed)
+pnpm clean:next    # clear .next / .turbo after NEXT_PUBLIC_* changes
+
+pnpm dev:web       # http://127.0.0.1:3000
+pnpm dev:game      # http://127.0.0.1:3001
+pnpm dev:admin     # http://127.0.0.1:3002
+pnpm dev:api       # http://127.0.0.1:4000
+pnpm dev:worker    # health http://127.0.0.1:4002
 ```
+
+Demo Mode smoke path:
+
+```bash
+# Terminal 1
+pnpm dev:api
+# Terminal 2
+pnpm dev:game
+# Browser
+open http://127.0.0.1:3001/demo
+```
+
+See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) and [docs/REOWN_SETUP.md](docs/REOWN_SETUP.md).
 
 ## Quality gates
 
@@ -63,6 +81,7 @@ pnpm test:e2e       # requires Playwright browsers
 pnpm db:validate    # static migration checks (no hosted writes)
 pnpm env:check
 pnpm secrets:scan
+pnpm doctor
 ```
 
 ## Feature flags (defaults)
