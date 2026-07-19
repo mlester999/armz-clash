@@ -20,12 +20,12 @@ export function SiteHeader({ config }: { config: PublicConfig }) {
           </Link>
         </div>
 
-        <nav aria-label="Primary" className="flex flex-wrap items-center gap-1 sm:gap-2">
+        <nav aria-label="Primary navigation" className="flex flex-wrap items-center gap-1 sm:gap-2">
           {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="min-h-10 rounded-md px-3 py-2 text-sm text-[var(--armz-text-secondary)] hover:bg-[rgba(255,255,255,0.04)] hover:text-[var(--armz-text)]"
+              className="min-h-10 rounded-md px-3 py-2 text-sm text-[var(--armz-text-secondary)] hover:bg-[rgba(255,255,255,0.04)] hover:text-[var(--armz-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--armz-cyan)]"
             >
               {item.label}
             </Link>

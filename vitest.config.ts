@@ -9,12 +9,14 @@ export default defineConfig({
       'packages/**/src/**/*.{test,spec}.ts',
       'services/**/src/**/*.{test,spec}.ts',
       'scripts/**/*.{test,spec}.ts',
+      // Pure policy regressions co-located with E2E helpers (not browser specs).
+      'tests/e2e/helpers.test.ts',
     ],
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
       '**/.next/**',
-      'tests/e2e/**',
+      'tests/e2e/**/*.spec.ts',
       '**/*.integration.test.ts',
     ],
     coverage: {
