@@ -32,6 +32,8 @@ loadMonorepoPublicEnv();
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Keep the bottom-left dev indicator from covering primary CTAs in E2E/local.
+  devIndicators: false,
   // Local and Playwright use 127.0.0.1 exclusively for this project.
   allowedDevOrigins: ['127.0.0.1'],
   transpilePackages: [

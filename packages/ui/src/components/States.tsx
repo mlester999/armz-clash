@@ -87,16 +87,19 @@ export function FeatureUnavailable({
   description: string;
 }) {
   return (
-    <Card className="space-y-3 border-dashed p-5">
+    <Card className="space-y-3 border-dashed border-[rgba(148,163,184,0.22)] bg-[rgba(8,12,20,0.55)] p-5">
       <div className="flex flex-wrap items-center gap-2">
         <h3 className="text-base font-semibold">{title}</h3>
         {phaseHint ? (
-          <span className="rounded-full border border-[var(--armz-border)] px-2 py-0.5 text-xs text-[var(--armz-text-muted)]">
+          <span className="rounded-full border border-[var(--armz-border)] bg-[rgba(0,0,0,0.25)] px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]">
             {phaseHint}
           </span>
         ) : null}
       </div>
       <p className="text-sm leading-relaxed text-[var(--armz-text-secondary)]">{description}</p>
+      <p className="text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-[var(--armz-accent)]">
+        Intentionally unavailable
+      </p>
     </Card>
   );
 }

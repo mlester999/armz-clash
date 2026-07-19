@@ -61,13 +61,30 @@ export function Wordmark({ className }: { className?: string }) {
   );
 }
 
-export function BrandLockup({ className }: { className?: string }) {
+export function BrandLockup({
+  className,
+  subtitle = 'Premium Solana Arena',
+}: {
+  className?: string;
+  subtitle?: string;
+}) {
   return (
     <div className={cn('flex items-center gap-3', className)}>
-      <LogoMark size={36} />
+      <div className="relative">
+        <LogoMark size={40} />
+        <span
+          className="pointer-events-none absolute -inset-1 rounded-[1rem] opacity-40"
+          style={{
+            background: 'radial-gradient(circle, rgba(212,175,106,0.35), transparent 70%)',
+          }}
+          aria-hidden
+        />
+      </div>
       <div className="flex min-w-0 flex-col leading-tight">
-        <Wordmark />
-        <span className="text-xs text-[var(--armz-text-muted)]">Premium Solana Arena</span>
+        <Wordmark className="bg-[linear-gradient(90deg,#f0d9a0,#d4af6a_50%,#c9e8ff)] bg-clip-text text-transparent" />
+        <span className="text-[0.68rem] font-medium tracking-wide text-[var(--armz-text-muted)]">
+          {subtitle}
+        </span>
       </div>
     </div>
   );

@@ -67,9 +67,15 @@ export function Section({
   return (
     <section className={cn('my-[var(--armz-section)] first:mt-0', className)}>
       {(title || description) && (
-        <div className="mb-5 max-w-3xl space-y-2">
-          {title ? <h2 className="text-2xl font-semibold tracking-tight">{title}</h2> : null}
-          {description ? <p className="text-[var(--armz-text-secondary)]">{description}</p> : null}
+        <div className="mb-4 max-w-3xl space-y-1.5">
+          {title ? (
+            <h2 className="armz-display text-xl font-semibold tracking-tight sm:text-2xl">
+              {title}
+            </h2>
+          ) : null}
+          {description ? (
+            <p className="text-sm text-[var(--armz-text-secondary)]">{description}</p>
+          ) : null}
         </div>
       )}
       {children}
@@ -86,7 +92,7 @@ export function Stack({
   className?: string;
   gap?: 'sm' | 'md' | 'lg';
 }) {
-  const g = gap === 'sm' ? 'gap-2' : gap === 'lg' ? 'gap-6' : 'gap-4';
+  const g = gap === 'sm' ? 'gap-2' : gap === 'lg' ? 'gap-5' : 'gap-3.5';
   return <div className={cn('flex flex-col', g, className)}>{children}</div>;
 }
 
@@ -111,13 +117,43 @@ export function Grid({
   return (
     <div
       className={cn(
-        'grid gap-4',
+        'grid gap-3',
         cols === 2 && 'md:grid-cols-2',
         cols === 3 && 'md:grid-cols-2 xl:grid-cols-3',
         className,
       )}
     >
       {children}
+    </div>
+  );
+}
+
+export function PageHero({
+  kicker,
+  title,
+  description,
+  badges,
+  actions,
+  className,
+}: {
+  kicker?: string;
+  title: string;
+  description?: string;
+  badges?: ReactNode;
+  actions?: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cn('space-y-3', className)}>
+      {kicker ? <p className="armz-kicker">{kicker}</p> : null}
+      {badges ? <div className="flex flex-wrap gap-2">{badges}</div> : null}
+      <h1 className="armz-display text-3xl sm:text-4xl">{title}</h1>
+      {description ? (
+        <p className="max-w-2xl text-sm leading-relaxed text-[var(--armz-text-secondary)] sm:text-base">
+          {description}
+        </p>
+      ) : null}
+      {actions ? <div className="flex flex-wrap gap-3 pt-1">{actions}</div> : null}
     </div>
   );
 }

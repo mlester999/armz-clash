@@ -1,56 +1,95 @@
+'use client';
+
 import Link from 'next/link';
-import { Badge, BrandLockup, Cluster, NetworkBadge } from '@armz-clash/ui';
+import { usePathname } from 'next/navigation';
+import { Badge, BrandLockup, Cluster, NavRail, NavTab, NetworkBadge } from '@armz-clash/ui';
 import type { PublicConfig } from '@armz-clash/config';
 import { GameWalletChrome } from './game-wallet-chrome';
 
-const disabledItems = [
+const futureItems = [
   { label: 'Fight', hint: 'Phase 5+' },
   { label: 'Marketplace', hint: 'Phase 9' },
   { label: 'Claim Rewards', hint: 'Phase 8' },
 ] as const;
 
-export function GameHeader({ config }: { config: PublicConfig }) {
+function ShellNavLink({
+  href,
+  active,
+  children,
+  testId,
+}: {
+  href: string;
+  active: boolean;
+  children: React.ReactNode;
+  testId?: string;
+}) {
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--armz-border)] bg-[rgba(11,14,20,0.9)] backdrop-blur-md">
-      <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-3 px-[var(--armz-page-x)] py-3 pt-[calc(0.75rem+var(--armz-safe-top))] lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-wrap items-center gap-3">
-          <BrandLockup />
+    <Link
+      href={href}
+      className="armz-nav-tab"
+      data-active={active ? 'true' : 'false'}
+      aria-current={active ? 'page' : undefined}
+      data-testid={testId}
+    >
+      {children}
+    </Link>
+  );
+}
+
+export function GameHeader({ config }: { config: PublicConfig }) {
+  const pathname = usePathname() || '/';
+  const demoActive = pathname === '/demo' || pathname === '/demo/';
+  const collectionActive = pathname.startsWith('/demo/collection');
+  const fightActive = pathname.startsWith('/demo/fight');
+
+  return (
+    <header className="sticky top-0 z-40 border-b border-[var(--armz-border)] bg-[rgba(7,11,18,0.88)] backdrop-blur-xl">
+      <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-3 px-[var(--armz-page-x)] py-3 pt-[calc(0.65rem+var(--armz-safe-top))] lg:flex-row lg:items-center lg:justify-between lg:gap-4">
+        <div className="flex min-w-0 flex-wrap items-center gap-3">
+          <Link
+            href="/"
+            className="cursor-pointer rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--armz-cyan)]"
+          >
+            <BrandLockup subtitle="Demo Arena · Phase 3" />
+          </Link>
           <Badge variant="warning">Phase 3 demo</Badge>
         </div>
 
-        <nav aria-label="Game" className="flex flex-wrap gap-1">
-          <Link
-            href="/demo"
-            className="inline-flex min-h-10 items-center gap-2 rounded-md px-3 py-2 text-sm text-[var(--armz-text)] hover:bg-[rgba(255,255,255,0.04)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--armz-cyan)]"
-          >
+        <NavRail label="Game" className="max-w-full overflow-x-auto">
+          <ShellNavLink href="/demo" active={demoActive} testId="nav-demo">
             Demo
-            <span className="text-[10px] uppercase tracking-wide text-[var(--armz-accent)]">
+            <span className="rounded-full bg-black/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider">
               Live
             </span>
-          </Link>
-          <Link
+          </ShellNavLink>
+          <ShellNavLink
             href="/demo/collection"
-            className="inline-flex min-h-10 items-center gap-2 rounded-md px-3 py-2 text-sm text-[var(--armz-text-secondary)] hover:bg-[rgba(255,255,255,0.04)]"
+            active={collectionActive}
+            testId="nav-demo-collection"
           >
-            Demo Collection
-          </Link>
-          {disabledItems.map((item) => (
-            <span
+            Collection
+          </ShellNavLink>
+          <ShellNavLink href="/demo/fight" active={fightActive} testId="nav-demo-fight">
+            Easy Fight
+          </ShellNavLink>
+          {futureItems.map((item) => (
+            <NavTab
               key={item.label}
-              className="inline-flex min-h-10 items-center gap-2 rounded-md px-3 py-2 text-sm text-[var(--armz-text-muted)]"
-              aria-disabled="true"
+              disabled
               title={`${item.label} unavailable — ${item.hint}`}
+              data-testid={`nav-future-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
             >
               {item.label}
-              <span className="text-[10px] uppercase tracking-wide opacity-70">{item.hint}</span>
-            </span>
+              <span className="text-[9px] font-bold uppercase tracking-wider opacity-70">
+                {item.hint}
+              </span>
+            </NavTab>
           ))}
-        </nav>
+        </NavRail>
 
         <Cluster gap="sm" className="justify-start lg:justify-end">
           <NetworkBadge network={config.networkLabel} />
-          <Badge variant="success">Real-value disabled</Badge>
-          <Badge variant="muted">Demo · Phase 3</Badge>
+          <Badge variant="success">Real-value off</Badge>
           <GameWalletChrome />
         </Cluster>
       </div>
