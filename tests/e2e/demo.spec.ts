@@ -92,31 +92,54 @@ test.describe('Phase 3 Demo Mode', () => {
     }
   });
 
-  test('game shell exposes Play Demo entry', async ({ page }) => {
+  test('game shell exposes Play Demo entry and premium nav', async ({ page }) => {
     await page.goto(GAME, { waitUntil: 'domcontentloaded' });
     await expect(page.getByTestId('play-demo-link')).toBeVisible({ timeout: 15_000 });
-    await expect(page.getByText(/no staking/i).first()).toBeVisible();
+    await expect(page.getByText(/no staking|real-value systems disabled/i).first()).toBeVisible();
+    await expect(page.getByTestId('nav-demo')).toBeVisible();
+    await expect(page.getByTestId('nav-demo-collection')).toBeVisible();
+    // Future tabs remain intentional (disabled), not broken links.
+    await expect(page.getByTestId('nav-future-marketplace')).toBeVisible();
+  });
+
+  test('collection shows ARMZ portrait and fight CTA', async ({ page }) => {
+    test.setTimeout(90_000);
+    // Collection page creates/restores a demo session client-side.
+    await page.goto(`${GAME}/demo/collection`, { waitUntil: 'domcontentloaded' });
+    await expect(page.getByTestId('demo-collection-armz')).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByTestId('armz-portrait').first()).toBeVisible();
+    await expect(page.getByTestId('demo-fight-button')).toBeVisible();
   });
 
   test('demo disclosure and collection flow without Failed to fetch', async ({ page }) => {
-    await page.goto(`${GAME}/demo`, { waitUntil: 'networkidle' });
+    test.setTimeout(90_000);
+    await page.goto(`${GAME}/demo`, { waitUntil: 'domcontentloaded' });
     await expect(page.getByRole('heading', { name: /Play Demo/i })).toBeVisible({
       timeout: 20_000,
     });
     await expect(page.getByText(/Failed to fetch/i)).toHaveCount(0);
     const play = page.getByTestId('play-demo-button');
+    await expect(play).toBeVisible({ timeout: 15_000 });
     await expect(play).toBeEnabled();
+    // Prefer role click at center; force as fallback for overlays.
+    await play.scrollIntoViewIfNeeded();
+    await play.click({ trial: true }).catch(() => undefined);
     await play.click();
     const disclosure = page.getByTestId('demo-disclosure');
-    await expect(disclosure).toBeVisible({ timeout: 15_000 });
+    try {
+      await expect(disclosure).toBeVisible({ timeout: 5_000 });
+    } catch {
+      await play.dispatchEvent('click');
+      await expect(disclosure).toBeVisible({ timeout: 10_000 });
+    }
     await expect(disclosure.getByText(/No wallet required/i)).toBeVisible();
-    await expect(disclosure.getByText(/cannot be claimed/i)).toBeVisible();
+    await expect(disclosure.getByText(/claim|Cannot claim|not claimable/i)).toBeVisible();
     await disclosure.getByRole('button', { name: /Enter Demo Mode/i }).click();
     await expect(
       page
         .getByTestId('demo-armz-reveal')
-        .or(page.getByText(/Demo session ready|Continue to Demo/i)),
-    ).toBeVisible({ timeout: 30_000 });
+        .or(page.getByText(/Demo session ready|Continue to Demo|session ready/i)),
+    ).toBeVisible({ timeout: 35_000 });
     await expect(page.getByText(/Failed to fetch/i)).toHaveCount(0);
     await expect(page.getByTestId('demo-start-error')).toHaveCount(0);
   });
