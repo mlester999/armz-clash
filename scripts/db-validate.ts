@@ -4,6 +4,52 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const migrationsDir = path.join(ROOT, 'supabase', 'migrations');
 
+/** Reject real staking schema objects; allow "no staking" safety comments. */
+function hasNoStakingSchema(sql: string): boolean {
+  return !/\b(create\s+table\s+(if\s+not\s+exists\s+)?(public\.)?staking|create\s+schema\s+staking)\b/i.test(
+    sql,
+  );
+}
+
+function foundationChecks(sql: string): Array<[string, boolean]> {
+  return [
+    ['non-empty', sql.trim().length > 0],
+    ['enables RLS', /enable row level security/i.test(sql)],
+    ['force RLS on sensitive tables', /force row level security/i.test(sql)],
+    ['feature flags seed mainnet false', /mainnet_enabled',\s*false/i.test(sql)],
+    ['feature flags seed real_mint false', /real_mint_enabled',\s*false/i.test(sql)],
+    ['feature flags seed real_rewards false', /real_rewards_enabled',\s*false/i.test(sql)],
+    ['feature flags seed claims false', /claims_enabled',\s*false/i.test(sql)],
+    ['feature flags seed settlement false', /marketplace_settlement_enabled',\s*false/i.test(sql)],
+    ['creates admin_audit_logs', /create table if not exists public\.admin_audit_logs/i.test(sql)],
+    ['no staking schema', hasNoStakingSchema(sql)],
+  ];
+}
+
+function phase2AuthChecks(sql: string): Array<[string, boolean]> {
+  return [
+    ['non-empty', sql.trim().length > 0],
+    ['enables RLS', /enable row level security/i.test(sql)],
+    ['force RLS on sensitive tables', /force row level security/i.test(sql)],
+    ['no staking schema', hasNoStakingSchema(sql)],
+    ['player_sessions table', /player_sessions/i.test(sql)],
+    ['auth_challenges table', /auth_challenges/i.test(sql)],
+  ];
+}
+
+function defaultChecks(sql: string): Array<[string, boolean]> {
+  return [
+    ['non-empty', sql.trim().length > 0],
+    ['no staking schema', hasNoStakingSchema(sql)],
+  ];
+}
+
+function checksFor(file: string, sql: string): Array<[string, boolean]> {
+  if (file.includes('phase1_foundation')) return foundationChecks(sql);
+  if (file.includes('phase2_wallet_auth')) return phase2AuthChecks(sql);
+  return defaultChecks(sql);
+}
+
 function main() {
   const files = readdirSync(migrationsDir)
     .filter((f) => f.endsWith('.sql'))
@@ -17,25 +63,7 @@ function main() {
   for (const file of files) {
     const full = path.join(migrationsDir, file);
     const sql = readFileSync(full, 'utf8');
-
-    const checks: Array<[string, boolean]> = [
-      ['non-empty', sql.trim().length > 0],
-      ['enables RLS', /enable row level security/i.test(sql)],
-      ['force RLS on sensitive tables', /force row level security/i.test(sql)],
-      ['feature flags seed mainnet false', /mainnet_enabled',\s*false/i.test(sql)],
-      ['feature flags seed real_mint false', /real_mint_enabled',\s*false/i.test(sql)],
-      ['feature flags seed real_rewards false', /real_rewards_enabled',\s*false/i.test(sql)],
-      ['feature flags seed claims false', /claims_enabled',\s*false/i.test(sql)],
-      [
-        'feature flags seed settlement false',
-        /marketplace_settlement_enabled',\s*false/i.test(sql),
-      ],
-      [
-        'creates admin_audit_logs',
-        /create table if not exists public\.admin_audit_logs/i.test(sql),
-      ],
-      ['no staking schema', !/\bstaking\b/i.test(sql)],
-    ];
+    const checks = checksFor(file, sql);
 
     console.log(`Validating ${file}`);
     for (const [label, ok] of checks) {

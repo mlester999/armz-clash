@@ -188,8 +188,17 @@ export async function revokeAllSessionsForWallet(
   await query;
 }
 
-const DISPLAY_NAME_RE = /^[\p{L}\p{N} _.\-]{1,32}$/u;
+const DISPLAY_NAME_RE = /^[\p{L}\p{N} _.-]{1,32}$/u;
 const AVATAR_PRESET_RE = /^[a-z0-9_-]{1,64}$/i;
+
+function stripControlChars(value: string): string {
+  let out = '';
+  for (const ch of value) {
+    const code = ch.codePointAt(0) ?? 0;
+    if (code >= 32 && code !== 127) out += ch;
+  }
+  return out;
+}
 
 export async function updateProfile(
   playerId: string,
@@ -197,7 +206,7 @@ export async function updateProfile(
 ) {
   const updates: Record<string, string> = { updated_at: new Date().toISOString() };
   if (patch.displayName !== undefined) {
-    const name = patch.displayName.trim().replace(/[\u0000-\u001F\u007F]/g, '');
+    const name = stripControlChars(patch.displayName.trim());
     if (!DISPLAY_NAME_RE.test(name) || /[<>&"`]/.test(name)) {
       throw Object.assign(new Error('Invalid display name'), {
         statusCode: 400,
