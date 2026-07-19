@@ -11,9 +11,12 @@
     "clean": "rm -rf .next .turbo"
   },
   "dependencies": {
+    "@armz-clash/blockchain": "workspace:*",
     "@armz-clash/config": "workspace:*",
     "@armz-clash/observability": "workspace:*",
     "@armz-clash/ui": "workspace:*",
+    "@reown/appkit": "^1.7.8",
+    "@reown/appkit-adapter-solana": "^1.7.8",
     "@tanstack/react-query": "^5.83.0",
     "framer-motion": "^12.23.6",
     "next": "^15.4.1",

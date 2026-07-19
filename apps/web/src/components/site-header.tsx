@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { Badge, BrandLockup, Button, Cluster, NetworkBadge } from '@armz-clash/ui';
+import { Badge, BrandLockup, Cluster, NetworkBadge } from '@armz-clash/ui';
 import type { PublicConfig } from '@armz-clash/config';
+import { HeaderWalletChrome } from './header-wallet-chrome';
 
 const nav = [
   { href: '/', label: 'Home' },
@@ -31,27 +32,19 @@ export function SiteHeader({ config }: { config: PublicConfig }) {
           ))}
           <span
             className="min-h-10 rounded-md px-3 py-2 text-sm text-[var(--armz-text-muted)]"
-            title="Marketplace is unavailable in Phase 1"
+            title="Marketplace is unavailable until a later phase"
             aria-disabled="true"
           >
             Marketplace
-            <span className="ml-1 text-[10px] uppercase tracking-wide">soon</span>
+            <span className="ml-1 text-[10px] uppercase tracking-wide">later</span>
           </span>
         </nav>
 
         <Cluster className="justify-start sm:justify-end" gap="sm">
           <NetworkBadge network={config.networkLabel} />
-          <Badge variant="warning">Phase 1</Badge>
-          <Button
-            variant="secondary"
-            size="sm"
-            disabled
-            aria-disabled="true"
-            title="Coming in Phase 2"
-          >
-            Connect Wallet
-            <span className="text-[10px] opacity-70">P2</span>
-          </Button>
+          <Badge variant="warning">Phase 2</Badge>
+          <Badge variant="success">Real-value disabled</Badge>
+          <HeaderWalletChrome />
         </Cluster>
       </div>
     </header>

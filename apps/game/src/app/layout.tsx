@@ -9,7 +9,8 @@ export const metadata: Metadata = {
     default: `${PRODUCT_NAME} Game`,
     template: `%s | ${PRODUCT_NAME} Game`,
   },
-  description: 'Armz Clash game client foundation. Gameplay arrives in later phases.',
+  description:
+    'Armz Clash game client. Wallet authentication is live on Devnet; gameplay arrives later.',
   robots: { index: false, follow: false },
 };
 

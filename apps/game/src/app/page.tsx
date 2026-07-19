@@ -8,11 +8,9 @@ import {
   Section,
   Stack,
 } from '@armz-clash/ui';
-import { getGamePublicConfig } from '../lib/public';
+import { GameAuthPanel } from '../components/game-auth-panel';
 
 export default function GameHomePage() {
-  const config = getGamePublicConfig();
-
   return (
     <PageContainer width="2xl">
       <Section className="pt-2">
@@ -20,19 +18,21 @@ export default function GameHomePage() {
           <div className="max-w-2xl space-y-3">
             <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Game shell</h1>
             <p className="text-[var(--armz-text-secondary)]">
-              Connected-player dashboard, fight flow, collection, battles, rewards, and claims are
-              not active in Phase 1. This shell establishes layout, spacing, and status indicators.
+              Phase 2 enables Solana Devnet wallet connection and signed authentication. Fight,
+              collection, rewards, and marketplace remain unavailable.
             </p>
           </div>
 
           <DevelopmentNotice>
-            Network: {config.networkLabel}. Token display: {config.tokenDisplay}. Real mint,
-            rewards, claims, marketplace settlement, and mainnet are disabled by default.
+            Network: Solana Devnet. Real mint, rewards, claims, marketplace settlement, and mainnet
+            remain disabled. Demo Mode arrives in Phase 3.
           </DevelopmentNotice>
+
+          <GameAuthPanel />
 
           <EmptyState
             title="Gameplay is not available yet"
-            description="Phase 3 introduces Demo Mode. Phase 5 introduces server-authoritative battles. No fake balances, rewards, or collection data are shown here."
+            description="Use Connect Wallet and Sign in above. Phase 3 introduces Demo Mode. No fake balances or rewards are shown."
           />
 
           <Grid cols={2}>
@@ -52,17 +52,15 @@ export default function GameHomePage() {
               description="Claimable ledger and on-chain claims are disabled."
             />
             <FeatureUnavailable
-              title="Wallet"
-              phaseHint="Phase 2"
-              description="Reown AppKit connection and signed authentication are not active."
+              title="Demo Mode"
+              phaseHint="Phase 3"
+              description="Free demo battles with temporary Common ARMZ arrive next."
             />
           </Grid>
 
-          {process.env.NODE_ENV === 'development' ? (
-            <Card className="p-4 text-xs text-[var(--armz-text-muted)]" data-testid="dev-health">
-              Development health indicator: game shell OK · {config.phaseLabel}
-            </Card>
-          ) : null}
+          <Card className="p-4 text-xs text-[var(--armz-text-muted)]" data-testid="dev-health">
+            Phase 2 wallet authentication foundation · no staking · real-value systems disabled
+          </Card>
         </Stack>
       </Section>
     </PageContainer>

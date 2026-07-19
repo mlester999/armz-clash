@@ -1,5 +1,6 @@
 import { Badge, BrandLockup, Cluster, NetworkBadge } from '@armz-clash/ui';
 import type { PublicConfig } from '@armz-clash/config';
+import { GameWalletChrome } from './game-wallet-chrome';
 
 const items = [
   { label: 'Fight', hint: 'Phase 5+' },
@@ -14,7 +15,7 @@ export function GameHeader({ config }: { config: PublicConfig }) {
       <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-3 px-[var(--armz-page-x)] py-3 pt-[calc(0.75rem+var(--armz-safe-top))] lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-wrap items-center gap-3">
           <BrandLockup />
-          <Badge variant="warning">Phase 1 foundation</Badge>
+          <Badge variant="warning">Phase 2 auth</Badge>
         </div>
 
         <nav aria-label="Game" className="flex flex-wrap gap-1">
@@ -34,8 +35,8 @@ export function GameHeader({ config }: { config: PublicConfig }) {
         <Cluster gap="sm" className="justify-start lg:justify-end">
           <NetworkBadge network={config.networkLabel} />
           <Badge variant="success">Real-value disabled</Badge>
-          <Badge variant="muted">Wallet · Phase 2</Badge>
           <Badge variant="muted">Demo · Phase 3</Badge>
+          <GameWalletChrome />
         </Cluster>
       </div>
     </header>
