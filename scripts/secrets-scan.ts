@@ -13,6 +13,14 @@ const IGNORE_DIRS = new Set([
   'test-results',
   '.turbo',
   'screenshots',
+  '.temp',
+]);
+
+const IGNORE_FILES = new Set([
+  '.env',
+  '.env.local',
+  '.env.development.local',
+  '.env.production.local',
 ]);
 
 const SUSPICIOUS_FILE_PATTERNS = [
@@ -28,7 +36,12 @@ const SUSPICIOUS_FILE_PATTERNS = [
 const CONTENT_PATTERNS: Array<{ name: string; re: RegExp }> = [
   { name: 'solana-private-array', re: /"privateKey"\s*:\s*\[/i },
   { name: 'begin-private-key', re: /-----BEGIN (RSA |OPENSSH |EC )?PRIVATE KEY-----/ },
-  { name: 'service-role-literal', re: /SUPABASE_SERVICE_ROLE_KEY\s*=\s*['"]eyJ/ },
+  { name: 'service-role-literal', re: /SUPABASE_SERVICE_ROLE_KEY\s*=\s*['"]?eyJ/ },
+  {
+    name: 'jwt-like-secret-assignment',
+    re: /(SERVICE_ROLE|DATABASE_URL|SECRET)\s*=\s*.*eyJ[A-Za-z0-9_-]{20,}/,
+  },
+  { name: 'postgres-url-with-password', re: /postgresql:\/\/[^:\s]+:[^@\s]+@/i },
   { name: 'aws-access-key', re: /AKIA[0-9A-Z]{16}/ },
 ];
 
@@ -39,8 +52,11 @@ function walk(dir: string, files: string[] = []): string[] {
     const st = statSync(full);
     if (st.isDirectory()) {
       walk(full, files);
-    } else {
-      files.push(full);
+    } else if (!IGNORE_FILES.has(entry) && !entry.startsWith('.env.')) {
+      // Allow scanning .env.example (template) but never local secret files.
+      if (entry === '.env.example' || !entry.startsWith('.env')) {
+        files.push(full);
+      }
     }
   }
   return files;
