@@ -22,7 +22,7 @@ export function HeaderWalletChrome() {
     <Chrome
       apiUrl={env.NEXT_PUBLIC_ARMZ_API_URL || 'http://127.0.0.1:4000'}
       projectId={env.NEXT_PUBLIC_REOWN_PROJECT_ID || ''}
-      metadataUrl={env.NEXT_PUBLIC_ARMZ_WEB_URL || 'http://localhost:3000'}
+      metadataUrl={env.NEXT_PUBLIC_ARMZ_WEB_URL || 'http://127.0.0.1:3000'}
     />
   );
 }

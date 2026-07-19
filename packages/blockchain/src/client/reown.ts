@@ -19,7 +19,9 @@ export function initArmzReownAppKit(input: {
   if (initialized) return true;
   if (typeof window === 'undefined') return false;
   if (!input.projectId) {
-    console.warn('[Armz Clash] NEXT_PUBLIC_REOWN_PROJECT_ID is missing; wallet modal disabled.');
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('[Armz Clash] Reown configuration: missing');
+    }
     return false;
   }
 
@@ -44,6 +46,10 @@ export function initArmzReownAppKit(input: {
   });
 
   initialized = true;
+  if (process.env.NODE_ENV === 'development') {
+    // Never print the Project ID. Use warn so lint allows the dev-only status line.
+    console.warn('[Armz Clash] Reown configuration: configured');
+  }
   return true;
 }
 
