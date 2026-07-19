@@ -2,9 +2,9 @@
 
 **ARMZ CLASH** — premium browser-based Solana arm-wrestling game.
 
-**Current phase: Phase 1 — Monorepo foundation**
+**Current phase: Phase 1.1 — Hosted setup & CI hardening**
 
-This repository contains infrastructure, design system, configuration, database foundations, and developer tooling. Wallet authentication, battles, minting, rewards, claims, and marketplace settlement are **not** active yet.
+This repository contains infrastructure, design system, configuration, database foundations, hosted Supabase validation tooling, and developer tooling. Wallet authentication, battles, minting, rewards, claims, and marketplace settlement are **not** active yet.
 
 ## Safety posture
 
@@ -99,12 +99,21 @@ git push -u origin main
 
 ## Hosted Supabase
 
-Migrations live in `supabase/migrations/`. Phase 1 does **not** auto-apply hosted migrations.
+Migrations live in `supabase/migrations/`. CI never pushes hosted migrations.
+
+See [docs/HOSTED_SUPABASE.md](docs/HOSTED_SUPABASE.md).
 
 ```bash
+# Local static checks
+pnpm db:validate
+
 # After owner provisions a development project and approves remote writes:
-SUPABASE_REMOTE_WRITES_APPROVED=true pnpm exec supabase db push
+SUPABASE_REMOTE_WRITES_APPROVED=true pnpm dlx supabase db push --linked
+RUN_HOSTED_SUPABASE_TESTS=true pnpm test:db:hosted
+RUN_HOSTED_SUPABASE_TESTS=true pnpm test:rls:hosted
 ```
+
+Secrets belong in `.env` only — never in `.env.example`.
 
 ## Token ticker
 
