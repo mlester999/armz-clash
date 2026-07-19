@@ -1,0 +1,12 @@
+{
+  "extends": "@armz-clash/typescript-config/node.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "verbatimModuleSyntax": true
+  },
+  "include": ["src/**/*.ts"]
+}

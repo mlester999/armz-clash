@@ -1,0 +1,28 @@
+{
+  "name": "@armz-clash/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc --noEmit -p tsconfig.json",
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint .",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@armz-clash/config": "workspace:*",
+    "@armz-clash/observability": "workspace:*",
+    "fastify": "^5.4.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@armz-clash/eslint-config": "workspace:*",
+    "@armz-clash/typescript-config": "workspace:*",
+    "@types/node": "^22.16.5",
+    "eslint": "^9.30.1",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "@armz-clash/database",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types.ts",
+    "./browser": "./src/browser.ts",
+    "./server": "./src/server.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint .",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.52.1"
+  },
+  "devDependencies": {
+    "@armz-clash/eslint-config": "workspace:*",
+    "@armz-clash/typescript-config": "workspace:*",
+    "eslint": "^9.30.1",
+    "typescript": "^5.9.2"
+  }
+}

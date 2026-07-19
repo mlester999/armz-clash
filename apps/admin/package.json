@@ -1,0 +1,36 @@
+{
+  "name": "@armz-clash/admin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3002",
+    "build": "next build",
+    "start": "next start --port 3002",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "clean": "rm -rf .next .turbo"
+  },
+  "dependencies": {
+    "@armz-clash/config": "workspace:*",
+    "@armz-clash/observability": "workspace:*",
+    "@armz-clash/ui": "workspace:*",
+    "@tanstack/react-query": "^5.83.0",
+    "framer-motion": "^12.23.6",
+    "next": "^15.4.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@armz-clash/eslint-config": "workspace:*",
+    "@armz-clash/typescript-config": "workspace:*",
+    "@tailwindcss/postcss": "^4.1.11",
+    "@types/node": "^22.16.5",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "eslint": "^9.30.1",
+    "tailwindcss": "^4.1.11",
+    "typescript": "^5.9.2"
+  },
+  "type": "module"
+}

@@ -1,0 +1,133 @@
+# Armz Clash
+
+**ARMZ CLASH** — premium browser-based Solana arm-wrestling game.
+
+**Current phase: Phase 1 — Monorepo foundation**
+
+This repository contains infrastructure, design system, configuration, database foundations, and developer tooling. Wallet authentication, battles, minting, rewards, claims, and marketplace settlement are **not** active yet.
+
+## Safety posture
+
+- Gameplay rewards are **probabilistic**, not guaranteed
+- Real-value systems are **disabled by default**
+- **Mainnet is disabled by default**
+- **No staking** in this version
+- Not an investment product, fixed-income product, or guaranteed ROI scheme
+- Reward obligations must never depend on new player purchases
+
+## Architecture
+
+```
+apps/web        Public landing, docs, legal (port 3000)
+apps/game       Player game shell (port 3001)
+apps/admin      Admin shell (port 3002)
+services/api    Fastify API health + public config (port 4000)
+services/worker Worker health + job registry foundation (port 4002)
+packages/*      Shared UI, config, domain, observability, database
+supabase/       Hosted Supabase migrations and seed
+```
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Requirements
+
+- Node.js 22+
+- pnpm 11+
+
+## Install
+
+```bash
+pnpm install
+cp .env.example .env
+```
+
+Do not invent production secrets. Leave optional Phase 2+ credentials empty for local foundation work.
+
+## Development
+
+```bash
+pnpm dev:web      # http://127.0.0.1:3000
+pnpm dev:game     # http://127.0.0.1:3001
+pnpm dev:admin    # http://127.0.0.1:3002
+pnpm dev:api      # http://127.0.0.1:4000
+pnpm dev:worker   # health http://127.0.0.1:4002
+```
+
+## Quality gates
+
+```bash
+pnpm check          # format, lint, typecheck, unit tests, env, secrets, db validate
+pnpm quality:ci     # deterministic CI suite including build (do not use bare `pnpm ci`)
+pnpm test:unit
+pnpm test:e2e       # requires Playwright browsers
+pnpm db:validate    # static migration checks (no hosted writes)
+pnpm env:check
+pnpm secrets:scan
+```
+
+## Feature flags (defaults)
+
+| Flag                                  | Default |
+| ------------------------------------- | ------- |
+| `ARMZ_DEMO_MODE_ENABLED`              | `true`  |
+| `ARMZ_REAL_MINT_ENABLED`              | `false` |
+| `ARMZ_REAL_REWARDS_ENABLED`           | `false` |
+| `ARMZ_CLAIMS_ENABLED`                 | `false` |
+| `ARMZ_MARKETPLACE_ENABLED`            | `false` |
+| `ARMZ_MARKETPLACE_SETTLEMENT_ENABLED` | `false` |
+| `ARMZ_ORACLE_ENABLED`                 | `false` |
+| `ARMZ_MAINNET_ENABLED`                | `false` |
+| `ARMZ_ADMIN_ECONOMY_WRITES_ENABLED`   | `false` |
+
+Only the strings `true` and `false` are accepted.
+
+## Git safety
+
+Armz Clash must be its **own** Git root. Do not commit this project into the parent Atlas Game Studio repository.
+
+```bash
+git rev-parse --show-toplevel
+# must print: .../armz-clash
+```
+
+If `gh` is available later:
+
+```bash
+gh repo create armz-clash --private --source=. --remote=origin
+git push -u origin main
+```
+
+## Hosted Supabase
+
+Migrations live in `supabase/migrations/`. Phase 1 does **not** auto-apply hosted migrations.
+
+```bash
+# After owner provisions a development project and approves remote writes:
+SUPABASE_REMOTE_WRITES_APPROVED=true pnpm exec supabase db push
+```
+
+## Token ticker
+
+The temporary game token ticker is centralized as **ARMZ** (`$ARMZ` display) in `@armz-clash/config`. Rename there — do not hardcode across components.
+
+## Documentation
+
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
+- [docs/SECURITY.md](docs/SECURITY.md)
+- [docs/ECONOMY_SAFETY.md](docs/ECONOMY_SAFETY.md)
+- [docs/PHASE1_REPORT_TEMPLATE.md](docs/PHASE1_REPORT_TEMPLATE.md)
+
+## Current limitations
+
+- No wallet connection
+- No authentication sessions
+- No battles or Demo Mode gameplay
+- No minting, rewards, claims, marketplace settlement
+- No PixiJS battle renderer yet
+- Hosted Supabase validation pending owner credentials
+- No remote GitHub repository until owner connects one
+
+## Next phase
+
+**Phase 2** — premium landing refinements (as needed), Reown wallet connection, signed wallet authentication, and player profile foundation.

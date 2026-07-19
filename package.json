@@ -1,0 +1,45 @@
+{
+  "name": "armz-clash",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Armz Clash — premium browser-based Solana arm-wrestling game (Phase 1 foundation)",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=11.0.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "dev:web": "pnpm --filter @armz-clash/web dev",
+    "dev:game": "pnpm --filter @armz-clash/game dev",
+    "dev:admin": "pnpm --filter @armz-clash/admin dev",
+    "dev:api": "pnpm --filter @armz-clash/api dev",
+    "dev:worker": "pnpm --filter @armz-clash/worker dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint -- --fix",
+    "typecheck": "turbo run typecheck",
+    "test": "pnpm test:unit",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:db": "tsx scripts/db-validate.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "clean": "turbo run clean && rm -rf node_modules .turbo coverage playwright-report test-results",
+    "env:check": "tsx scripts/env-check.ts",
+    "db:validate": "tsx scripts/db-validate.ts",
+    "secrets:scan": "tsx scripts/secrets-scan.ts",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:unit && pnpm env:check && pnpm secrets:scan && pnpm db:validate",
+    "quality:ci": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:unit && pnpm build && pnpm env:check && pnpm secrets:scan && pnpm db:validate"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.2",
+    "@types/node": "^22.16.5",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.3",
+    "turbo": "^2.5.4",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}

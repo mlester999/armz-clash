@@ -1,0 +1,73 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.key
+*.keystore
+id_rsa
+id_ed25519
+*.secret
+*secret*.local
+*-keypair.json
+*wallet*.json
+!package.json
+!tsconfig*.json
+!turbo.json
+!components.json
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+coverage/
+.turbo/
+*.tsbuildinfo
+
+# Test artifacts
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+vitest-report/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+
+# Supabase local state
+supabase/.branches
+supabase/.temp
+.supabase/
+
+# Caches
+.cache/
+.eslintcache
+.stylelintcache
+.parcel-cache/
+.vercel/
+
+# Misc
+tmp/
+temp/
+*.local
