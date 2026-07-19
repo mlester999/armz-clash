@@ -22,6 +22,8 @@ export const ClientEnvSchema = z.object({
   NEXT_PUBLIC_ARMZ_NFT_COLLECTION: z.string().optional().default(''),
   NEXT_PUBLIC_SENTRY_DSN: z.string().optional().default(''),
   NEXT_PUBLIC_ARMZ_API_URL: z.string().optional().default('http://127.0.0.1:4000'),
+  NEXT_PUBLIC_ARMZ_WEB_URL: z.string().optional().default('http://localhost:3000'),
+  NEXT_PUBLIC_ARMZ_GAME_URL: z.string().optional().default('http://localhost:3001'),
   // Feature flags mirrored for client display only (non-authoritative).
   NEXT_PUBLIC_ARMZ_DEMO_MODE_ENABLED: z.boolean().default(DEFAULT_FEATURE_FLAGS.demoModeEnabled),
   NEXT_PUBLIC_ARMZ_REAL_MINT_ENABLED: z.boolean().default(DEFAULT_FEATURE_FLAGS.realMintEnabled),
@@ -63,6 +65,8 @@ export function loadClientEnv(
     NEXT_PUBLIC_ARMZ_NFT_COLLECTION: env.NEXT_PUBLIC_ARMZ_NFT_COLLECTION,
     NEXT_PUBLIC_SENTRY_DSN: env.NEXT_PUBLIC_SENTRY_DSN,
     NEXT_PUBLIC_ARMZ_API_URL: env.NEXT_PUBLIC_ARMZ_API_URL,
+    NEXT_PUBLIC_ARMZ_WEB_URL: env.NEXT_PUBLIC_ARMZ_WEB_URL,
+    NEXT_PUBLIC_ARMZ_GAME_URL: env.NEXT_PUBLIC_ARMZ_GAME_URL,
     NEXT_PUBLIC_ARMZ_DEMO_MODE_ENABLED: readPublicBool(
       env,
       'NEXT_PUBLIC_ARMZ_DEMO_MODE_ENABLED',

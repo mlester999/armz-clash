@@ -22,6 +22,6 @@ export function formatTokenSymbol(symbol: string = TOKEN_SYMBOL): string {
 
 export const DEFAULT_TOKEN_DISPLAY = formatTokenSymbol(TOKEN_SYMBOL);
 
-export const DOCS_VERSION = '0.1.0-phase1' as const;
-export const APP_PHASE = 1 as const;
-export const APP_PHASE_LABEL = 'Phase 1 — Foundation' as const;
+export const DOCS_VERSION = '0.2.0-phase2' as const;
+export const APP_PHASE = 2 as const;
+export const APP_PHASE_LABEL = 'Phase 2 — Wallet Auth' as const;

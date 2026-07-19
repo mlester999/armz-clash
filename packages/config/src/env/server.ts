@@ -23,11 +23,27 @@ export const ServerEnvSchema = SharedEnvSchema.extend({
   ARMZ_REWARD_TREASURY_PUBLIC_KEY: z.string().optional().default(''),
   ARMZ_MARKETPLACE_FEE_TREASURY_PUBLIC_KEY: z.string().optional().default(''),
 
-  // Security placeholders (optional until later phases)
+  // Auth / security (Phase 2)
   ARMZ_WALLET_NONCE_SECRET: z.string().optional().default(''),
   ARMZ_SESSION_SIGNING_SECRET: z.string().optional().default(''),
+  ARMZ_REQUEST_METADATA_SECRET: z.string().optional().default(''),
   ARMZ_REWARD_SIGNER_SECRET: z.string().optional().default(''),
   ARMZ_PRODUCTION_ADMIN_WRITES_APPROVED: z.string().optional().default('false'),
+  ARMZ_NONCE_TTL_SECONDS: z.coerce.number().int().positive().default(300),
+  ARMZ_SESSION_TTL_SECONDS: z.coerce.number().int().positive().default(1800),
+  ARMZ_SESSION_ABSOLUTE_TTL_SECONDS: z.coerce.number().int().positive().default(86400),
+  ARMZ_SESSION_RENEWAL_WINDOW_SECONDS: z.coerce.number().int().positive().default(600),
+  ARMZ_SESSION_COOKIE_NAME: z.string().default('armz_clash_session'),
+  ARMZ_CSRF_COOKIE_NAME: z.string().default('armz_clash_csrf'),
+  ARMZ_COOKIE_DOMAIN: z.string().optional().default(''),
+  ARMZ_WEB_ORIGIN: z.string().optional().default('http://localhost:3000'),
+  ARMZ_GAME_ORIGIN: z.string().optional().default('http://localhost:3001'),
+  ARMZ_ADMIN_ORIGIN: z.string().optional().default('http://localhost:3002'),
+  ARMZ_API_ORIGIN: z.string().optional().default('http://localhost:4000'),
+  ARMZ_AUTH_NONCE_IP_LIMIT: z.coerce.number().int().positive().default(10),
+  ARMZ_AUTH_NONCE_WALLET_LIMIT: z.coerce.number().int().positive().default(5),
+  ARMZ_AUTH_VERIFY_IP_LIMIT: z.coerce.number().int().positive().default(15),
+  ARMZ_AUTH_VERIFY_WALLET_LIMIT: z.coerce.number().int().positive().default(8),
 
   // Hosted safety gates
   SUPABASE_REMOTE_WRITES_APPROVED: z.string().optional().default('false'),

@@ -8,5 +8,6 @@ export * from './network';
 export * from './ports';
 export * from './features';
 export * from './public-config';
+export * from './auth';
 export * from './env/shared';
 export { loadClientEnv, ClientEnvSchema, type ClientEnv } from './env/client';
