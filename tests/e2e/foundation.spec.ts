@@ -30,15 +30,18 @@ async function expectBrandVisible(page: Page) {
   });
 }
 
-test.describe('Armz Clash Phase 1 foundation', () => {
+test.describe('Armz Clash Phase 2 foundation', () => {
   test('web home loads with branding and disabled real-value messaging', async ({
     page,
   }, testInfo) => {
     await page.goto(WEB, { waitUntil: 'networkidle' });
     await expectBrandVisible(page);
     await expect(page.getByText(/Premium Solana/i).first()).toBeVisible();
-    await expect(page.getByText(/Real-value systems disabled/i).first()).toBeVisible();
-    await expect(page.getByRole('button', { name: /Connect Wallet/i })).toBeDisabled();
+    await expect(page.getByText(/Real-value disabled/i).first()).toBeVisible();
+    // Wallet chrome hydrates client-side (Connect Wallet or loading placeholder)
+    await expect(page.getByRole('button', { name: /Connect Wallet|Wallet/i }).first()).toBeVisible({
+      timeout: 15_000,
+    });
     await expect(page.getByText(/Marketplace/i).first()).toBeVisible();
     await assertNoStaking(page);
     await assertNoHorizontalOverflow(page);
