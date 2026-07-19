@@ -8,6 +8,7 @@ import {
   createLogger,
 } from '@armz-clash/observability';
 import { JOB_REGISTRY } from './types';
+import { cleanupExpiredDemoSessions } from './jobs/demo-cleanup';
 
 const env = loadServerEnv();
 const logger = createLogger({
@@ -35,7 +36,7 @@ healthApp.get('/ready', async (request, reply) => {
     correlationId: request.id,
     checks: {
       process: { ok: true },
-      scheduler: { ok: true, detail: 'no-op foundation; no jobs scheduled' },
+      scheduler: { ok: true, detail: 'demo cleanup + heartbeat' },
       registry: {
         ok: JOB_REGISTRY.length > 0,
         detail: `${JOB_REGISTRY.length} job types registered`,
@@ -49,16 +50,27 @@ const port = env.ARMZ_WORKER_HEALTH_PORT || PORTS.workerHealth;
 let shuttingDown = false;
 
 /**
- * Safe no-op scheduler foundation.
- * Phase 1 does not process real jobs or schedule midnight mass updates.
+ * Phase 3: periodic demo session cleanup + heartbeat.
+ * Still no midnight mass updates for real inventory.
  */
-function startNoopScheduler(): NodeJS.Timeout {
+function startScheduler(): NodeJS.Timeout {
   return setInterval(() => {
     if (shuttingDown) return;
     logger.debug('worker heartbeat', {
       jobsRegistered: JOB_REGISTRY.length,
       jobsEnabled: JOB_REGISTRY.filter((j) => j.enabled).length,
     });
+    if (JOB_REGISTRY.some((j) => j.name === 'cleanup.expired_demo_sessions' && j.enabled)) {
+      void cleanupExpiredDemoSessions()
+        .then((result) => {
+          if (result.deleted > 0) {
+            logger.info('demo session cleanup', result);
+          }
+        })
+        .catch((error) => {
+          logger.error('demo session cleanup failed', {}, error);
+        });
+    }
   }, 60_000);
 }
 
@@ -68,9 +80,17 @@ async function main() {
     jobs: JOB_REGISTRY.map((j) => j.name),
   });
 
-  const timer = startNoopScheduler();
+  const timer = startScheduler();
   await healthApp.listen({ port, host: '0.0.0.0' });
   logger.info('Worker health server listening', { port });
+
+  // Run once on boot
+  try {
+    const result = await cleanupExpiredDemoSessions();
+    logger.info('demo session cleanup (boot)', result);
+  } catch (error) {
+    logger.error('demo session cleanup boot failed', {}, error);
+  }
 
   const shutdown = async (signal: string) => {
     if (shuttingDown) return;

@@ -22,6 +22,17 @@ import { verifyAuthChallenge } from './auth/verify';
 import { loadSessionFromToken, renewSession, revokeSession, updateProfile } from './auth/session';
 import { fetchWalletBalances } from './auth/balances';
 import { sha256Hex } from './lib/crypto';
+import { loadDemoConfig } from '@armz-clash/config';
+import {
+  buildDemoPublicPayload,
+  createOrRestoreDemoSession,
+  ensureDemoArmz,
+  getDemoHistory,
+  isDemoModeEnabled,
+  resetDemoArmz,
+  resolveDemoSession,
+  startDemoBattle,
+} from './demo/service';
 
 // Load .env if present (local dev)
 try {
@@ -407,12 +418,231 @@ app.get('/api/v1/wallet/balances', async (request, reply) => {
   });
 });
 
+// ---------------------------------------------------------------------------
+// Phase 3 — Demo Mode (temporary, simulated, no real value)
+// ---------------------------------------------------------------------------
+const demoConfig = loadDemoConfig();
+
+function setDemoCookie(
+  reply: { setCookie: (name: string, value: string, opts: Record<string, unknown>) => void },
+  token: string,
+  maxAgeSeconds: number,
+) {
+  reply.setCookie(demoConfig.cookieName, token, {
+    path: '/',
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: cookieSecure(),
+    maxAge: maxAgeSeconds,
+    ...(authConfig.cookieDomain ? { domain: authConfig.cookieDomain } : {}),
+  });
+}
+
+function demoDisabled(reply: { status: (code: number) => { send: (body: unknown) => unknown } }) {
+  return reply.status(503).send({
+    error: 'demo_mode_disabled',
+    message: 'Demo Mode is unavailable. ARMZ_DEMO_MODE_ENABLED is false.',
+    demoModeEnabled: false,
+  });
+}
+
+app.post('/api/v1/demo/session', async (request, reply) => {
+  if (!isDemoModeEnabled()) return demoDisabled(reply);
+  try {
+    const existing = request.cookies[demoConfig.cookieName];
+    let playerId: string | null = null;
+    try {
+      const playerSession = await loadSessionFromToken(
+        request.cookies[authConfig.sessionCookieName],
+      );
+      playerId = playerSession?.playerId ?? null;
+    } catch {
+      playerId = null;
+    }
+    const { token, session, isNew } = await createOrRestoreDemoSession({
+      existingToken: existing,
+      playerId,
+      config: demoConfig,
+    });
+    setDemoCookie(reply, token, demoConfig.sessionTtlSeconds);
+    const armz = await ensureDemoArmz(session);
+    return reply.send({
+      isNew,
+      ...buildDemoPublicPayload(session, armz),
+    });
+  } catch (error) {
+    logger.error('demo session failed', {}, error);
+    return reply
+      .status(500)
+      .send({ error: 'demo_session_failed', message: 'Could not start Demo Mode' });
+  }
+});
+
+app.get('/api/v1/demo/session', async (request, reply) => {
+  if (!isDemoModeEnabled()) return demoDisabled(reply);
+  const session = await resolveDemoSession(request.cookies[demoConfig.cookieName]);
+  if (!session) {
+    return reply
+      .status(401)
+      .send({ error: 'demo_session_required', message: 'Start Demo Mode first' });
+  }
+  const armz = await ensureDemoArmz(session);
+  return reply.send(buildDemoPublicPayload(session, armz));
+});
+
+app.post('/api/v1/demo/armz', async (request, reply) => {
+  if (!isDemoModeEnabled()) return demoDisabled(reply);
+  const session = await resolveDemoSession(request.cookies[demoConfig.cookieName]);
+  if (!session) {
+    return reply.status(401).send({ error: 'demo_session_required' });
+  }
+  const armz = await ensureDemoArmz(session);
+  return reply.send({ armz: buildDemoPublicPayload(session, armz).armz });
+});
+
+app.get('/api/v1/demo/armz', async (request, reply) => {
+  if (!isDemoModeEnabled()) return demoDisabled(reply);
+  const session = await resolveDemoSession(request.cookies[demoConfig.cookieName]);
+  if (!session) {
+    return reply.status(401).send({ error: 'demo_session_required' });
+  }
+  const armz = await ensureDemoArmz(session);
+  return reply.send({ armz: buildDemoPublicPayload(session, armz).armz });
+});
+
+app.post('/api/v1/demo/armz/reset', async (request, reply) => {
+  if (!isDemoModeEnabled()) return demoDisabled(reply);
+  const session = await resolveDemoSession(request.cookies[demoConfig.cookieName]);
+  if (!session) {
+    return reply.status(401).send({ error: 'demo_session_required' });
+  }
+  try {
+    const armz = await resetDemoArmz(session, demoConfig);
+    const refreshed = await resolveDemoSession(request.cookies[demoConfig.cookieName]);
+    return reply.send(buildDemoPublicPayload(refreshed ?? session, armz));
+  } catch (error) {
+    const err = error as {
+      statusCode?: number;
+      code?: string;
+      message?: string;
+      retryAfterSeconds?: number;
+    };
+    return reply.status(err.statusCode ?? 500).send({
+      error: err.code ?? 'demo_reset_failed',
+      message: err.message,
+      retryAfterSeconds: err.retryAfterSeconds,
+    });
+  }
+});
+
+app.post(
+  '/api/v1/demo/battle',
+  {
+    config: {
+      rateLimit: { max: 20, timeWindow: '1 minute' },
+    },
+  },
+  async (request, reply) => {
+    if (!isDemoModeEnabled()) return demoDisabled(reply);
+    const session = await resolveDemoSession(request.cookies[demoConfig.cookieName]);
+    if (!session) {
+      return reply.status(401).send({ error: 'demo_session_required' });
+    }
+    const body = (request.body ?? {}) as { idempotencyKey?: string; reducedMotion?: boolean };
+    const idempotencyKey =
+      body.idempotencyKey?.trim() ||
+      (typeof request.headers['idempotency-key'] === 'string'
+        ? request.headers['idempotency-key']
+        : '') ||
+      `auto-${Date.now()}`;
+    try {
+      const result = await startDemoBattle({
+        session,
+        idempotencyKey,
+        reducedMotion: Boolean(body.reducedMotion),
+        config: demoConfig,
+      });
+      return reply.send({
+        battleId: result.battle.id,
+        outcome: result.result.outcome,
+        durationMs: result.result.durationMs,
+        playerFinalStrength: result.result.playerFinalStrength,
+        opponentFinalStrength: result.result.opponentFinalStrength,
+        timeline: result.result.timeline,
+        criticalEvents: result.result.criticalEvents,
+        recoveryEvents: result.result.recoveryEvents,
+        configurationVersion: result.result.configurationVersion,
+        reward: result.result.reward
+          ? {
+              ...result.result.reward,
+              display: `${(result.result.reward.demoUnits / 1_000_000).toFixed(2)} Demo $ARMZ`,
+              noMonetaryValue: true,
+              notClaimable: true,
+              notWithdrawable: true,
+              simulated: true,
+            }
+          : null,
+        armz: buildDemoPublicPayload(result.session, result.armz).armz,
+        session: result.replay,
+        opponent: buildDemoPublicPayload(result.session, result.armz).opponent,
+        labels: buildDemoPublicPayload(result.session, result.armz).labels,
+      });
+    } catch (error) {
+      const err = error as {
+        statusCode?: number;
+        code?: string;
+        message?: string;
+        retryAfterSeconds?: number;
+      };
+      return reply.status(err.statusCode ?? 500).send({
+        error: err.code ?? 'demo_battle_failed',
+        message: err.message ?? 'Battle failed',
+        retryAfterSeconds: err.retryAfterSeconds,
+      });
+    }
+  },
+);
+
+app.get('/api/v1/demo/history', async (request, reply) => {
+  if (!isDemoModeEnabled()) return demoDisabled(reply);
+  const session = await resolveDemoSession(request.cookies[demoConfig.cookieName]);
+  if (!session) {
+    return reply.status(401).send({ error: 'demo_session_required' });
+  }
+  const history = await getDemoHistory(session.id);
+  return reply.send({
+    history,
+    simulatedOnly: true,
+    claimable: false,
+    monetaryValue: false,
+  });
+});
+
+app.get('/api/v1/demo/config', async (_request, reply) => {
+  return reply.send({
+    demoModeEnabled: isDemoModeEnabled(),
+    configurationVersion: demoConfig.configurationVersion,
+    replayCooldownSeconds: demoConfig.replayCooldownSeconds,
+    armzResetCooldownSeconds: demoConfig.armzResetCooldownSeconds,
+    maxBattlesPerSession: demoConfig.maxBattlesPerSession,
+    sessionTtlSeconds: demoConfig.sessionTtlSeconds,
+    difficulty: 'easy',
+    labels: {
+      mode: 'Demo Mode',
+      temporary: 'Temporary Common ARMZ',
+      simulated: 'Simulated battle and reward',
+      noMonetaryValue: 'No monetary value',
+      notClaimable: 'Not claimable',
+    },
+  });
+});
+
 const port = env.ARMZ_API_PORT || PORTS.api;
 
 async function main() {
   try {
     await app.listen({ port, host: '0.0.0.0' });
-    logger.info('API listening', { port, product: PRODUCT_NAME, phase: 2 });
+    logger.info('API listening', { port, product: PRODUCT_NAME, phase: 3 });
   } catch (error) {
     logger.error('API failed to start', {}, error);
     process.exit(1);

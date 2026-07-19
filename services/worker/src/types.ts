@@ -4,6 +4,7 @@ export type JobName =
   | 'reconciliation.snapshot'
   | 'reconciliation.rewards'
   | 'cleanup.expired_listings'
+  | 'cleanup.expired_demo_sessions'
   | 'monitoring.oracle_health'
   | 'monitoring.treasury';
 
@@ -72,6 +73,13 @@ export const JOB_REGISTRY: readonly JobRegistryEntry[] = [
     enabled: false,
     retry: DEFAULT_RETRY_POLICY,
     scheduleNote: 'Bounded batches; never unbounded table scans.',
+  },
+  {
+    name: 'cleanup.expired_demo_sessions',
+    description: 'Delete expired Demo Mode sessions and cascading temporary ARMZ/battles.',
+    enabled: true,
+    retry: DEFAULT_RETRY_POLICY,
+    scheduleNote: 'Periodic UTC cleanup; demo data only — never real inventory.',
   },
   {
     name: 'monitoring.oracle_health',

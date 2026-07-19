@@ -14,6 +14,7 @@
   "dependencies": {
     "@armz-clash/config": "workspace:*",
     "@armz-clash/observability": "workspace:*",
+    "@supabase/supabase-js": "^2.110.7",
     "fastify": "^5.4.0",
     "zod": "^3.25.76"
   },

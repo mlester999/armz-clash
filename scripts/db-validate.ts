@@ -37,6 +37,21 @@ function phase2AuthChecks(sql: string): Array<[string, boolean]> {
   ];
 }
 
+function phase3DemoChecks(sql: string): Array<[string, boolean]> {
+  return [
+    ['non-empty', sql.trim().length > 0],
+    ['enables RLS', /enable row level security/i.test(sql)],
+    ['force RLS on sensitive tables', /force row level security/i.test(sql)],
+    ['no staking schema', hasNoStakingSchema(sql)],
+    ['demo_sessions table', /demo_sessions/i.test(sql)],
+    ['demo_armz table', /demo_armz/i.test(sql)],
+    ['demo_battles table', /demo_battles/i.test(sql)],
+    ['demo_reward_events table', /demo_reward_events/i.test(sql)],
+    ['simulated reward flags', /simulated boolean not null default true/i.test(sql)],
+    ['common-only demo armz', /rarity = 'common'/i.test(sql)],
+  ];
+}
+
 function defaultChecks(sql: string): Array<[string, boolean]> {
   return [
     ['non-empty', sql.trim().length > 0],
@@ -47,6 +62,7 @@ function defaultChecks(sql: string): Array<[string, boolean]> {
 function checksFor(file: string, sql: string): Array<[string, boolean]> {
   if (file.includes('phase1_foundation')) return foundationChecks(sql);
   if (file.includes('phase2_wallet_auth')) return phase2AuthChecks(sql);
+  if (file.includes('phase3_demo_mode')) return phase3DemoChecks(sql);
   return defaultChecks(sql);
 }
 
