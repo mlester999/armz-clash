@@ -16,12 +16,30 @@ export type ActiveSession = {
   };
 };
 
+export type RenewResult =
+  | {
+      rotated: true;
+      sessionToken: string;
+      csrfToken: string;
+      expiresAt: string;
+      absoluteExpiresAt: string;
+      profile: ActiveSession['profile'];
+      walletAddress: string;
+    }
+  | {
+      rotated: false;
+      expiresAt: string;
+      absoluteExpiresAt: string;
+      profile: ActiveSession['profile'];
+      walletAddress: string;
+    };
+
 export async function loadSessionFromToken(
   token: string | undefined,
 ): Promise<ActiveSession | null> {
   if (!token) return null;
   const secret = process.env.ARMZ_SESSION_SIGNING_SECRET ?? '';
-  if (!secret) return null;
+  if (!secret || secret.length < 16) return null;
   const db = getServiceDb();
   const tokenHash = hashToken(secret, token);
   const { data: session } = await db
@@ -64,14 +82,13 @@ export async function loadSessionFromToken(
   };
 }
 
-export async function renewSession(token: string | undefined): Promise<{
-  sessionToken: string;
-  csrfToken: string;
-  expiresAt: string;
-  absoluteExpiresAt: string;
-  profile: ActiveSession['profile'];
-  walletAddress: string;
-} | null> {
+/**
+ * Renew session:
+ * - Outside renewal window: return same session metadata without rotation.
+ * - Inside window: atomically revoke current, then create child session.
+ * Concurrent renewals: only one revoke succeeds; others fail.
+ */
+export async function renewSession(token: string | undefined): Promise<RenewResult | null> {
   const current = await loadSessionFromToken(token);
   if (!current || !token) return null;
   const auth = loadAuthConfig();
@@ -79,12 +96,35 @@ export async function renewSession(token: string | undefined): Promise<{
   const expiresAtMs = new Date(current.expiresAt).getTime();
   const absoluteMs = new Date(current.absoluteExpiresAt).getTime();
   if (absoluteMs <= now) return null;
-  if (expiresAtMs - now > auth.sessionRenewalWindowSeconds * 1000) {
-    // Still valid; return rotation only near expiry — still allow renew in window.
+
+  const remainingMs = expiresAtMs - now;
+  if (remainingMs > auth.sessionRenewalWindowSeconds * 1000) {
+    return {
+      rotated: false,
+      expiresAt: current.expiresAt,
+      absoluteExpiresAt: current.absoluteExpiresAt,
+      profile: current.profile,
+      walletAddress: current.walletAddress,
+    };
   }
 
   const secret = process.env.ARMZ_SESSION_SIGNING_SECRET ?? '';
+  if (!secret) return null;
   const db = getServiceDb();
+
+  // Atomic claim: only one concurrent renew can revoke the parent.
+  const { data: revoked, error: revokeError } = await db
+    .from('player_sessions')
+    .update({ revoked_at: new Date().toISOString() })
+    .eq('id', current.sessionId)
+    .is('revoked_at', null)
+    .select('id')
+    .maybeSingle();
+
+  if (revokeError || !revoked) {
+    return null;
+  }
+
   const sessionToken = generateToken(32);
   const csrfToken = generateToken(24);
   const newExpires = new Date(
@@ -105,15 +145,12 @@ export async function renewSession(token: string | undefined): Promise<{
     .select('expires_at, absolute_expires_at')
     .single();
 
-  if (error || !created) return null;
-
-  await db
-    .from('player_sessions')
-    .update({ revoked_at: new Date().toISOString() })
-    .eq('id', current.sessionId)
-    .is('revoked_at', null);
+  if (error || !created) {
+    return null;
+  }
 
   return {
+    rotated: true,
     sessionToken,
     csrfToken,
     expiresAt: created.expires_at as string,
@@ -135,14 +172,33 @@ export async function revokeSession(token: string | undefined): Promise<void> {
     .is('revoked_at', null);
 }
 
+export async function revokeAllSessionsForWallet(
+  walletAddress: string,
+  exceptSessionId?: string,
+): Promise<void> {
+  const db = getServiceDb();
+  let query = db
+    .from('player_sessions')
+    .update({ revoked_at: new Date().toISOString() })
+    .eq('wallet_address', walletAddress)
+    .is('revoked_at', null);
+  if (exceptSessionId) {
+    query = query.neq('id', exceptSessionId);
+  }
+  await query;
+}
+
+const DISPLAY_NAME_RE = /^[\p{L}\p{N} _.\-]{1,32}$/u;
+const AVATAR_PRESET_RE = /^[a-z0-9_-]{1,64}$/i;
+
 export async function updateProfile(
   playerId: string,
   patch: { displayName?: string; avatarPreset?: string },
 ) {
   const updates: Record<string, string> = { updated_at: new Date().toISOString() };
   if (patch.displayName !== undefined) {
-    const name = patch.displayName.trim();
-    if (name.length < 1 || name.length > 32) {
+    const name = patch.displayName.trim().replace(/[\u0000-\u001F\u007F]/g, '');
+    if (!DISPLAY_NAME_RE.test(name) || /[<>&"`]/.test(name)) {
       throw Object.assign(new Error('Invalid display name'), {
         statusCode: 400,
         code: 'invalid_display_name',
@@ -152,7 +208,7 @@ export async function updateProfile(
   }
   if (patch.avatarPreset !== undefined) {
     const preset = patch.avatarPreset.trim();
-    if (preset.length < 1 || preset.length > 64) {
+    if (!AVATAR_PRESET_RE.test(preset)) {
       throw Object.assign(new Error('Invalid avatar preset'), {
         statusCode: 400,
         code: 'invalid_avatar_preset',

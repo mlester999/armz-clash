@@ -22,7 +22,8 @@ describe('auth message + signature pipeline', () => {
     expect(message).toContain('solana:devnet');
     expect(message).toContain('solana-devnet');
     expect(message).toContain(keypair.publicKey.toBase58());
-    expect(message).toContain('will not trigger a blockchain transaction');
+    expect(message).toContain('does not trigger a blockchain transaction');
+    expect(message).toContain('does not approve token spending');
 
     const sig = nacl.sign.detached(new TextEncoder().encode(message), keypair.secretKey);
     expect(

@@ -4,6 +4,28 @@ import { isSolanaPublicKeyString } from '@armz-clash/blockchain';
 import { getServiceDb } from '../lib/db';
 import { generateToken } from '../lib/crypto';
 
+function assertAllowedUri(uri: string, allowedOrigins: string[]): void {
+  let parsed: URL;
+  try {
+    parsed = new URL(uri);
+  } catch {
+    throw Object.assign(new Error('Invalid URI'), { statusCode: 400, code: 'invalid_uri' });
+  }
+  const origin = parsed.origin;
+  if (!allowedOrigins.includes(origin)) {
+    throw Object.assign(new Error('URI origin not allowed'), {
+      statusCode: 403,
+      code: 'uri_forbidden',
+    });
+  }
+  if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+    throw Object.assign(new Error('Invalid URI protocol'), {
+      statusCode: 400,
+      code: 'invalid_uri_protocol',
+    });
+  }
+}
+
 export async function createAuthChallenge(input: {
   walletAddress: string;
   origin: string;
@@ -12,6 +34,12 @@ export async function createAuthChallenge(input: {
   requestMetadataHash?: string;
 }) {
   const auth = loadAuthConfig();
+  if (!input.origin) {
+    throw Object.assign(new Error('Origin required'), {
+      statusCode: 400,
+      code: 'origin_required',
+    });
+  }
   if (!isSolanaPublicKeyString(input.walletAddress)) {
     throw Object.assign(new Error('Invalid wallet address'), {
       statusCode: 400,
@@ -27,6 +55,9 @@ export async function createAuthChallenge(input: {
     });
   }
 
+  const uri = input.uri || input.origin;
+  assertAllowedUri(uri, allowed);
+
   const now = Date.now();
   const issuedAt = new Date(now).toISOString();
   const expiresAt = new Date(now + auth.nonceTtlSeconds * 1000).toISOString();
@@ -37,7 +68,7 @@ export async function createAuthChallenge(input: {
 
   const message = buildSignInMessage({
     domain,
-    uri: input.uri || input.origin,
+    uri,
     walletAddress: input.walletAddress,
     nonce,
     challengeId,
@@ -53,7 +84,7 @@ export async function createAuthChallenge(input: {
     nonce_hash: sha256Hex(nonce),
     message_hash: sha256Hex(message),
     domain,
-    uri: input.uri || input.origin,
+    uri,
     network: AUTH_NETWORK,
     issued_at: issuedAt,
     expires_at: expiresAt,

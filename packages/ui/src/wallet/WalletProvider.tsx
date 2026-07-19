@@ -102,7 +102,15 @@ function WalletRuntime({
 
   useEffect(() => {
     if (!isConnected || !address) {
-      if (state === 'authenticated' || state === 'connected_unauthenticated') {
+      if (state === 'authenticated') {
+        // Wallet disconnect while authenticated: revoke server session and clear UI.
+        void api.logout().finally(() => {
+          setProfile(undefined);
+          setBoundWallet(undefined);
+          setBalances(undefined);
+          setWalletState('disconnected');
+        });
+      } else if (state === 'connected_unauthenticated') {
         setWalletState('disconnected');
         setProfile(undefined);
         setBalances(undefined);
@@ -110,6 +118,7 @@ function WalletRuntime({
       return;
     }
     if (boundWallet && boundWallet !== address && state === 'authenticated') {
+      // Wallet switch: revoke prior session immediately; require new sign-in.
       void api.logout().finally(() => {
         setProfile(undefined);
         setBoundWallet(undefined);

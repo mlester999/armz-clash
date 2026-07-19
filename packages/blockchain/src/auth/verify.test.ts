@@ -19,6 +19,7 @@ describe('verifySolanaMessageSignature', () => {
       expiresAt: new Date(Date.now() + 300_000).toISOString(),
       requestId: 'req_test',
     });
+    expect(message).toContain('does not approve token spending');
     const sig = nacl.sign.detached(new TextEncoder().encode(message), keypair.secretKey);
     const result = verifySolanaMessageSignature({
       message,

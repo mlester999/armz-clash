@@ -16,7 +16,7 @@ export type ChallengeMessageInput = {
 export function buildSignInMessage(input: ChallengeMessageInput): string {
   const statement =
     input.statement ??
-    'Sign in to Armz Clash. This request will not trigger a blockchain transaction or cost SOL.';
+    'Sign in to Armz Clash to authenticate your player profile. This request does not trigger a blockchain transaction, does not cost SOL, and does not approve token spending.';
 
   return [
     `${input.domain} wants you to sign in with your Solana account:`,

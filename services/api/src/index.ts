@@ -60,20 +60,20 @@ const app = Fastify({
 });
 
 await app.register(cookie);
+// Player auth cookies are shared by host (not port). Never allow admin origin
+// to make credentialed player-API requests.
+const playerOrigins = allowedAuthOrigins(authConfig);
 await app.register(cors, {
   origin: (origin, cb) => {
+    // Non-browser tools may omit Origin for health checks only; auth routes require Origin.
     if (!origin) return cb(null, true);
-    const allowed = [
-      ...allowedAuthOrigins(authConfig),
-      authConfig.adminOrigin,
-      authConfig.apiOrigin,
-    ];
-    if (allowed.includes(origin)) return cb(null, true);
+    if (playerOrigins.includes(origin)) return cb(null, true);
     return cb(new Error('CORS origin denied'), false);
   },
   credentials: true,
 });
 await app.register(rateLimit, {
+  global: true,
   max: 120,
   timeWindow: '1 minute',
 });
@@ -196,71 +196,106 @@ app.get('/api/v1/config/public', async () =>
   }),
 );
 
-app.post('/api/v1/auth/challenge', async (request, reply) => {
-  try {
-    const body = (request.body ?? {}) as { walletAddress?: string; uri?: string };
-    const origin = String(request.headers.origin ?? authConfig.webOrigin);
-    const result = await createAuthChallenge({
-      walletAddress: body.walletAddress ?? '',
-      origin,
-      uri: body.uri || origin,
-      correlationId: (request as { correlationId?: string }).correlationId ?? request.id,
-      requestMetadataHash: sha256Hex(
-        `${request.ip}|${String(request.headers['user-agent'] ?? '')}`,
-      ),
-    });
-    return reply.send(result);
-  } catch (error) {
-    const err = error as { statusCode?: number; code?: string; message?: string };
-    logger.warn('challenge failed', { code: err.code, message: err.message });
-    return reply.status(err.statusCode ?? 500).send({
-      error: err.code ?? 'challenge_failed',
-      message: err.message ?? 'Challenge failed',
-    });
-  }
-});
+app.post(
+  '/api/v1/auth/challenge',
+  {
+    config: {
+      rateLimit: {
+        // Allow higher burst in development for security suites; still capped.
+        max:
+          env.ARMZ_ENVIRONMENT === 'development'
+            ? Math.max(authConfig.nonceIpLimit, 60)
+            : authConfig.nonceIpLimit,
+        timeWindow: '1 minute',
+      },
+    },
+  },
+  async (request, reply) => {
+    try {
+      const body = (request.body ?? {}) as { walletAddress?: string; uri?: string };
+      const originHeader = request.headers.origin;
+      if (!originHeader || typeof originHeader !== 'string') {
+        return reply.status(400).send({ error: 'origin_required', message: 'Origin required' });
+      }
+      const result = await createAuthChallenge({
+        walletAddress: body.walletAddress ?? '',
+        origin: originHeader,
+        uri: body.uri || originHeader,
+        correlationId: (request as { correlationId?: string }).correlationId ?? request.id,
+        requestMetadataHash: sha256Hex(
+          `${request.ip}|${String(request.headers['user-agent'] ?? '')}`,
+        ),
+      });
+      return reply.send(result);
+    } catch (error) {
+      const err = error as { statusCode?: number; code?: string; message?: string };
+      logger.warn('challenge failed', { code: err.code, message: err.message });
+      return reply.status(err.statusCode ?? 500).send({
+        error: err.code ?? 'challenge_failed',
+        message: err.message ?? 'Challenge failed',
+      });
+    }
+  },
+);
 
-app.post('/api/v1/auth/verify', async (request, reply) => {
-  try {
-    const body = (request.body ?? {}) as {
-      challengeId?: string;
-      walletAddress?: string;
-      message?: string;
-      signature?: string;
-      signatureEncoding?: 'base58' | 'base64';
-    };
-    const origin = String(request.headers.origin ?? authConfig.webOrigin);
-    const result = await verifyAuthChallenge({
-      challengeId: body.challengeId ?? '',
-      walletAddress: body.walletAddress ?? '',
-      message: body.message ?? '',
-      signature: body.signature ?? '',
-      signatureEncoding: body.signatureEncoding,
-      origin,
-      correlationId: (request as { correlationId?: string }).correlationId ?? request.id,
-      userAgent: String(request.headers['user-agent'] ?? ''),
-      ip: request.ip,
-    });
+app.post(
+  '/api/v1/auth/verify',
+  {
+    config: {
+      rateLimit: {
+        max:
+          env.ARMZ_ENVIRONMENT === 'development'
+            ? Math.max(authConfig.verifyIpLimit, 60)
+            : authConfig.verifyIpLimit,
+        timeWindow: '1 minute',
+      },
+    },
+  },
+  async (request, reply) => {
+    try {
+      const body = (request.body ?? {}) as {
+        challengeId?: string;
+        walletAddress?: string;
+        message?: string;
+        signature?: string;
+        signatureEncoding?: 'base58' | 'base64';
+      };
+      const originHeader = request.headers.origin;
+      if (!originHeader || typeof originHeader !== 'string') {
+        return reply.status(400).send({ error: 'origin_required', message: 'Origin required' });
+      }
+      const result = await verifyAuthChallenge({
+        challengeId: body.challengeId ?? '',
+        walletAddress: body.walletAddress ?? '',
+        message: body.message ?? '',
+        signature: body.signature ?? '',
+        signatureEncoding: body.signatureEncoding,
+        origin: originHeader,
+        correlationId: (request as { correlationId?: string }).correlationId ?? request.id,
+        userAgent: String(request.headers['user-agent'] ?? ''),
+        ip: request.ip,
+      });
 
-    const maxAge = Math.floor((new Date(result.session.expiresAt).getTime() - Date.now()) / 1000);
-    setSessionCookies(reply, result.sessionToken, result.csrfToken, Math.max(maxAge, 60));
+      const maxAge = Math.floor((new Date(result.session.expiresAt).getTime() - Date.now()) / 1000);
+      setSessionCookies(reply, result.sessionToken, result.csrfToken, Math.max(maxAge, 60));
 
-    return reply.send({
-      authenticated: true,
-      profile: result.profile,
-      session: result.session,
-      walletAddress: body.walletAddress,
-      network: 'solana-devnet',
-    });
-  } catch (error) {
-    const err = error as { statusCode?: number; code?: string; message?: string };
-    logger.warn('verify failed', { code: err.code });
-    return reply.status(err.statusCode ?? 500).send({
-      error: err.code ?? 'verify_failed',
-      message: err.message ?? 'Verification failed',
-    });
-  }
-});
+      return reply.send({
+        authenticated: true,
+        profile: result.profile,
+        session: result.session,
+        walletAddress: body.walletAddress,
+        network: 'solana-devnet',
+      });
+    } catch (error) {
+      const err = error as { statusCode?: number; code?: string; message?: string };
+      logger.warn('verify failed', { code: err.code });
+      return reply.status(err.statusCode ?? 500).send({
+        error: err.code ?? 'verify_failed',
+        message: err.message ?? 'Verification failed',
+      });
+    }
+  },
+);
 
 app.get('/api/v1/auth/session', async (request, reply) => {
   const token = request.cookies[authConfig.sessionCookieName];
@@ -290,10 +325,13 @@ app.post('/api/v1/auth/renew', async (request, reply) => {
       clearSessionCookies(reply);
       return reply.status(401).send({ error: 'session_expired', authenticated: false });
     }
-    const maxAge = Math.floor((new Date(renewed.expiresAt).getTime() - Date.now()) / 1000);
-    setSessionCookies(reply, renewed.sessionToken, renewed.csrfToken, Math.max(maxAge, 60));
+    if (renewed.rotated) {
+      const maxAge = Math.floor((new Date(renewed.expiresAt).getTime() - Date.now()) / 1000);
+      setSessionCookies(reply, renewed.sessionToken, renewed.csrfToken, Math.max(maxAge, 60));
+    }
     return reply.send({
       authenticated: true,
+      rotated: renewed.rotated,
       profile: renewed.profile,
       walletAddress: renewed.walletAddress,
       session: {

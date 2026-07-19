@@ -4,9 +4,21 @@ import { verifySolanaMessageSignature } from '@armz-clash/blockchain/auth/verify
 import { isSolanaPublicKeyString } from '@armz-clash/blockchain';
 import { getServiceDb } from '../lib/db';
 import { generateToken, hashToken } from '../lib/crypto';
+import { revokeAllSessionsForWallet } from './session';
 
 function truncateAddress(address: string): string {
   return `${address.slice(0, 4)}…${address.slice(-4)}`;
+}
+
+function requireAuthSecret(): string {
+  const sessionSecret = process.env.ARMZ_SESSION_SIGNING_SECRET ?? '';
+  if (!sessionSecret || sessionSecret.length < 16) {
+    throw Object.assign(new Error('Session secret missing'), {
+      statusCode: 500,
+      code: 'session_secret_missing',
+    });
+  }
+  return sessionSecret;
 }
 
 export async function verifyAuthChallenge(input: {
@@ -21,6 +33,12 @@ export async function verifyAuthChallenge(input: {
   ip?: string;
 }) {
   const auth = loadAuthConfig();
+  if (!input.origin) {
+    throw Object.assign(new Error('Origin required'), {
+      statusCode: 400,
+      code: 'origin_required',
+    });
+  }
   if (!allowedAuthOrigins(auth).includes(input.origin)) {
     throw Object.assign(new Error('Origin not allowed'), {
       statusCode: 403,
@@ -29,6 +47,14 @@ export async function verifyAuthChallenge(input: {
   }
   if (!isSolanaPublicKeyString(input.walletAddress)) {
     throw Object.assign(new Error('Invalid wallet'), { statusCode: 400, code: 'invalid_wallet' });
+  }
+
+  // Reject mainnet wording in client-supplied message early (hash would also fail).
+  if (/mainnet/i.test(input.message) && !/solana-devnet|solana:devnet/i.test(input.message)) {
+    throw Object.assign(new Error('Network mismatch'), {
+      statusCode: 400,
+      code: 'network_mismatch',
+    });
   }
 
   const db = getServiceDb();
@@ -70,6 +96,22 @@ export async function verifyAuthChallenge(input: {
     });
   }
 
+  // Domain must match request origin host
+  const requestDomain = new URL(input.origin).host;
+  if (challenge.domain !== requestDomain) {
+    throw Object.assign(new Error('Domain mismatch'), {
+      statusCode: 400,
+      code: 'domain_mismatch',
+    });
+  }
+
+  if ((challenge.failed_attempts ?? 0) >= (challenge.max_failed_attempts ?? 5)) {
+    throw Object.assign(new Error('Challenge locked'), {
+      statusCode: 429,
+      code: 'challenge_locked',
+    });
+  }
+
   if (sha256Hex(input.message) !== challenge.message_hash) {
     await db
       .from('auth_challenges')
@@ -78,13 +120,6 @@ export async function verifyAuthChallenge(input: {
     throw Object.assign(new Error('Message mismatch'), {
       statusCode: 400,
       code: 'message_mismatch',
-    });
-  }
-
-  if ((challenge.failed_attempts ?? 0) >= (challenge.max_failed_attempts ?? 5)) {
-    throw Object.assign(new Error('Challenge locked'), {
-      statusCode: 429,
-      code: 'challenge_locked',
     });
   }
 
@@ -114,7 +149,7 @@ export async function verifyAuthChallenge(input: {
     });
   }
 
-  // Atomic consume
+  // Atomic consume — concurrent verifies: only one succeeds
   const { data: consumed, error: consumeError } = await db
     .from('auth_challenges')
     .update({ consumed_at: new Date().toISOString() })
@@ -130,7 +165,6 @@ export async function verifyAuthChallenge(input: {
     });
   }
 
-  // Upsert player + wallet
   let playerId: string;
   const { data: existingWallet } = await db
     .from('wallet_accounts')
@@ -174,15 +208,12 @@ export async function verifyAuthChallenge(input: {
     });
   }
 
+  // New login revokes prior sessions for this wallet (session fixation / multi-session control).
+  await revokeAllSessionsForWallet(input.walletAddress);
+
+  const sessionSecret = requireAuthSecret();
   const sessionToken = generateToken(32);
   const csrfToken = generateToken(24);
-  const sessionSecret = process.env.ARMZ_SESSION_SIGNING_SECRET ?? '';
-  if (!sessionSecret) {
-    throw Object.assign(new Error('Session secret missing'), {
-      statusCode: 500,
-      code: 'session_secret_missing',
-    });
-  }
 
   const now = Date.now();
   const expiresAt = new Date(now + auth.sessionTtlSeconds * 1000).toISOString();
