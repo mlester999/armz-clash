@@ -28,7 +28,7 @@ loadEnvFile();
 
 const enabled = process.env.RUN_HOSTED_SUPABASE_TESTS === 'true';
 const apiBase = process.env.NEXT_PUBLIC_ARMZ_API_URL || 'http://127.0.0.1:4000';
-const origin = process.env.ARMZ_WEB_ORIGIN || 'http://localhost:3000';
+const origin = process.env.ARMZ_WEB_ORIGIN || 'http://127.0.0.1:3000';
 
 function signMessage(message: string, keypair: Keypair): string {
   const sig = nacl.sign.detached(new TextEncoder().encode(message), keypair.secretKey);

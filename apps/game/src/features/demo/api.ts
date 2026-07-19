@@ -93,26 +93,85 @@ export type DemoBattlePayload = {
   labels: Record<string, string>;
 };
 
+export type DemoApiError = Error & {
+  status?: number;
+  code?: string;
+  correlationId?: string;
+  kind: 'network' | 'api' | 'parse';
+  apiBase: string;
+};
+
+export function resolveDemoApiBase(override?: string): string {
+  const fromEnv = (override ?? loadClientEnv().NEXT_PUBLIC_ARMZ_API_URL ?? '').trim();
+  const base = fromEnv || 'http://127.0.0.1:4000';
+  return base.replace(/\/$/, '');
+}
+
 function apiBase(): string {
-  return (loadClientEnv().NEXT_PUBLIC_ARMZ_API_URL || 'http://127.0.0.1:4000').replace(/\/$/, '');
+  return resolveDemoApiBase();
+}
+
+function correlationFromResponse(res: Response, body: Record<string, unknown>): string | undefined {
+  const header =
+    res.headers.get('x-correlation-id') || res.headers.get('x-request-id') || undefined;
+  const fromBody =
+    typeof body.correlationId === 'string'
+      ? body.correlationId
+      : typeof body.requestId === 'string'
+        ? body.requestId
+        : undefined;
+  return header || fromBody || undefined;
+}
+
+function formatNetworkError(base: string, cause?: unknown): DemoApiError {
+  const causeMsg =
+    cause instanceof Error && cause.message && cause.message !== 'Failed to fetch'
+      ? ` (${cause.message})`
+      : '';
+  const err = new Error(
+    `The Armz Clash API could not be reached at ${base}. Make sure the API service is running (pnpm dev:api).${causeMsg}`,
+  ) as DemoApiError;
+  err.kind = 'network';
+  err.apiBase = base;
+  err.code = 'api_unreachable';
+  return err;
 }
 
 async function demoFetch<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${apiBase()}${path}`, {
-    ...init,
-    credentials: 'include',
-    headers: {
-      'content-type': 'application/json',
-      ...(init?.headers ?? {}),
-    },
-  });
-  const data = (await res.json().catch(() => ({}))) as T & { error?: string; message?: string };
-  if (!res.ok) {
-    throw Object.assign(new Error(data.message || data.error || `Request failed (${res.status})`), {
-      status: res.status,
-      code: data.error,
-      data,
+  const base = apiBase();
+  let res: Response;
+  try {
+    res = await fetch(`${base}${path}`, {
+      ...init,
+      credentials: 'include',
+      headers: {
+        'content-type': 'application/json',
+        ...(init?.headers ?? {}),
+      },
     });
+  } catch (cause) {
+    throw formatNetworkError(base, cause);
+  }
+
+  const data = (await res.json().catch(() => ({}))) as T & {
+    error?: string;
+    message?: string;
+    correlationId?: string;
+    requestId?: string;
+  };
+  if (!res.ok) {
+    const correlationId = correlationFromResponse(res, data as Record<string, unknown>);
+    const baseMessage = data.message || data.error || `Request failed (${res.status})`;
+    const withCorrelation = correlationId
+      ? `${baseMessage} (correlation: ${correlationId})`
+      : baseMessage;
+    const err = new Error(withCorrelation) as DemoApiError;
+    err.status = res.status;
+    err.code = data.error;
+    err.correlationId = correlationId;
+    err.kind = 'api';
+    err.apiBase = base;
+    throw err;
   }
   return data;
 }

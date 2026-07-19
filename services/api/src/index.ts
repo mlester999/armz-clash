@@ -22,6 +22,7 @@ import { verifyAuthChallenge } from './auth/verify';
 import { loadSessionFromToken, renewSession, revokeSession, updateProfile } from './auth/session';
 import { fetchWalletBalances } from './auth/balances';
 import { sha256Hex } from './lib/crypto';
+import { loadApiRootEnv } from './lib/load-root-env';
 import { loadDemoConfig } from '@armz-clash/config';
 import {
   buildDemoPublicPayload,
@@ -34,26 +35,8 @@ import {
   startDemoBattle,
 } from './demo/service';
 
-// Load .env if present (local dev)
-try {
-  const { readFileSync, existsSync } = await import('node:fs');
-  if (existsSync('.env')) {
-    for (const line of readFileSync('.env', 'utf8').split('\n')) {
-      const t = line.trim();
-      if (!t || t.startsWith('#')) continue;
-      const i = t.indexOf('=');
-      if (i < 0) continue;
-      const k = t.slice(0, i);
-      let v = t.slice(i + 1);
-      if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
-        v = v.slice(1, -1);
-      }
-      if (process.env[k] === undefined) process.env[k] = v;
-    }
-  }
-} catch {
-  // ignore
-}
+// Load monorepo root .env for local dev (works when cwd is services/api).
+loadApiRootEnv();
 
 const env = loadServerEnv();
 const authConfig = loadAuthConfig();
@@ -638,11 +621,28 @@ app.get('/api/v1/demo/config', async (_request, reply) => {
 });
 
 const port = env.ARMZ_API_PORT || PORTS.api;
+const bindHost = '0.0.0.0';
 
 async function main() {
   try {
-    await app.listen({ port, host: '0.0.0.0' });
-    logger.info('API listening', { port, product: PRODUCT_NAME, phase: 3 });
+    await app.listen({ port, host: bindHost });
+    // Never log secrets. Origins and feature flags are operationally useful.
+    logger.info('API listening', {
+      service: 'armz-clash-api',
+      product: PRODUCT_NAME,
+      phase: 3,
+      host: bindHost,
+      port,
+      environment: env.ARMZ_ENVIRONMENT,
+      network: env.network,
+      allowedPlayerOrigins: playerOrigins,
+      demoModeEnabled: env.features.demoModeEnabled,
+      mainnetEnabled: env.features.mainnetEnabled,
+      realMintEnabled: env.features.realMintEnabled,
+      realRewardsEnabled: env.features.realRewardsEnabled,
+      claimsEnabled: env.features.claimsEnabled,
+      marketplaceEnabled: env.features.marketplaceEnabled,
+    });
   } catch (error) {
     logger.error('API failed to start', {}, error);
     process.exit(1);

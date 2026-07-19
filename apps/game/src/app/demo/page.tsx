@@ -106,9 +106,14 @@ export default function DemoEntryPage() {
           )}
 
           {phase === 'error' && (
-            <Card className="space-y-3 p-6">
+            <Card className="space-y-3 p-6" data-testid="demo-start-error">
               <h2 className="text-lg font-semibold">Could not start Demo Mode</h2>
-              <p className="text-sm text-[var(--armz-danger)]">{error}</p>
+              <p
+                className="text-sm text-[var(--armz-danger)]"
+                data-testid="demo-start-error-message"
+              >
+                {error}
+              </p>
               <Button onClick={() => setPhase('landing')}>Try again</Button>
             </Card>
           )}
