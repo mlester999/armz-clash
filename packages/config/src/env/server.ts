@@ -56,6 +56,15 @@ export const ServerEnvSchema = SharedEnvSchema.extend({
   // Service ports
   ARMZ_API_PORT: z.coerce.number().int().positive().default(PORTS.api),
   ARMZ_WORKER_HEALTH_PORT: z.coerce.number().int().positive().default(PORTS.workerHealth),
+
+  // Demo Mode (Phase 3) — temporary only, never real value
+  ARMZ_DEMO_SESSION_TTL_SECONDS: z.coerce.number().int().positive().default(86_400),
+  ARMZ_DEMO_REPLAY_COOLDOWN_SECONDS: z.coerce.number().int().nonnegative().default(60),
+  ARMZ_DEMO_ARMZ_RESET_COOLDOWN_SECONDS: z.coerce.number().int().nonnegative().default(3_600),
+  ARMZ_DEMO_MAX_BATTLES_PER_SESSION: z.coerce.number().int().positive().default(20),
+  ARMZ_DEMO_SESSION_COOKIE_NAME: z.string().default('armz_clash_demo_session'),
+  ARMZ_DEMO_CONFIGURATION_VERSION: z.string().default('demo-combat-v1'),
+  ARMZ_DEMO_SESSION_SIGNING_SECRET: z.string().optional().default(''),
 });
 
 export type ServerEnv = z.infer<typeof ServerEnvSchema> & {
