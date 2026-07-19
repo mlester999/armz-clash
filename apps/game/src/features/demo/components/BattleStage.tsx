@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Badge, Button, Card } from '@armz-clash/ui';
+import { Badge, Button, Card, Cluster, StrengthBar } from '@armz-clash/ui';
 import type { DemoBattlePayload } from '../api';
 import { BattleRenderer } from '../renderer/BattleRenderer';
 
@@ -10,6 +10,26 @@ function formatCooldown(seconds: number): string {
   const s = seconds % 60;
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 }
+
+const EVENT_LABELS: Record<string, string> = {
+  intro: 'Arena intro',
+  lock: 'Locking grip',
+  grip: 'Grip locked',
+  first_pressure: 'First pressure',
+  pressure: 'Pressure building',
+  momentum: 'Momentum swing',
+  strain: 'Strain phase',
+  critical: 'Critical force',
+  recovery: 'Recovery',
+  counter: 'Counter',
+  push: 'Pushing',
+  push_heavy: 'Heavy push',
+  decisive: 'Decisive push',
+  winning_slam: 'Victory slam',
+  defeated: 'Pinned',
+  victory: 'Victory',
+  defeat: 'Defeat',
+};
 
 export function BattleStage({
   battle,
@@ -31,7 +51,7 @@ export function BattleStage({
   const [done, setDone] = useState(false);
   const [muted, setMuted] = useState(true);
   const [musicOn, setMusicOn] = useState(false);
-  const [eventLabel, setEventLabel] = useState('Preparing…');
+  const [eventLabel, setEventLabel] = useState('Preparing arena…');
   const [cooldown, setCooldown] = useState(battle.session.replayAvailableInSeconds);
 
   useEffect(() => {
@@ -49,6 +69,7 @@ export function BattleStage({
       opponentPalette: battle.opponent.palette,
       playerName: battle.armz.displayName,
       opponentName: battle.opponent.displayName,
+      playerPresetKey: battle.armz.presetKey,
       reducedMotion,
       muted,
       onComplete: () => setDone(true),
@@ -56,7 +77,10 @@ export function BattleStage({
         setPlayerStr(p);
         setOpponentStr(o);
       },
-      onEvent: (ev) => setEventLabel(ev.type.replace(/_/g, ' ')),
+      onEvent: (ev) => {
+        const key = ev.animationCue || ev.type;
+        setEventLabel(EVENT_LABELS[key] ?? key.replace(/_/g, ' '));
+      },
     });
     rendererRef.current = renderer;
     void renderer.mount();
@@ -64,7 +88,6 @@ export function BattleStage({
       renderer.destroy();
       rendererRef.current = null;
     };
-    // Mount once per battle id
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [battle.battleId]);
 
@@ -79,7 +102,6 @@ export function BattleStage({
   }, [cooldown]);
 
   const skipToResult = () => {
-    // Result is already server-finalized — skip only after battle payload exists
     setDone(true);
     setPlayerStr(battle.playerFinalStrength);
     setOpponentStr(battle.opponentFinalStrength);
@@ -87,61 +109,87 @@ export function BattleStage({
   };
 
   return (
-    <div className="space-y-4" data-testid="demo-battle-stage">
-      <div className="flex flex-wrap items-center gap-2">
+    <div className="space-y-3" data-testid="demo-battle-stage">
+      <Cluster gap="sm">
         <Badge variant="warning">Demo Mode</Badge>
         <Badge variant="muted">Simulated battle</Badge>
-        <Badge variant="info">Easy</Badge>
+        <Badge variant="enemy">Easy</Badge>
         <Badge variant="success">Server-authoritative</Badge>
-      </div>
+      </Cluster>
 
       <div className="grid gap-3 sm:grid-cols-2">
         <StrengthBar label={battle.armz.displayName} value={playerStr} tone="player" />
         <StrengthBar label={battle.opponent.displayName} value={opponentStr} tone="opponent" />
       </div>
 
-      <p className="text-sm capitalize text-[var(--armz-text-secondary)]" aria-live="polite">
-        {eventLabel}
-      </p>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p
+          className="rounded-full border border-[var(--armz-border)] bg-[rgba(0,0,0,0.35)] px-3 py-1 text-sm font-semibold capitalize tracking-wide text-[var(--armz-text-secondary)]"
+          aria-live="polite"
+        >
+          {eventLabel}
+        </p>
+        <Cluster gap="sm">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setMuted((m) => !m)}
+            aria-pressed={!muted}
+          >
+            SFX {muted ? 'Off' : 'On'}
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setMusicOn((m) => !m)}
+            aria-pressed={musicOn}
+          >
+            Music {musicOn ? 'On' : 'Off'}
+          </Button>
+          {!done && (
+            <Button variant="secondary" size="sm" onClick={skipToResult}>
+              Skip to result
+            </Button>
+          )}
+        </Cluster>
+      </div>
 
       <div
         ref={hostRef}
-        className="relative aspect-[16/10] w-full overflow-hidden rounded-[var(--armz-radius-lg)] border border-[var(--armz-border)] bg-[#0b0e14]"
+        className="relative aspect-[16/10] w-full overflow-hidden rounded-[var(--armz-radius-xl)] border border-[rgba(212,175,106,0.28)] bg-[#070b12] shadow-[var(--armz-shadow-glow)]"
         data-testid="demo-battle-canvas-host"
       />
 
-      <div className="flex flex-wrap gap-2">
-        <Button variant="ghost" size="sm" onClick={() => setMuted((m) => !m)} aria-pressed={!muted}>
-          SFX {muted ? 'Off' : 'On'}
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setMusicOn((m) => !m)}
-          aria-pressed={musicOn}
-        >
-          Music {musicOn ? 'On' : 'Off'}
-        </Button>
-        {!done && (
-          <Button variant="ghost" size="sm" onClick={skipToResult}>
-            Skip to result
-          </Button>
-        )}
-      </div>
-
       {done && (
-        <Card className="space-y-4 p-5" data-testid="demo-battle-result">
+        <Card
+          className={
+            battle.outcome === 'victory'
+              ? 'armz-result-victory space-y-4 p-5 sm:p-6'
+              : 'armz-result-defeat space-y-4 p-5 sm:p-6'
+          }
+          data-testid="demo-battle-result"
+        >
           {battle.outcome === 'victory' ? (
             <>
-              <h2 className="text-2xl font-semibold text-[var(--armz-cyan)]">Victory</h2>
-              <p className="text-sm text-[var(--armz-text-secondary)]">
-                {battle.armz.displayName} pinned the Practice Automaton in a simulated Easy clash.
-              </p>
+              <div className="space-y-2">
+                <p className="armz-kicker">Simulated result</p>
+                <h2 className="armz-display text-3xl text-[var(--armz-cyan)] sm:text-4xl">
+                  Victory
+                </h2>
+                <p className="text-sm text-[var(--armz-text-secondary)]">
+                  {battle.armz.displayName} pinned the Practice Automaton in a simulated Easy clash.
+                </p>
+              </div>
               {battle.reward && (
-                <div className="rounded-md border border-[var(--armz-border)] bg-[rgba(78,205,196,0.08)] p-4">
-                  <p className="font-semibold">{battle.reward.display}</p>
-                  <ul className="mt-2 space-y-1 text-xs text-[var(--armz-text-muted)]">
-                    <li>Simulated</li>
+                <div className="rounded-[var(--armz-radius-md)] border border-[rgba(94,200,255,0.35)] bg-[rgba(94,200,255,0.08)] p-4">
+                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--armz-cyan)]">
+                    Simulated reward
+                  </p>
+                  <p className="mt-1 text-2xl font-bold text-[var(--armz-accent)]">
+                    {battle.reward.display}
+                  </p>
+                  <ul className="mt-2 grid gap-1 text-xs text-[var(--armz-text-muted)] sm:grid-cols-2">
+                    <li>Simulated only</li>
                     <li>No monetary value</li>
                     <li>Not claimable</li>
                     <li>Not withdrawable</li>
@@ -151,18 +199,23 @@ export function BattleStage({
             </>
           ) : (
             <>
-              <h2 className="text-2xl font-semibold">Defeat</h2>
-              <p className="text-sm text-[var(--armz-text-secondary)]">
-                The Practice Automaton held the line. No simulated reward this round — try again
-                after the cooldown.
-              </p>
+              <div className="space-y-2">
+                <p className="armz-kicker">Simulated result</p>
+                <h2 className="armz-display text-3xl text-[var(--armz-danger)] sm:text-4xl">
+                  Defeat
+                </h2>
+                <p className="text-sm text-[var(--armz-text-secondary)]">
+                  The Practice Automaton held the line. No simulated reward this round — train again
+                  after the cooldown.
+                </p>
+              </div>
             </>
           )}
           <p className="text-xs text-[var(--armz-text-muted)]">
             Battle ID {battle.battleId.slice(0, 8)}… · duration{' '}
             {(battle.durationMs / 1000).toFixed(1)}s
           </p>
-          <div className="flex flex-wrap gap-3">
+          <Cluster>
             <Button
               onClick={onReplay}
               disabled={cooldown > 0 || battle.session.battlesRemaining <= 0}
@@ -174,50 +227,15 @@ export function BattleStage({
                   ? 'Battle limit reached'
                   : 'Replay Easy fight'}
             </Button>
-            <Button variant="ghost" onClick={onCollection}>
+            <Button variant="secondary" onClick={onCollection}>
               Demo Collection
             </Button>
             <Button variant="ghost" onClick={onHome}>
               Return Home
             </Button>
-          </div>
+          </Cluster>
         </Card>
       )}
-    </div>
-  );
-}
-
-function StrengthBar({
-  label,
-  value,
-  tone,
-}: {
-  label: string;
-  value: number;
-  tone: 'player' | 'opponent';
-}) {
-  const color = tone === 'player' ? 'var(--armz-cyan)' : 'var(--armz-accent)';
-  return (
-    <div className="space-y-1">
-      <div className="flex justify-between text-xs">
-        <span>{label}</span>
-        <span className="tabular-nums" aria-live="polite">
-          Strength {value}/100
-        </span>
-      </div>
-      <div
-        className="h-3 overflow-hidden rounded-full bg-[rgba(255,255,255,0.08)]"
-        role="meter"
-        aria-valuenow={value}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-label={`${label} strength`}
-      >
-        <div
-          className="h-full rounded-full transition-[width] duration-200"
-          style={{ width: `${value}%`, background: color }}
-        />
-      </div>
     </div>
   );
 }
