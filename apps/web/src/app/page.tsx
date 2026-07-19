@@ -41,22 +41,38 @@ export default function HomePage() {
           </div>
 
           <DevelopmentNotice>
-            You are viewing the Phase 1 monorepo foundation. Wallet connection arrives in Phase 2.
-            Demo Mode arrives in Phase 3. Minting, rewards, claims, and marketplace settlement stay
-            disabled until later phases with explicit owner approval.
+            Phase 3 Demo Mode is available on the game app. Wallet authentication works on Solana
+            Devnet. Minting, real rewards, claims, and marketplace settlement stay disabled until
+            later phases with explicit owner approval.
           </DevelopmentNotice>
 
           <Grid cols={3}>
-            <FeatureUnavailable
-              title="Connect Wallet"
-              phaseHint="Phase 2"
-              description="Reown AppKit Solana wallet connection and signed authentication are not active yet."
-            />
-            <FeatureUnavailable
-              title="Demo Mode"
-              phaseHint="Phase 3"
-              description="Free demo battles with temporary Common ARMZ will be available without payment."
-            />
+            <Card className="space-y-3 p-5">
+              <h3 className="font-semibold">Play Demo</h3>
+              <p className="text-xs uppercase tracking-wide text-[var(--armz-accent)]">Phase 3</p>
+              <p className="text-sm text-[var(--armz-text-secondary)]">
+                Temporary Common ARMZ and simulated Easy battles — no wallet required, no real
+                value.
+              </p>
+              <a
+                href={
+                  process.env.NEXT_PUBLIC_ARMZ_GAME_URL
+                    ? `${process.env.NEXT_PUBLIC_ARMZ_GAME_URL.replace(/\/$/, '')}/demo`
+                    : 'http://127.0.0.1:3001/demo'
+                }
+                className="inline-flex min-h-10 items-center justify-center rounded-md bg-[var(--armz-accent)] px-4 text-sm font-semibold text-[#0b0e14]"
+                data-testid="web-play-demo"
+              >
+                Open Demo Mode
+              </a>
+            </Card>
+            <Card className="space-y-3 p-5">
+              <h3 className="font-semibold">Connect Wallet</h3>
+              <p className="text-xs uppercase tracking-wide text-[var(--armz-accent)]">Phase 2</p>
+              <p className="text-sm text-[var(--armz-text-secondary)]">
+                Reown AppKit Solana Devnet wallet connection and signed authentication.
+              </p>
+            </Card>
             <FeatureUnavailable
               title="Marketplace"
               phaseHint="Phase 9"

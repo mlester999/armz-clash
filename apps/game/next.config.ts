@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
     '@armz-clash/config',
     '@armz-clash/observability',
     '@armz-clash/blockchain',
+    '@armz-clash/game-core',
   ],
   poweredByHeader: false,
   webpack: (config) => {

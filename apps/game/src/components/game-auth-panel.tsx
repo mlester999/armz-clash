@@ -13,9 +13,12 @@ export function GameAuthPanel() {
   useEffect(() => {
     const env = loadClientEnv();
     const api = createAuthApi(env.NEXT_PUBLIC_ARMZ_API_URL || 'http://127.0.0.1:4000');
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 8_000);
     void api
       .session()
       .then((session) => {
+        if (controller.signal.aborted) return;
         if (session.authenticated && session.profile) {
           setAuthed(true);
           setLabel(
@@ -27,9 +30,19 @@ export function GameAuthPanel() {
         }
       })
       .catch(() => {
+        if (controller.signal.aborted) {
+          setAuthed(false);
+          setLabel('Not signed in — connect a wallet and sign the Armz Clash challenge.');
+          return;
+        }
         setAuthed(false);
         setLabel('Session service unavailable. Start the API on port 4000.');
-      });
+      })
+      .finally(() => window.clearTimeout(timer));
+    return () => {
+      controller.abort();
+      window.clearTimeout(timer);
+    };
   }, []);
 
   return (
