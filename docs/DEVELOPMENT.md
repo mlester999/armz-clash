@@ -45,6 +45,15 @@ pnpm exec playwright install chromium
 pnpm test:e2e
 ```
 
+Playwright starts **API (4000)**, **web (3000)**, **game (3001)**, and **admin (3002)** on `127.0.0.1`.
+
+- Root `.env` is loaded for `NEXT_PUBLIC_*` and API secrets (never committed).
+- Hostnames are standardized to `127.0.0.1` (not mixed with `localhost`).
+- Apps use `next dev` + `allowedDevOrigins` for iteration; production-like `next start` is preferred long-term.
+- Foundation tests assert safe Reown **unconfigured** state when no Project ID is set.
+- With `NEXT_PUBLIC_REOWN_PROJECT_ID` present, tests assert the unconfigured banner is absent.
+- Lit multi-version console warnings may appear from Reown’s dependency tree; currently non-blocking (single `lit@3.3.0` in the lockfile).
+
 ## Database validation
 
 Static migration validation (no hosted writes):
