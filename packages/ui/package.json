@@ -6,7 +6,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./styles.css": "./src/styles.css",
-    "./tokens": "./src/tokens.ts"
+    "./tokens": "./src/tokens.ts",
+    "./wallet": "./src/wallet/WalletProvider.tsx"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json",
@@ -18,7 +19,11 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
+    "@armz-clash/blockchain": "workspace:*",
     "@armz-clash/config": "workspace:*",
+    "@reown/appkit": "^1.7.8",
+    "@reown/appkit-adapter-solana": "^1.7.8",
+    "bs58": "^6.0.0",
     "clsx": "^2.1.1"
   },
   "devDependencies": {

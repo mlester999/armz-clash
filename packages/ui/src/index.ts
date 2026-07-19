@@ -8,3 +8,7 @@ export * from './components/Layout';
 export * from './components/States';
 export * from './components/Form';
 export * from './components/Overlay';
+export * from './wallet/types';
+export * from './wallet/api';
+export * from './wallet/WalletProvider';
+export * from './wallet/WalletControls';
