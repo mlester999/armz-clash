@@ -26,6 +26,8 @@
     "test:db": "tsx scripts/db-validate.ts",
     "test:db:hosted": "tsx scripts/hosted-db-validate.ts",
     "test:rls:hosted": "tsx scripts/hosted-rls-probes.ts",
+    "test:rls:auth:hosted": "tsx scripts/hosted-auth-rls-probes.ts",
+    "test:auth:security": "vitest run --config vitest.integration.config.ts",
     "db:lint:hosted": "tsx scripts/hosted-db-lint.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

@@ -10,7 +10,13 @@ export default defineConfig({
       'services/**/src/**/*.{test,spec}.ts',
       'scripts/**/*.{test,spec}.ts',
     ],
-    exclude: ['**/node_modules/**', '**/dist/**', '**/.next/**', 'tests/e2e/**'],
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/.next/**',
+      'tests/e2e/**',
+      '**/*.integration.test.ts',
+    ],
     coverage: {
       reporter: ['text', 'html'],
       include: ['packages/**/src/**/*.ts', 'services/**/src/**/*.ts'],
