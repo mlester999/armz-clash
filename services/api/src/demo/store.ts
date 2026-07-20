@@ -1,9 +1,20 @@
 /**
- * Demo Mode persistence: Supabase when configured and migrated,
- * otherwise in-process memory (local/CI foundation without phase3 tables).
+ * Demo Mode persistence — explicit modes only.
+ * No silent database → memory fallback.
+ *
+ * Modes:
+ * - database: hosted/dev with Supabase (fail closed on errors)
+ * - memory-test: CI / unit isolation (explicit)
+ * - memory-development: local only when explicitly configured
  */
 
 import { randomUUID } from 'node:crypto';
+import {
+  assertDemoDatabaseConfigured,
+  demoPersistencePublicLabel,
+  resolveDemoPersistenceMode,
+  type DemoPersistenceMode,
+} from '@armz-clash/config';
 import { getServiceDb } from '../lib/db';
 
 export type DemoSessionRow = {
@@ -73,6 +84,13 @@ export type DemoBattleRow = {
   created_at: string;
 };
 
+export type DemoStorageHealth = {
+  mode: DemoPersistenceMode;
+  publicLabel: string;
+  healthy: boolean;
+  detail: string;
+};
+
 const mem = {
   sessions: new Map<string, DemoSessionRow>(),
   armz: new Map<string, DemoArmzRow>(),
@@ -83,39 +101,108 @@ const mem = {
   >(),
 };
 
-/** Once Supabase demo tables are confirmed missing, stay on memory for this process. */
-let forceMemory = false;
+let cachedMode: DemoPersistenceMode | null = null;
+let lastHealth: DemoStorageHealth | null = null;
 
-function supabaseConfigured(): boolean {
-  return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+export function getDemoPersistenceMode(): DemoPersistenceMode {
+  if (!cachedMode) {
+    cachedMode = resolveDemoPersistenceMode();
+  }
+  return cachedMode;
+}
+
+/** Test helper — reset mode cache between unit tests. */
+export function resetDemoPersistenceCacheForTests(): void {
+  cachedMode = null;
+  lastHealth = null;
 }
 
 function useMemory(): boolean {
-  if (forceMemory) return true;
-  if (process.env.ARMZ_DEMO_FORCE_MEMORY === 'true') return true;
-  return !supabaseConfigured();
-}
-
-function isMissingRelationError(error: unknown): boolean {
-  const msg = String((error as { message?: string })?.message ?? error ?? '').toLowerCase();
-  const code = String((error as { code?: string })?.code ?? '');
-  return (
-    code === '42P01' ||
-    code === 'PGRST205' ||
-    msg.includes('does not exist') ||
-    msg.includes('could not find the table') ||
-    msg.includes('schema cache')
-  );
-}
-
-function enableMemoryFallback(error: unknown): void {
-  if (isMissingRelationError(error)) {
-    forceMemory = true;
-  }
+  const mode = getDemoPersistenceMode();
+  return mode === 'memory-test' || mode === 'memory-development';
 }
 
 export function isDemoStoreMemory(): boolean {
   return useMemory();
+}
+
+export function getDemoStorageHealthSnapshot(): DemoStorageHealth {
+  if (lastHealth) return lastHealth;
+  const mode = getDemoPersistenceMode();
+  return {
+    mode,
+    publicLabel: demoPersistencePublicLabel(mode),
+    healthy: mode !== 'database' ? true : false,
+    detail: mode === 'database' ? 'not probed yet' : 'memory mode active',
+  };
+}
+
+/**
+ * Probe demo persistence. In database mode, missing tables/config fail closed.
+ * Never switches to memory on failure.
+ */
+export async function probeDemoStorageHealth(): Promise<DemoStorageHealth> {
+  const mode = getDemoPersistenceMode();
+  const publicLabel = demoPersistencePublicLabel(mode);
+
+  if (mode === 'memory-test' || mode === 'memory-development') {
+    lastHealth = {
+      mode,
+      publicLabel,
+      healthy: true,
+      detail: 'In-process memory (explicit non-production mode)',
+    };
+    return lastHealth;
+  }
+
+  try {
+    assertDemoDatabaseConfigured();
+  } catch (error) {
+    lastHealth = {
+      mode,
+      publicLabel,
+      healthy: false,
+      detail: error instanceof Error ? error.message : 'Database configuration missing',
+    };
+    return lastHealth;
+  }
+
+  try {
+    const db = getServiceDb();
+    const { error } = await db.from('demo_sessions').select('id').limit(1);
+    if (error) {
+      lastHealth = {
+        mode,
+        publicLabel,
+        healthy: false,
+        detail: 'Demo tables unavailable or not migrated',
+      };
+      return lastHealth;
+    }
+    lastHealth = {
+      mode,
+      publicLabel,
+      healthy: true,
+      detail: 'Demo sessions table reachable',
+    };
+    return lastHealth;
+  } catch {
+    lastHealth = {
+      mode,
+      publicLabel,
+      healthy: false,
+      detail: 'Database connection failed',
+    };
+    return lastHealth;
+  }
+}
+
+function rethrowDb(error: unknown): never {
+  const msg = String((error as { message?: string })?.message ?? error ?? 'demo_store_error');
+  throw Object.assign(new Error(msg), {
+    statusCode: 503,
+    code: 'demo_persistence_unavailable',
+  });
 }
 
 export async function insertDemoSession(
@@ -149,12 +236,7 @@ export async function insertDemoSession(
     if (error) throw error;
     return data as DemoSessionRow;
   } catch (error) {
-    enableMemoryFallback(error);
-    if (useMemory()) {
-      mem.sessions.set(full.id, full);
-      return full;
-    }
-    throw error;
+    rethrowDb(error);
   }
 }
 
@@ -178,14 +260,7 @@ export async function findDemoSessionByTokenHash(
     if (error) throw error;
     return (data as DemoSessionRow) ?? null;
   } catch (error) {
-    enableMemoryFallback(error);
-    if (useMemory()) {
-      for (const s of mem.sessions.values()) {
-        if (s.token_hash === tokenHash && !s.revoked_at) return s;
-      }
-      return null;
-    }
-    throw error;
+    rethrowDb(error);
   }
 }
 
@@ -211,15 +286,7 @@ export async function updateDemoSession(
     if (error) throw error;
     return data as DemoSessionRow;
   } catch (error) {
-    enableMemoryFallback(error);
-    if (useMemory()) {
-      const cur = mem.sessions.get(id);
-      if (!cur) throw new Error('demo_session_not_found');
-      const next = { ...cur, ...patch, updated_at: new Date().toISOString() };
-      mem.sessions.set(id, next);
-      return next;
-    }
-    throw error;
+    rethrowDb(error);
   }
 }
 
@@ -261,12 +328,7 @@ export async function insertDemoArmz(
     if (error) throw error;
     return data as DemoArmzRow;
   } catch (error) {
-    enableMemoryFallback(error);
-    if (useMemory()) {
-      mem.armz.set(full.id, full);
-      return full;
-    }
-    throw error;
+    rethrowDb(error);
   }
 }
 
@@ -288,14 +350,7 @@ export async function findActiveDemoArmz(sessionId: string): Promise<DemoArmzRow
     if (error) throw error;
     return (data as DemoArmzRow) ?? null;
   } catch (error) {
-    enableMemoryFallback(error);
-    if (useMemory()) {
-      for (const a of mem.armz.values()) {
-        if (a.demo_session_id === sessionId && a.is_active) return a;
-      }
-      return null;
-    }
-    throw error;
+    rethrowDb(error);
   }
 }
 
@@ -317,16 +372,7 @@ export async function deactivateDemoArmz(sessionId: string): Promise<void> {
       .eq('is_active', true);
     if (error) throw error;
   } catch (error) {
-    enableMemoryFallback(error);
-    if (useMemory()) {
-      for (const [id, a] of mem.armz) {
-        if (a.demo_session_id === sessionId && a.is_active) {
-          mem.armz.set(id, { ...a, is_active: false });
-        }
-      }
-      return;
-    }
-    throw error;
+    rethrowDb(error);
   }
 }
 
@@ -348,12 +394,7 @@ export async function insertDemoBattle(
     if (error) throw error;
     return data as DemoBattleRow;
   } catch (error) {
-    enableMemoryFallback(error);
-    if (useMemory()) {
-      mem.battles.set(full.id, full);
-      return full;
-    }
-    throw error;
+    rethrowDb(error);
   }
 }
 
@@ -378,14 +419,7 @@ export async function findDemoBattleByIdempotency(
     if (error) throw error;
     return (data as DemoBattleRow) ?? null;
   } catch (error) {
-    enableMemoryFallback(error);
-    if (useMemory()) {
-      for (const b of mem.battles.values()) {
-        if (b.demo_session_id === sessionId && b.idempotency_key === idempotencyKey) return b;
-      }
-      return null;
-    }
-    throw error;
+    rethrowDb(error);
   }
 }
 
@@ -407,14 +441,7 @@ export async function listDemoBattles(sessionId: string, limit = 20): Promise<De
     if (error) throw error;
     return (data as DemoBattleRow[]) ?? [];
   } catch (error) {
-    enableMemoryFallback(error);
-    if (useMemory()) {
-      return [...mem.battles.values()]
-        .filter((b) => b.demo_session_id === sessionId)
-        .sort((a, b) => b.created_at.localeCompare(a.created_at))
-        .slice(0, limit);
-    }
-    throw error;
+    rethrowDb(error);
   }
 }
 
@@ -444,15 +471,7 @@ export async function insertDemoRewardEvent(input: {
     });
     if (error) throw error;
   } catch (error) {
-    enableMemoryFallback(error);
-    if (useMemory()) {
-      mem.rewards.set(input.demo_battle_id, {
-        id: randomUUID(),
-        ...input,
-      });
-      return;
-    }
-    throw error;
+    rethrowDb(error);
   }
 }
 
@@ -478,7 +497,6 @@ export async function cleanupExpiredDemoSessions(now = new Date()): Promise<numb
     if (error) throw error;
     return data?.length ?? 0;
   } catch (error) {
-    enableMemoryFallback(error);
-    return 0;
+    rethrowDb(error);
   }
 }

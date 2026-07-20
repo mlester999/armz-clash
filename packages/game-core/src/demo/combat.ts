@@ -2,10 +2,11 @@
  * Server-authoritative Easy demo battle engine.
  * Integer math for combat power; deterministic timeline from seed.
  *
- * Balance targets (100k sims):
- * - Average Common roll: ~68–76% win vs Easy
- * - Min Common stats: ≥ ~55%
- * - Max Common stats: ≤ ~86%
+ * Balance targets (demo-combat-v2, 1M sims):
+ * - Average Common roll: 69–75% win vs Easy
+ * - Min Common stats: 58–62%
+ * - Max Common stats: 82–86%
+ * - Recovery: ~2–5% of battles (at most once)
  */
 
 import type { DemoCombatStats } from './stats';
@@ -41,14 +42,26 @@ export function totalCombatRating(s: DemoCombatStats): number {
 }
 
 /**
- * Win probability in basis points for a final contested roll.
- * Calibrated so average Common (~total ~280) vs Easy (~270) ≈ 72%.
+ * Map rating delta → win-chance contribution (bps).
+ * Calibrated so Common min/avg/max land near 60% / 72% / 84%.
+ * Integer-only; soft clamps keep extremes inside product bands.
+ */
+export function compressRatingDelta(delta: number): number {
+  // ~12 bps per rating point; cap tails so no auto-win / auto-lose.
+  const scaled = delta * 12;
+  return Math.max(-1350, Math.min(1450, scaled));
+}
+
+/**
+ * Win probability in basis points for the final contested roll.
+ * Calibrated for Common ranges vs Practice Automaton (demo-combat-v2).
  */
 export function easyWinChanceBps(player: DemoCombatStats, opponent: DemoCombatStats): number {
   const delta = totalCombatRating(player) - totalCombatRating(opponent);
-  // Base 70% for equal ratings; each rating point ≈ 0.25%
-  const bps = 7000 + delta * 25;
-  return Math.max(5200, Math.min(8600, bps));
+  // Equal ratings ≈ 71.5%.
+  const bps = 7150 + compressRatingDelta(delta);
+  // Hard safety clamps: never auto-win, never hopeless for Common min.
+  return Math.max(5800, Math.min(8600, bps));
 }
 
 function exchangeDamage(
@@ -93,6 +106,7 @@ export function simulateDemoBattle(input: {
   let t = 0;
   let criticalEvents = 0;
   let recoveryEvents = 0;
+  let recoveryUsed = false;
 
   const emit = (
     type: BattleTimelineEvent['type'],
@@ -235,15 +249,20 @@ export function simulateDemoBattle(input: {
       });
     }
 
-    if (pStr > 8 && pStr < 50 && rng.chanceBps(1500 + input.player.endurance * 10)) {
+    // Recovery: Approach A — at most once per battle, target ~3% of battles.
+    // Single checkpoint at mid-fight so frequency is independent of bar state.
+    // Final slam still enforces the pre-rolled winner.
+    if (!recoveryUsed && i === Math.floor(rounds / 2) && rng.chanceBps(320)) {
+      recoveryUsed = true;
       recoveryEvents += 1;
-      emit('recovery', 550, () => {
-        pStr = clampStrength(pStr + rng.intInclusive(2, 5));
+      emit('recovery', 700, () => {
+        // Modest heal that never exceeds STRENGTH_MAX.
+        pStr = clampStrength(Math.min(STRENGTH_MAX, pStr + rng.intInclusive(4, 8)));
         return {
           animationCue: 'recovery',
           soundCue: 'recovery',
-          vfxCue: 'none',
-          intensity: 4000,
+          vfxCue: 'energy_trail',
+          intensity: 5500,
           side: 'player' as const,
         };
       });

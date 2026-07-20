@@ -20,7 +20,7 @@ const EVENT_LABELS: Record<string, string> = {
   momentum: 'Momentum swing',
   strain: 'Strain phase',
   critical: 'Critical force',
-  recovery: 'Recovery',
+  recovery: 'Second wind recovery',
   counter: 'Counter',
   push: 'Pushing',
   push_heavy: 'Heavy push',

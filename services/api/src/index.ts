@@ -34,6 +34,11 @@ import {
   resolveDemoSession,
   startDemoBattle,
 } from './demo/service';
+import {
+  getDemoPersistenceMode,
+  getDemoStorageHealthSnapshot,
+  probeDemoStorageHealth,
+} from './demo/store';
 
 // Load monorepo root .env for local dev (works when cwd is services/api).
 loadApiRootEnv();
@@ -150,6 +155,14 @@ app.get('/ready', async (request, reply) => {
   const correlationId = (request as { correlationId?: string }).correlationId;
   const hasAuthSecrets = Boolean(env.ARMZ_SESSION_SIGNING_SECRET && env.ARMZ_WALLET_NONCE_SECRET);
   const hasSupabase = Boolean(env.NEXT_PUBLIC_SUPABASE_URL && env.SUPABASE_SERVICE_ROLE_KEY);
+  const demoHealth = isDemoModeEnabled()
+    ? await probeDemoStorageHealth()
+    : {
+        healthy: true,
+        detail: 'demo disabled',
+        publicLabel: 'N/A',
+        mode: getDemoPersistenceMode(),
+      };
   const body = buildReadinessResponse({
     service: 'armz-clash-api',
     correlationId,
@@ -163,6 +176,10 @@ app.get('/ready', async (request, reply) => {
       database: {
         ok: hasSupabase,
         detail: hasSupabase ? 'supabase configured' : 'supabase not configured',
+      },
+      demoPersistence: {
+        ok: demoHealth.healthy,
+        detail: `${demoHealth.publicLabel}: ${demoHealth.detail}`,
       },
     },
   });
@@ -602,6 +619,9 @@ app.get('/api/v1/demo/history', async (request, reply) => {
 });
 
 app.get('/api/v1/demo/config', async (_request, reply) => {
+  const health = getDemoStorageHealthSnapshot();
+  // Refresh probe when demo enabled so status stays honest.
+  const probed = isDemoModeEnabled() ? await probeDemoStorageHealth() : health;
   return reply.send({
     demoModeEnabled: isDemoModeEnabled(),
     configurationVersion: demoConfig.configurationVersion,
@@ -610,6 +630,10 @@ app.get('/api/v1/demo/config', async (_request, reply) => {
     maxBattlesPerSession: demoConfig.maxBattlesPerSession,
     sessionTtlSeconds: demoConfig.sessionTtlSeconds,
     difficulty: 'easy',
+    // Public-safe status only — never secrets or connection strings.
+    demoPersistence: probed.publicLabel,
+    demoPersistenceHealthy: probed.healthy,
+    demoApi: probed.healthy || !isDemoModeEnabled() ? 'Operational' : 'Degraded',
     labels: {
       mode: 'Demo Mode',
       temporary: 'Temporary Common ARMZ',
@@ -627,6 +651,7 @@ async function main() {
   try {
     await app.listen({ port, host: bindHost });
     // Never log secrets. Origins and feature flags are operationally useful.
+    const demoHealth = await probeDemoStorageHealth();
     logger.info('API listening', {
       service: 'armz-clash-api',
       product: PRODUCT_NAME,
@@ -637,6 +662,8 @@ async function main() {
       network: env.network,
       allowedPlayerOrigins: playerOrigins,
       demoModeEnabled: env.features.demoModeEnabled,
+      demoPersistence: demoHealth.publicLabel,
+      demoPersistenceHealthy: demoHealth.healthy,
       mainnetEnabled: env.features.mainnetEnabled,
       realMintEnabled: env.features.realMintEnabled,
       realRewardsEnabled: env.features.realRewardsEnabled,

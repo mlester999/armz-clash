@@ -18,8 +18,8 @@ export type DemoOpponent = {
 };
 
 /**
- * Easy opponent tuned so average Common ARMZ wins ~68–76%.
- * Still capable of defeating weak rolls.
+ * Easy opponent tuned for demo-combat-v2 bands:
+ * min Common ~58–62%, average ~69–75%, max ~82–86%.
  */
 export const EASY_DEMO_OPPONENT: DemoOpponent = {
   opponentKey: 'practice_automaton',
@@ -27,8 +27,8 @@ export const EASY_DEMO_OPPONENT: DemoOpponent = {
   difficulty: 'easy',
   tagline: 'Armored training arm of the Arena — firm, fair, and never real currency.',
   animationSetKey: 'easy_opponent_v1',
-  configurationVersion: 'demo-combat-v1',
-  // Tuned near average Common totals so min can still win ~55%+ and max ~85%.
+  configurationVersion: 'demo-combat-v2',
+  // Near average Common so min≈60%, avg≈72%, max≈84% under compressRatingDelta.
   stats: {
     power: 42,
     grip: 42,

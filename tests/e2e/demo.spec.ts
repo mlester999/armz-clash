@@ -184,4 +184,28 @@ test.describe('Phase 3 Demo Mode', () => {
       page.locator('w3m-modal, wcm-modal, [data-testid="w3m-modal"], #w3m-modal').first(),
     ).toBeVisible({ timeout: 15_000 });
   });
+
+  test('demo config reports explicit persistence label', async ({ request }) => {
+    const res = await request.get(`${API}/api/v1/demo/config`);
+    expect(res.ok()).toBeTruthy();
+    const body = await res.json();
+    expect(body.demoModeEnabled).toBe(true);
+    expect(typeof body.demoPersistence).toBe('string');
+    expect(body.demoPersistence.length).toBeGreaterThan(0);
+    // Must not leak connection strings
+    expect(JSON.stringify(body).toLowerCase()).not.toContain('service_role');
+    expect(JSON.stringify(body).toLowerCase()).not.toContain('postgresql://');
+  });
+
+  test('interactive controls expose pointer cursor', async ({ page }) => {
+    await page.goto(`${GAME}/demo`, { waitUntil: 'domcontentloaded' });
+    const play = page.getByTestId('play-demo-button');
+    await expect(play).toBeVisible({ timeout: 15_000 });
+    const cursor = await play.evaluate((el) => getComputedStyle(el).cursor);
+    expect(cursor).toBe('pointer');
+    const disabledNav = page.getByTestId('nav-future-marketplace');
+    await expect(disabledNav).toBeVisible();
+    const disabledCursor = await disabledNav.evaluate((el) => getComputedStyle(el).cursor);
+    expect(disabledCursor).toBe('not-allowed');
+  });
 });

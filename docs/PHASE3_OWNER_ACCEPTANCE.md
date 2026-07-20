@@ -2,7 +2,7 @@
 
 Play Demo Mode on `http://127.0.0.1:3001/demo` (API on `:4000`).
 
-## Prerequisites (Phase 3.0A)
+## Prerequisites (Phase 3.2)
 
 ```bash
 pnpm doctor
@@ -12,12 +12,26 @@ pnpm dev:api
 pnpm dev:game
 ```
 
+Recommended env for local owner demo with hosted tables:
+
+```bash
+ARMZ_DEMO_PERSISTENCE_MODE=database
+```
+
 - [ ] Doctor reports Reown Project ID configured (when set in root `.env`)
 - [ ] Doctor reports API reachable and game origin allowed
 - [ ] Browser uses `http://127.0.0.1:3001` (not `localhost`)
 - [ ] Reown warning is **absent** when Project ID is configured
 - [ ] Connect Wallet opens Reown modal (web or game chrome)
 - [ ] Demo Mode does **not** show bare `Failed to fetch`
+- [ ] Top nav looks like real game tabs (active gold pill, future tabs muted)
+- [ ] Buttons feel premium with pointer cursor and hover/press states
+- [ ] Six Common ARMZ portraits look distinct (not placeholder boxes)
+- [ ] Practice Automaton looks like a real Easy opponent
+- [ ] Collection feels collectible (portrait + stat meters, not a form)
+- [ ] Battle push/counter/slam and optional recovery feel readable
+- [ ] Victory/defeat presentation is satisfying and clearly simulated
+- [ ] Desktop / tablet / mobile spacing looks balanced
 
 ## Flow
 

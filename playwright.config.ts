@@ -75,9 +75,10 @@ export default defineConfig({
         ...process.env,
         ...apiEnv,
         ARMZ_API_PORT: String(apiPort),
-        // Prefer in-process demo store when Phase 3 tables are not yet migrated.
-        // Hosted migrate removes the need for this; memory is still safe for foundation CI.
-        ARMZ_DEMO_FORCE_MEMORY: process.env.ARMZ_DEMO_FORCE_MEMORY ?? 'true',
+        // Explicit memory-test mode for foundation E2E (never silent fallback).
+        ARMZ_DEMO_PERSISTENCE_MODE:
+          process.env.ARMZ_DEMO_PERSISTENCE_MODE ??
+          (process.env.ARMZ_DEMO_FORCE_MEMORY === 'false' ? 'database' : 'memory-test'),
       },
     },
     {
