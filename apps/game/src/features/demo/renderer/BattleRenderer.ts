@@ -1,9 +1,28 @@
 /**
- * PixiJS Phase 3.3A battle renderer — premium vertical arm-wrestling rig.
- * Close camera, layered anatomical arms, cinematic VFX, arena spectacle.
+ * PixiJS Phase 3.3B battle renderer - textured sprite rigs + cinematic VFX.
+ *
+ * Replaces procedural Graphics fighter anatomy with SpriteRig layers loaded
+ * from the Qwen-authored SVG asset pipeline. PixiJS Graphics are retained ONLY
+ * for particles, lighting cones, haze, impact rings, debug geometry, control
+ * bars, and loading indicators.
+ *
+ * Camera system: responsive presets (desktop/tablet/mobile), dynamic zoom on
+ * critical push, shake on slam, pull-back for result.
  */
 
-import { Application, Container, Graphics } from 'pixi.js';
+import { Application, Container, Graphics, Sprite } from 'pixi.js';
+import type { ViewportClass } from '@armz-clash/game-core';
+import { SpriteRig } from './SpriteRig';
+import { BattleAudio, type AudioCue } from './BattleAudio';
+import {
+  preloadBattleAssets,
+  resolvePose,
+  classifyViewport,
+  fighterIdForPreset,
+  fighterIdForOpponent,
+  type BattleAssetBundle,
+} from './battleAssets';
+import { computeGripPoint } from './rigSolver';
 
 export type TimelineEvent = {
   index: number;
@@ -36,8 +55,11 @@ export type BattleRendererOptions = {
   playerName: string;
   opponentName: string;
   playerPresetKey?: string;
+  opponentKey?: string;
   reducedMotion?: boolean;
   muted?: boolean;
+  sfxEnabled?: boolean;
+  musicEnabled?: boolean;
   onComplete?: () => void;
   onEvent?: (ev: TimelineEvent) => void;
   onStrength?: (player: number, opponent: number) => void;
@@ -56,8 +78,33 @@ function easeInOut(t: number): number {
 }
 
 type Particle = {
-  x: number; y: number; vx: number; vy: number;
-  life: number; maxLife: number; size: number; color: number; alpha: number;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  maxLife: number;
+  size: number;
+  color: number;
+  alpha: number;
+};
+
+type EffectSprite = {
+  sprite: Sprite;
+  life: number;
+  maxLife: number;
+  vx: number;
+  vy: number;
+  growRate: number;
+};
+
+const CAMERA_PRESETS: Record<
+  ViewportClass,
+  { baseZoom: number; focusY: number; criticalZoom: number }
+> = {
+  desktop: { baseZoom: 1.0, focusY: 0.62, criticalZoom: 1.12 },
+  tablet: { baseZoom: 0.92, focusY: 0.58, criticalZoom: 1.05 },
+  mobile: { baseZoom: 0.82, focusY: 0.55, criticalZoom: 0.95 },
 };
 
 export class BattleRenderer {
@@ -68,6 +115,8 @@ export class BattleRenderer {
   private opponentPalette: FighterPalette;
   private reducedMotion: boolean;
   private muted: boolean;
+  private sfxEnabled: boolean;
+  private musicEnabled: boolean;
   private onComplete?: () => void;
   private onEvent?: (ev: TimelineEvent) => void;
   private onStrength?: (player: number, opponent: number) => void;
@@ -79,9 +128,16 @@ export class BattleRenderer {
   private playerStr = 100;
   private opponentStr = 100;
   private layers: {
-    bg: Container; crowd: Container; table: Container;
-    playerArm: Container; opponentArm: Container; grip: Container;
-    tableFront: Container; particles: Container; vfx: Container; overlay: Container;
+    bg: Container;
+    crowd: Container;
+    table: Container;
+    playerArm: Container;
+    opponentArm: Container;
+    grip: Container;
+    tableFront: Container;
+    particles: Container;
+    vfx: Container;
+    overlay: Container;
   } | null = null;
   private playerG: Graphics | null = null;
   private opponentG: Graphics | null = null;
@@ -93,13 +149,13 @@ export class BattleRenderer {
   private gripG: Graphics | null = null;
   private tableFrontG: Graphics | null = null;
   private overlayG: Graphics | null = null;
+  private loadingG: Graphics | null = null;
   private cue = 'idle';
   private shake = 0;
   private playerName: string;
   private opponentName: string;
   private playerPresetKey: string;
-  private lastSoundAt = 0;
-  private audioCtx: AudioContext | null = null;
+  private opponentKey: string;
   private completed = false;
   private gripAngle = 0;
   private targetGripAngle = 0;
@@ -111,6 +167,22 @@ export class BattleRenderer {
   private prevDiff = 0;
   private recoveryGlow = 0;
   private ambientPhase = 0;
+  private assetBundle: BattleAssetBundle | null = null;
+  private playerRig: SpriteRig | null = null;
+  private opponentRig: SpriteRig | null = null;
+  private arenaSprites: Sprite[] = [];
+  private effectSprites: EffectSprite[] = [];
+  private audio: BattleAudio;
+  private cameraZoom = 1;
+  private targetCameraZoom = 1;
+  private cameraShakeX = 0;
+  private cameraShakeY = 0;
+  private viewport: ViewportClass = 'desktop';
+  private playerFighterId: string | null = null;
+  private opponentFighterId: string | null = null;
+  private useSpriteRigs = false;
+  private prevCueForAudio = '';
+  private rootContainer: Container | null = null;
 
   constructor(opts: BattleRendererOptions) {
     this.host = opts.host;
@@ -119,16 +191,24 @@ export class BattleRenderer {
     this.opponentPalette = opts.opponentPalette;
     this.reducedMotion = Boolean(opts.reducedMotion);
     this.muted = Boolean(opts.muted);
+    this.sfxEnabled = opts.sfxEnabled ?? !opts.muted;
+    this.musicEnabled = opts.musicEnabled ?? false;
     this.onComplete = opts.onComplete;
     this.onEvent = opts.onEvent;
     this.onStrength = opts.onStrength;
     this.playerName = opts.playerName;
     this.opponentName = opts.opponentName;
     this.playerPresetKey = opts.playerPresetKey ?? 'rookie_brawler';
+    this.opponentKey = opts.opponentKey ?? 'practice_automaton';
+    this.audio = new BattleAudio();
+    this.playerFighterId = fighterIdForPreset(this.playerPresetKey);
+    this.opponentFighterId = fighterIdForOpponent(this.opponentKey);
+    this.useSpriteRigs = Boolean(this.playerFighterId && this.opponentFighterId);
   }
 
   async mount(): Promise<void> {
     if (this.destroyed) return;
+    this.viewport = classifyViewport(this.host.clientWidth || 1280, this.host.clientHeight || 720);
     const app = new Application();
     await app.init({
       resizeTo: this.host,
@@ -142,15 +222,22 @@ export class BattleRenderer {
     (app.canvas as HTMLCanvasElement).setAttribute('role', 'img');
     (app.canvas as HTMLCanvasElement).setAttribute(
       'aria-label',
-      'Armz Clash demo battle \\u2014 arm wrestling animation',
+      `Armz Clash demo battle \\u2014 ${this.playerName} vs ${this.opponentName} arm wrestling animation`,
     );
 
     const root = new Container();
+    this.rootContainer = root;
     app.stage.addChild(root);
     this.layers = {
-      bg: new Container(), crowd: new Container(), table: new Container(),
-      playerArm: new Container(), opponentArm: new Container(), grip: new Container(),
-      tableFront: new Container(), particles: new Container(), vfx: new Container(),
+      bg: new Container(),
+      crowd: new Container(),
+      table: new Container(),
+      playerArm: new Container(),
+      opponentArm: new Container(),
+      grip: new Container(),
+      tableFront: new Container(),
+      particles: new Container(),
+      vfx: new Container(),
       overlay: new Container(),
     };
     Object.values(this.layers).forEach((c) => root.addChild(c));
@@ -165,6 +252,7 @@ export class BattleRenderer {
     this.particlesG = new Graphics();
     this.vfxG = new Graphics();
     this.overlayG = new Graphics();
+    this.loadingG = new Graphics();
 
     this.layers.bg.addChild(this.bgG);
     this.layers.crowd.addChild(this.crowdG);
@@ -176,8 +264,30 @@ export class BattleRenderer {
     this.layers.particles.addChild(this.particlesG);
     this.layers.vfx.addChild(this.vfxG);
     this.layers.overlay.addChild(this.overlayG);
+    this.layers.overlay.addChild(this.loadingG);
 
     this.drawStaticScene();
+
+    if (this.useSpriteRigs) {
+      this.drawLoadingIndicator(true);
+      try {
+        this.assetBundle = await preloadBattleAssets(
+          this.playerFighterId,
+          this.opponentFighterId,
+          this.viewport,
+        );
+        this.buildArenaSprites();
+        this.buildFighterRigs();
+      } catch {
+        this.useSpriteRigs = false;
+        this.assetBundle = null;
+      }
+      this.drawLoadingIndicator(false);
+    }
+
+    this.audio.init();
+    this.audio.setSfxEnabled(this.sfxEnabled && !this.muted);
+    this.audio.setMusicEnabled(this.musicEnabled);
 
     this.startTs = performance.now();
     const tick = () => {
@@ -192,7 +302,6 @@ export class BattleRenderer {
     if (this.paused) return;
     this.paused = true;
   }
-
   resume(): void {
     if (!this.paused) return;
     this.paused = false;
@@ -200,15 +309,32 @@ export class BattleRenderer {
 
   setMuted(muted: boolean): void {
     this.muted = muted;
+    this.audio.setSfxEnabled(!muted && this.sfxEnabled);
+  }
+
+  setSfxEnabled(enabled: boolean): void {
+    this.sfxEnabled = enabled;
+    this.audio.setSfxEnabled(enabled && !this.muted);
+  }
+
+  setMusicEnabled(enabled: boolean): void {
+    this.musicEnabled = enabled;
+    this.audio.setMusicEnabled(enabled);
   }
 
   destroy(): void {
     this.destroyed = true;
     cancelAnimationFrame(this.raf);
-    if (this.audioCtx) {
-      void this.audioCtx.close().catch(() => {});
-      this.audioCtx = null;
-    }
+    this.audio.destroy();
+    this.playerRig?.destroy();
+    this.playerRig = null;
+    this.opponentRig?.destroy();
+    this.opponentRig = null;
+    for (const s of this.arenaSprites) s.destroy({ texture: false, textureSource: false });
+    this.arenaSprites = [];
+    for (const e of this.effectSprites) e.sprite.destroy({ texture: false, textureSource: false });
+    this.effectSprites = [];
+    this.particles = [];
     if (this.app) {
       this.app.destroy(true, { children: true });
       this.app = null;
@@ -216,7 +342,6 @@ export class BattleRenderer {
     this.host.replaceChildren();
   }
 
-  // === SCENE GEOMETRY (closer camera) ===
   private get scene() {
     const w = this.app!.screen.width;
     const h = this.app!.screen.height;
@@ -238,53 +363,257 @@ export class BattleRenderer {
     const opponentPinX = cx + tableW * 0.42;
     const shoulderY = elbowY + h * 0.08;
     return {
-      w, h, cx, tableY, tableW, tableH, elbowPadW, elbowPadH,
-      playerElbowX, opponentElbowX, elbowY, forearmLen,
-      gripCenterX, gripCenterY, pinPadW, pinPadH,
-      playerPinX, opponentPinX, shoulderY,
+      w,
+      h,
+      cx,
+      tableY,
+      tableW,
+      tableH,
+      elbowPadW,
+      elbowPadH,
+      playerElbowX,
+      opponentElbowX,
+      elbowY,
+      forearmLen,
+      gripCenterX,
+      gripCenterY,
+      pinPadW,
+      pinPadH,
+      playerPinX,
+      opponentPinX,
+      shoulderY,
     };
   }
 
-  // === STATIC SCENE (cinematic arena) ===
+  private drawLoadingIndicator(show: boolean): void {
+    if (!this.loadingG || !this.app) return;
+    this.loadingG.clear();
+    if (!show) return;
+    const { w, h } = this.scene;
+    this.loadingG.rect(0, 0, w, h).fill({ color: 0x04070d, alpha: 0.85 });
+    const barW = Math.min(w * 0.4, 200);
+    const barH = 6;
+    const bx = (w - barW) / 2;
+    const by = h / 2;
+    this.loadingG.roundRect(bx, by, barW, barH, 3).fill({ color: 0x1a2438, alpha: 1 });
+    this.loadingG.roundRect(bx, by, barW * 0.6, barH, 3).fill({ color: 0xd4af6a, alpha: 0.9 });
+  }
+
+  private buildArenaSprites(): void {
+    if (!this.assetBundle || !this.layers) return;
+    const { textures } = this.assetBundle;
+    const s = this.scene;
+    const arenaIds = [
+      'arena/background',
+      'arena/crowd',
+      'arena/lighting',
+      'arena/banners',
+      'arena/table',
+      'arena/elbow-pad',
+      'arena/pin-pad',
+      'arena/table-frame',
+    ];
+    for (const id of arenaIds) {
+      const tex = textures.get(id);
+      if (!tex) continue;
+      const sprite = new Sprite(tex);
+      sprite.label = id;
+      if (id === 'arena/background') {
+        sprite.width = s.w;
+        sprite.height = s.h;
+        this.layers.bg.addChild(sprite);
+      } else if (id === 'arena/table') {
+        sprite.width = s.tableW;
+        sprite.height = s.tableH * 1.5;
+        sprite.x = s.cx - s.tableW / 2;
+        sprite.y = s.tableY - s.tableH * 0.25;
+        this.layers.table.addChild(sprite);
+      } else if (id === 'arena/table-frame') {
+        sprite.width = s.tableW * 1.05;
+        sprite.height = s.tableH * 2;
+        sprite.x = s.cx - s.tableW * 0.525;
+        sprite.y = s.tableY + s.tableH * 0.5;
+        this.layers.table.addChild(sprite);
+      } else if (id === 'arena/elbow-pad') {
+        sprite.width = s.elbowPadW;
+        sprite.height = s.elbowPadH;
+        sprite.x = s.playerElbowX - s.elbowPadW / 2;
+        sprite.y = s.elbowY - s.elbowPadH / 2;
+        this.layers.table.addChild(sprite);
+        const pad2 = new Sprite(tex);
+        pad2.width = s.elbowPadW;
+        pad2.height = s.elbowPadH;
+        pad2.x = s.opponentElbowX - s.elbowPadW / 2;
+        pad2.y = s.elbowY - s.elbowPadH / 2;
+        this.layers.table.addChild(pad2);
+        this.arenaSprites.push(pad2);
+      } else if (id === 'arena/pin-pad') {
+        sprite.width = s.pinPadW;
+        sprite.height = s.pinPadH;
+        sprite.x = s.playerPinX - s.pinPadW / 2;
+        sprite.y = s.tableY - s.pinPadH;
+        this.layers.table.addChild(sprite);
+        const pad2 = new Sprite(tex);
+        pad2.width = s.pinPadW;
+        pad2.height = s.pinPadH;
+        pad2.x = s.opponentPinX - s.pinPadW / 2;
+        pad2.y = s.tableY - s.pinPadH;
+        this.layers.table.addChild(pad2);
+        this.arenaSprites.push(pad2);
+      } else if (id === 'arena/crowd') {
+        sprite.width = s.w;
+        sprite.height = s.h * 0.35;
+        sprite.y = s.h * 0.15;
+        sprite.alpha = 0.7;
+        this.layers.crowd.addChild(sprite);
+      } else if (id === 'arena/lighting') {
+        sprite.width = s.w;
+        sprite.height = s.h * 0.6;
+        sprite.alpha = 0.5;
+        this.layers.bg.addChild(sprite);
+      } else if (id === 'arena/banners') {
+        sprite.width = s.w;
+        sprite.height = s.h * 0.3;
+        sprite.alpha = 0.6;
+        this.layers.bg.addChild(sprite);
+      }
+      this.arenaSprites.push(sprite);
+    }
+  }
+
+  private buildFighterRigs(): void {
+    if (!this.assetBundle || !this.layers) return;
+    const { manifests, textures, textureSizes } = this.assetBundle;
+    const rigManifest = manifests.rig;
+    if (this.playerFighterId) {
+      const parts = rigManifest.fighters[this.playerFighterId];
+      if (parts && parts.length > 0) {
+        this.playerRig = new SpriteRig({ parts, textures, textureSizes });
+        this.layers.playerArm.addChild(this.playerRig.container);
+      }
+    }
+    if (this.opponentFighterId) {
+      const parts = rigManifest.fighters[this.opponentFighterId];
+      if (parts && parts.length > 0) {
+        this.opponentRig = new SpriteRig({ parts, textures, textureSizes });
+        this.layers.opponentArm.addChild(this.opponentRig.container);
+      }
+    }
+  }
+
+  private spawnEffectSprite(assetId: string, x: number, y: number, count = 1): void {
+    if (this.reducedMotion || !this.assetBundle || !this.layers) return;
+    const tex = this.assetBundle.textures.get(assetId);
+    if (!tex) return;
+    for (let i = 0; i < count; i++) {
+      const sprite = new Sprite(tex);
+      const size = 30 + Math.random() * 40;
+      sprite.width = size;
+      sprite.height = size;
+      sprite.anchor.set(0.5);
+      sprite.x = x + (Math.random() - 0.5) * 30;
+      sprite.y = y + (Math.random() - 0.5) * 20;
+      sprite.alpha = 0.8;
+      this.layers.vfx.addChild(sprite);
+      this.effectSprites.push({
+        sprite,
+        life: 1,
+        maxLife: 0.5 + Math.random() * 0.5,
+        vx: (Math.random() - 0.5) * 3,
+        vy: -1 - Math.random() * 2,
+        growRate: 1 + Math.random() * 0.5,
+      });
+    }
+    if (this.effectSprites.length > 40) {
+      const removed = this.effectSprites.splice(0, this.effectSprites.length - 30);
+      for (const e of removed) e.sprite.destroy({ texture: false, textureSource: false });
+    }
+  }
+
+  private updateEffectSprites(dt: number): void {
+    this.effectSprites = this.effectSprites.filter((e) => {
+      e.life -= dt / e.maxLife;
+      if (e.life <= 0) {
+        e.sprite.destroy({ texture: false, textureSource: false });
+        return false;
+      }
+      e.sprite.x += e.vx;
+      e.sprite.y += e.vy;
+      e.sprite.alpha = e.life * 0.8;
+      const grow = 1 + (1 - e.life) * e.growRate * 0.01;
+      e.sprite.width *= grow;
+      e.sprite.height *= grow;
+      return true;
+    });
+  }
+
+  private applyCamera(): void {
+    if (!this.rootContainer || !this.app) return;
+    const preset = CAMERA_PRESETS[this.viewport];
+    const s = this.scene;
+    this.cameraZoom += (this.targetCameraZoom - this.cameraZoom) * 0.08;
+    if (!this.reducedMotion && this.shake > 0.3) {
+      this.cameraShakeX = (Math.random() - 0.5) * this.shake * 4;
+      this.cameraShakeY = (Math.random() - 0.5) * this.shake * 2;
+    } else {
+      this.cameraShakeX *= 0.85;
+      this.cameraShakeY *= 0.85;
+    }
+    const focusX = s.gripCenterX;
+    const focusY = s.h * preset.focusY;
+    this.rootContainer.pivot.set(focusX, focusY);
+    this.rootContainer.position.set(focusX + this.cameraShakeX, focusY + this.cameraShakeY);
+    this.rootContainer.scale.set(this.cameraZoom);
+  }
+
   private drawStaticScene(): void {
     if (!this.app) return;
-    const { w, h, cx, tableY, tableW, tableH, elbowPadW, elbowPadH, playerElbowX, opponentElbowX, elbowY, playerPinX, opponentPinX, pinPadW, pinPadH } = this.scene;
-
+    const {
+      w,
+      h,
+      cx,
+      tableY,
+      tableW,
+      tableH,
+      elbowPadW,
+      elbowPadH,
+      playerElbowX,
+      opponentElbowX,
+      elbowY,
+      playerPinX,
+      opponentPinX,
+      pinPadW,
+      pinPadH,
+    } = this.scene;
     const bg = this.bgG!;
     bg.clear();
     bg.rect(0, 0, w, h).fill(0x04070d);
     bg.rect(0, 0, w, h * 0.4).fill({ color: 0x080e18, alpha: 1 });
     bg.rect(0, h * 0.4, w, h * 0.15).fill({ color: 0x0a1020, alpha: 0.8 });
     bg.rect(0, h * 0.55, w, h * 0.15).fill({ color: 0x0c1225, alpha: 0.6 });
-
-    // Arena pillars with accent lighting
     for (let i = 0; i < 6; i++) {
       const px = (w * (i + 0.5)) / 6;
       bg.roundRect(px - 8, 0, 16, h * 0.55, 4).fill({ color: 0x121a2a, alpha: 0.7 });
       bg.roundRect(px - 2, h * 0.05, 4, h * 0.4, 2).fill({ color: 0xd4af6a, alpha: 0.06 });
     }
-
-    // Arena banners
     bg.roundRect(w * 0.06, h * 0.03, w * 0.07, h * 0.25, 5).fill({ color: 0x1a2438, alpha: 0.8 });
     bg.roundRect(w * 0.87, h * 0.03, w * 0.07, h * 0.25, 5).fill({ color: 0x1a2438, alpha: 0.8 });
     bg.roundRect(w * 0.075, h * 0.05, w * 0.025, h * 0.2, 3).fill({ color: 0x5ec8ff, alpha: 0.12 });
     bg.roundRect(w * 0.885, h * 0.05, w * 0.025, h * 0.2, 3).fill({ color: 0xe07a4a, alpha: 0.12 });
-
-    // Spotlight cones focused on fighters
-    bg.moveTo(cx - w * 0.12, 0).lineTo(cx + w * 0.12, 0)
-      .lineTo(cx + w * 0.38, tableY).lineTo(cx - w * 0.38, tableY)
+    bg.moveTo(cx - w * 0.12, 0)
+      .lineTo(cx + w * 0.12, 0)
+      .lineTo(cx + w * 0.38, tableY)
+      .lineTo(cx - w * 0.38, tableY)
       .fill({ color: 0xffffff, alpha: 0.035 });
-    bg.moveTo(cx - w * 0.06, 0).lineTo(cx + w * 0.06, 0)
-      .lineTo(cx + w * 0.22, tableY).lineTo(cx - w * 0.22, tableY)
+    bg.moveTo(cx - w * 0.06, 0)
+      .lineTo(cx + w * 0.06, 0)
+      .lineTo(cx + w * 0.22, tableY)
+      .lineTo(cx - w * 0.22, tableY)
       .fill({ color: 0xfff8e0, alpha: 0.025 });
     bg.ellipse(cx, tableY - h * 0.08, w * 0.32, h * 0.1).fill({ color: 0xd4af6a, alpha: 0.07 });
     bg.ellipse(cx, tableY - h * 0.05, w * 0.2, h * 0.06).fill({ color: 0xffffff, alpha: 0.03 });
-
-    // Floor
     bg.rect(0, tableY + tableH, w, h - tableY - tableH).fill(0x060a10);
     bg.rect(0, tableY + tableH, w, 2).fill({ color: 0xd4af6a, alpha: 0.15 });
-
-    // Crowd silhouettes
     const crowd = this.crowdG!;
     crowd.clear();
     for (let row = 0; row < 3; row++) {
@@ -296,129 +625,181 @@ export class BattleRenderer {
         const r = 9 - row * 1.5 + (i % 3) * 1.5;
         const shade = 0x0c1018 + row * 0x020204;
         crowd.circle(cxp, cyp, r).fill({ color: shade, alpha: 0.8 - row * 0.1 });
-        crowd.roundRect(cxp - r * 0.7, cyp + r * 0.5, r * 1.4, r * 2, 3).fill({ color: shade - 0x010102, alpha: 0.75 - row * 0.1 });
+        crowd
+          .roundRect(cxp - r * 0.7, cyp + r * 0.5, r * 1.4, r * 2, 3)
+          .fill({ color: shade - 0x010102, alpha: 0.75 - row * 0.1 });
       }
     }
-
-    // Table
     const tbl = this.tableG!;
     tbl.clear();
     tbl.ellipse(cx, tableY + tableH + 14, tableW * 0.5, 16).fill({ color: 0x000000, alpha: 0.6 });
     tbl.roundRect(cx - tableW / 2, tableY, tableW, tableH, 10).fill(0x1a1510);
     tbl.roundRect(cx - tableW / 2 + 5, tableY + 4, tableW - 10, tableH - 8, 7).fill(0x282018);
     tbl.roundRect(cx - tableW / 2 + 10, tableY + 7, tableW - 20, tableH * 0.28, 5).fill(0x3a3020);
-    tbl.roundRect(cx - tableW * 0.36, tableY + tableH * 0.5, tableW * 0.72, 3, 1.5).fill({ color: 0xd4af6a, alpha: 0.55 });
-    tbl.moveTo(cx - tableW / 2 + 8, tableY + 3).lineTo(cx + tableW / 2 - 8, tableY + 3).stroke({ width: 2, color: 0x7a6a4a, alpha: 0.6 });
-    // Elbow pads
-    tbl.roundRect(playerElbowX - elbowPadW / 2, elbowY - elbowPadH / 2, elbowPadW, elbowPadH, 5).fill({ color: 0x2a3a4a, alpha: 0.95 });
-    tbl.roundRect(playerElbowX - elbowPadW / 2 + 3, elbowY - elbowPadH / 2 + 3, elbowPadW - 6, elbowPadH - 6, 4).fill({ color: 0x3a4a5a, alpha: 0.7 });
-    tbl.roundRect(opponentElbowX - elbowPadW / 2, elbowY - elbowPadH / 2, elbowPadW, elbowPadH, 5).fill({ color: 0x4a3a2a, alpha: 0.95 });
-    tbl.roundRect(opponentElbowX - elbowPadW / 2 + 3, elbowY - elbowPadH / 2 + 3, elbowPadW - 6, elbowPadH - 6, 4).fill({ color: 0x5a4a3a, alpha: 0.7 });
-    // Pin pads
-    tbl.roundRect(playerPinX - pinPadW / 2, tableY - pinPadH, pinPadW, pinPadH, 4).fill({ color: 0x5ec8ff, alpha: 0.25 });
-    tbl.roundRect(opponentPinX - pinPadW / 2, tableY - pinPadH, pinPadW, pinPadH, 4).fill({ color: 0xe07a4a, alpha: 0.25 });
-
-    // Table front edge
+    tbl
+      .roundRect(cx - tableW * 0.36, tableY + tableH * 0.5, tableW * 0.72, 3, 1.5)
+      .fill({ color: 0xd4af6a, alpha: 0.55 });
+    tbl
+      .moveTo(cx - tableW / 2 + 8, tableY + 3)
+      .lineTo(cx + tableW / 2 - 8, tableY + 3)
+      .stroke({ width: 2, color: 0x7a6a4a, alpha: 0.6 });
+    tbl
+      .roundRect(playerElbowX - elbowPadW / 2, elbowY - elbowPadH / 2, elbowPadW, elbowPadH, 5)
+      .fill({ color: 0x2a3a4a, alpha: 0.95 });
+    tbl
+      .roundRect(
+        playerElbowX - elbowPadW / 2 + 3,
+        elbowY - elbowPadH / 2 + 3,
+        elbowPadW - 6,
+        elbowPadH - 6,
+        4,
+      )
+      .fill({ color: 0x3a4a5a, alpha: 0.7 });
+    tbl
+      .roundRect(opponentElbowX - elbowPadW / 2, elbowY - elbowPadH / 2, elbowPadW, elbowPadH, 5)
+      .fill({ color: 0x4a3a2a, alpha: 0.95 });
+    tbl
+      .roundRect(
+        opponentElbowX - elbowPadW / 2 + 3,
+        elbowY - elbowPadH / 2 + 3,
+        elbowPadW - 6,
+        elbowPadH - 6,
+        4,
+      )
+      .fill({ color: 0x5a4a3a, alpha: 0.7 });
+    tbl
+      .roundRect(playerPinX - pinPadW / 2, tableY - pinPadH, pinPadW, pinPadH, 4)
+      .fill({ color: 0x5ec8ff, alpha: 0.25 });
+    tbl
+      .roundRect(opponentPinX - pinPadW / 2, tableY - pinPadH, pinPadW, pinPadH, 4)
+      .fill({ color: 0xe07a4a, alpha: 0.25 });
     const tf = this.tableFrontG!;
     tf.clear();
     tf.roundRect(cx - tableW / 2, tableY + tableH - 5, tableW, 10, 4).fill(0x181210);
-    tf.roundRect(cx - tableW / 2 + 3, tableY + tableH - 3, tableW - 6, 4, 2).fill({ color: 0xd4af6a, alpha: 0.2 });
+    tf.roundRect(cx - tableW / 2 + 3, tableY + tableH - 3, tableW - 6, 4, 2).fill({
+      color: 0xd4af6a,
+      alpha: 0.2,
+    });
   }
 
-  // === PREMIUM ARM DRAWING ===
   private drawArms(): void {
     if (!this.app || !this.playerG || !this.opponentG || !this.gripG) return;
     const s = this.scene;
-    const shakeX = this.reducedMotion ? 0 : this.shake * (Math.random() - 0.5) * 5;
-    const shakeY = this.reducedMotion ? 0 : this.shake * (Math.random() - 0.5) * 2;
-
     const angle = this.gripAngle;
     const strain = Math.abs(angle) / 0.55;
+    const diff = (this.opponentStr - this.playerStr) / 100;
+    const maxSway = s.tableW * 0.28;
+    const gripPt = computeGripPoint(
+      { x: s.gripCenterX, y: s.gripCenterY },
+      -diff,
+      maxSway,
+      s.forearmLen * 0.08,
+    );
 
-    const pivotX = s.cx + shakeX;
-    const pivotY = s.elbowY;
-    const handDist = s.forearmLen * 0.85;
-    const handX = pivotX + Math.sin(angle) * handDist * 0.6;
-    const handY = pivotY - handDist + Math.abs(angle) * handDist * 0.12 + shakeY;
-
-    this.drawPremiumArm(this.playerG, {
-      elbowX: s.playerElbowX + shakeX, elbowY: s.elbowY, handX, handY,
-      shoulderX: s.playerElbowX - s.tableW * 0.2 + shakeX, shoulderY: s.shoulderY,
-      palette: this.playerPalette, side: 'player', strain, mechanical: false,
-    });
-
-    this.drawPremiumArm(this.opponentG, {
-      elbowX: s.opponentElbowX + shakeX, elbowY: s.elbowY, handX, handY,
-      shoulderX: s.opponentElbowX + s.tableW * 0.2 + shakeX, shoulderY: s.shoulderY,
-      palette: this.opponentPalette, side: 'opponent', strain, mechanical: true,
-    });
-
-    this.drawGrip(handX, handY, angle, strain);
+    if (this.useSpriteRigs && this.playerRig && this.opponentRig && this.assetBundle) {
+      const poses = this.assetBundle.manifests.poses.poses;
+      const cueToPose = this.assetBundle.manifests.poses.cueToPose ?? {};
+      const playerPose = resolvePose(poses, cueToPose, this.cue, -diff, undefined, true);
+      const opponentPose = resolvePose(poses, cueToPose, this.cue, -diff, undefined, false);
+      this.playerRig.update({
+        elbow: { x: s.playerElbowX, y: s.elbowY },
+        grip: gripPt,
+        pose: playerPose,
+        mirror: false,
+      });
+      this.opponentRig.update({
+        elbow: { x: s.opponentElbowX, y: s.elbowY },
+        grip: gripPt,
+        pose: opponentPose,
+        mirror: true,
+      });
+      this.playerG.clear();
+      this.opponentG.clear();
+      this.gripG.clear();
+    } else {
+      const shakeX = this.reducedMotion ? 0 : this.shake * (Math.random() - 0.5) * 5;
+      const shakeY = this.reducedMotion ? 0 : this.shake * (Math.random() - 0.5) * 2;
+      const handX = gripPt.x + shakeX;
+      const handY = gripPt.y + shakeY;
+      this.drawProceduralArm(this.playerG, {
+        elbowX: s.playerElbowX + shakeX,
+        elbowY: s.elbowY,
+        handX,
+        handY,
+        shoulderX: s.playerElbowX - s.tableW * 0.2 + shakeX,
+        shoulderY: s.shoulderY,
+        palette: this.playerPalette,
+        side: 'player',
+        strain,
+        mechanical: false,
+      });
+      this.drawProceduralArm(this.opponentG, {
+        elbowX: s.opponentElbowX + shakeX,
+        elbowY: s.elbowY,
+        handX,
+        handY,
+        shoulderX: s.opponentElbowX + s.tableW * 0.2 + shakeX,
+        shoulderY: s.shoulderY,
+        palette: this.opponentPalette,
+        side: 'opponent',
+        strain,
+        mechanical: true,
+      });
+      this.drawGrip(handX, handY, angle, strain);
+    }
   }
 
-  private drawPremiumArm(
+  private drawProceduralArm(
     g: Graphics,
     opts: {
-      elbowX: number; elbowY: number; handX: number; handY: number;
-      shoulderX: number; shoulderY: number; palette: FighterPalette;
-      side: 'player' | 'opponent'; strain: number; mechanical: boolean;
+      elbowX: number;
+      elbowY: number;
+      handX: number;
+      handY: number;
+      shoulderX: number;
+      shoulderY: number;
+      palette: FighterPalette;
+      side: 'player' | 'opponent';
+      strain: number;
+      mechanical: boolean;
     },
   ): void {
     g.clear();
     const skin = hex(opts.palette.skinTone);
     const cloth = hex(opts.palette.primaryCloth);
     const accent = hex(opts.palette.accent);
-    const glove = hex(opts.palette.glove);
     const { elbowX, elbowY, handX, handY, shoulderX, shoulderY, strain } = opts;
-
     const faMidX = (elbowX + handX) / 2 + (opts.side === 'player' ? -10 : 10);
     const faMidY = (elbowY + handY) / 2;
     const uaMidX = (shoulderX + elbowX) / 2;
     const uaMidY = (shoulderY + elbowY) / 2 - 8;
-
-    // Shadow layer
     g.moveTo(shoulderX + 4, shoulderY + 6)
       .quadraticCurveTo(uaMidX + 4, uaMidY + 6, elbowX + 4, elbowY + 5)
       .stroke({ width: 36, color: 0x000000, alpha: 0.35, cap: 'round' });
     g.moveTo(elbowX + 3, elbowY + 4)
       .quadraticCurveTo(faMidX + 3, faMidY + 4, handX + 3, handY + 3)
       .stroke({ width: 30, color: 0x000000, alpha: 0.3, cap: 'round' });
-
     if (opts.mechanical) {
-      // === MECHANICAL ARM (Practice Automaton) ===
-      // Upper arm: segmented metal
       g.moveTo(shoulderX, shoulderY)
         .quadraticCurveTo(uaMidX, uaMidY, elbowX, elbowY)
         .stroke({ width: 32, color: 0x3a4048, cap: 'round' });
       g.moveTo(shoulderX, shoulderY)
         .quadraticCurveTo(uaMidX, uaMidY, elbowX, elbowY)
         .stroke({ width: 24, color: 0x4a5058, cap: 'round' });
-      // Plate separation lines
       for (let i = 1; i <= 3; i++) {
         const t = i / 4;
         const px = lerp(shoulderX, elbowX, t);
         const py = lerp(shoulderY, elbowY, t) - 4;
-        g.moveTo(px - 10, py).lineTo(px + 10, py).stroke({ width: 2, color: 0x2a3038, alpha: 0.8 });
+        g.moveTo(px - 10, py)
+          .lineTo(px + 10, py)
+          .stroke({ width: 2, color: 0x2a3038, alpha: 0.8 });
       }
-      // Hydraulic pistons
       g.moveTo(shoulderX + 8, shoulderY + 4)
         .quadraticCurveTo(uaMidX + 10, uaMidY + 4, elbowX + 8, elbowY + 2)
         .stroke({ width: 5, color: accent, alpha: 0.5, cap: 'round' });
-      g.moveTo(shoulderX - 6, shoulderY + 6)
-        .quadraticCurveTo(uaMidX - 8, uaMidY + 6, elbowX - 6, elbowY + 4)
-        .stroke({ width: 4, color: 0x6a7a8a, alpha: 0.6, cap: 'round' });
-
-      // Elbow: mechanical bearing
       g.circle(elbowX, elbowY, 18).fill(0x3a4048);
       g.circle(elbowX, elbowY, 14).fill(0x4a5560);
       g.circle(elbowX, elbowY, 8).fill(accent);
-      g.circle(elbowX, elbowY, 4).fill(0x2a3038);
-      for (let i = 0; i < 4; i++) {
-        const a = (i / 4) * Math.PI * 2 + 0.4;
-        g.circle(elbowX + Math.cos(a) * 12, elbowY + Math.sin(a) * 12, 2.5).fill(0x6a7a8a);
-      }
-
-      // Forearm: industrial metal
       const faW = 26 + strain * 5;
       g.moveTo(elbowX, elbowY)
         .quadraticCurveTo(faMidX, faMidY, handX, handY)
@@ -426,61 +807,26 @@ export class BattleRenderer {
       g.moveTo(elbowX, elbowY)
         .quadraticCurveTo(faMidX, faMidY, handX, handY)
         .stroke({ width: faW - 8, color: 0x5a6570, cap: 'round' });
-      g.moveTo(elbowX, elbowY - 2)
-        .quadraticCurveTo(faMidX, faMidY - 2, handX, handY - 1)
-        .stroke({ width: 6, color: 0x6a7580, alpha: 0.7, cap: 'round' });
-      // Hydraulic lines
       g.moveTo(elbowX + 6, elbowY - 3)
         .quadraticCurveTo(faMidX + 8, faMidY - 3, handX + 5, handY - 2)
         .stroke({ width: 3.5, color: accent, alpha: 0.6, cap: 'round' });
-      g.moveTo(elbowX - 5, elbowY + 3)
-        .quadraticCurveTo(faMidX - 7, faMidY + 3, handX - 4, handY + 2)
-        .stroke({ width: 3, color: 0x8a9aa8, alpha: 0.5, cap: 'round' });
-      // Rivets
-      for (let i = 1; i <= 4; i++) {
-        const t = i / 5;
-        const rx = lerp(elbowX, handX, t) + (opts.side === 'player' ? -6 : 6);
-        const ry = lerp(elbowY, handY, t);
-        g.circle(rx, ry, 2).fill(0x7a8a98);
-      }
-
-      // Wrist actuator
       const wristX = lerp(elbowX, handX, 0.78);
       const wristY = lerp(elbowY, handY, 0.78);
       g.roundRect(wristX - 14, wristY - 10, 28, 20, 4).fill(0x3a4550);
       g.roundRect(wristX - 10, wristY - 6, 20, 12, 3).fill(accent);
-      g.roundRect(wristX - 6, wristY - 3, 12, 6, 2).fill(0x2a3038);
-
-      // Shoulder housing
       g.circle(shoulderX, shoulderY, 22).fill(0x3a4048);
       g.circle(shoulderX, shoulderY, 16).fill(0x4a5560);
       g.circle(shoulderX, shoulderY, 8).fill(accent);
-      g.roundRect(shoulderX - 18, shoulderY - 4, 36, 8, 4).fill({ color: 0x5a6570, alpha: 0.6 });
-
     } else {
-      // === ORGANIC ARM (Rookie Brawler) ===
-      // Upper arm: muscular
       g.moveTo(shoulderX, shoulderY)
         .quadraticCurveTo(uaMidX, uaMidY, elbowX, elbowY)
         .stroke({ width: 34, color: skin, cap: 'round' });
       g.moveTo(shoulderX + 2, shoulderY - 4)
         .quadraticCurveTo(uaMidX + 2, uaMidY - 6, elbowX + 1, elbowY - 3)
         .stroke({ width: 14, color: 0xffffff, alpha: 0.08, cap: 'round' });
-      g.moveTo(shoulderX - 4, shoulderY + 6)
-        .quadraticCurveTo(uaMidX - 3, uaMidY + 5, elbowX - 2, elbowY + 3)
-        .stroke({ width: 3, color: 0x000000, alpha: 0.12, cap: 'round' });
-
-      // Shoulder: deltoid with cloth strap
       g.circle(shoulderX, shoulderY, 22).fill(skin);
-      g.circle(shoulderX - 3, shoulderY - 5, 14).fill({ color: 0xffffff, alpha: 0.06 });
       g.roundRect(shoulderX - 16, shoulderY - 8, 32, 16, 8).fill({ color: cloth, alpha: 0.8 });
-      g.moveTo(shoulderX - 12, shoulderY).lineTo(shoulderX + 12, shoulderY + 2).stroke({ width: 3, color: accent, alpha: 0.6, cap: 'round' });
-
-      // Elbow
       g.circle(elbowX, elbowY, 16).fill(skin);
-      g.circle(elbowX, elbowY, 11).fill({ color: cloth, alpha: 0.4 });
-
-      // Forearm: thick, powerful
       const faW = 26 + strain * 6;
       g.moveTo(elbowX, elbowY)
         .quadraticCurveTo(faMidX, faMidY, handX, handY)
@@ -488,39 +834,25 @@ export class BattleRenderer {
       g.moveTo(elbowX - 2, elbowY - 4)
         .quadraticCurveTo(faMidX - 2, faMidY - 4, handX - 1, handY - 3)
         .stroke({ width: 9, color: 0xffffff, alpha: 0.07, cap: 'round' });
-      g.moveTo(elbowX + 2, elbowY + 4)
-        .quadraticCurveTo(faMidX + 2, faMidY + 4, handX + 1, handY + 3)
-        .stroke({ width: 8, color: 0x000000, alpha: 0.1, cap: 'round' });
-
-      // Veins under strain
       if (strain > 0.3 && !this.reducedMotion) {
         const veinAlpha = 0.08 + strain * 0.12;
         g.moveTo(elbowX + 3, elbowY - 6)
           .quadraticCurveTo(faMidX + 5, faMidY - 5, handX + 3, handY - 4)
           .stroke({ width: 1.5, color: 0x4a2a3a, alpha: veinAlpha, cap: 'round' });
-        g.moveTo(elbowX - 4, elbowY - 3)
-          .quadraticCurveTo(faMidX - 3, faMidY - 4, handX - 2, handY - 5)
-          .stroke({ width: 1.2, color: 0x4a2a3a, alpha: veinAlpha * 0.7, cap: 'round' });
       }
-
-      // Leather wrist wraps (Rookie Brawler signature)
       const wristX = lerp(elbowX, handX, 0.72);
       const wristY = lerp(elbowY, handY, 0.72);
       g.roundRect(wristX - 13, wristY - 9, 26, 18, 5).fill(cloth);
       for (let i = 0; i < 3; i++) {
         const wy = wristY - 5 + i * 5;
-        g.moveTo(wristX - 10, wy).lineTo(wristX + 10, wy + 1.5).stroke({ width: 2.5, color: accent, alpha: 0.6 - i * 0.1, cap: 'round' });
+        g.moveTo(wristX - 10, wy)
+          .lineTo(wristX + 10, wy + 1.5)
+          .stroke({ width: 2.5, color: accent, alpha: 0.6 - i * 0.1, cap: 'round' });
       }
-      g.roundRect(wristX - 4, wristY - 3, 8, 6, 2).fill(accent);
-
-      // Mid-forearm bracer
       const bracerX = lerp(elbowX, handX, 0.45);
       const bracerY = lerp(elbowY, handY, 0.45);
       g.roundRect(bracerX - 11, bracerY - 7, 22, 14, 4).fill({ color: cloth, alpha: 0.7 });
-      g.moveTo(bracerX - 8, bracerY).lineTo(bracerX + 8, bracerY + 1).stroke({ width: 2, color: accent, alpha: 0.5, cap: 'round' });
     }
-
-    // Elbow pad contact glow
     g.circle(elbowX, elbowY, 18).stroke({ width: 2.5, color: accent, alpha: 0.15 + strain * 0.35 });
   }
 
@@ -528,148 +860,213 @@ export class BattleRenderer {
     if (!this.gripG) return;
     const g = this.gripG;
     g.clear();
-
     const playerGlove = hex(this.playerPalette.glove);
     const opponentGlove = hex(this.opponentPalette.glove);
     const playerSkin = hex(this.playerPalette.skinTone);
     const opponentSkin = hex(this.opponentPalette.skinTone);
-
     const gripR = 18 + strain * 4;
-
-    // Pressure aura
     const glowAlpha = 0.08 + strain * 0.2;
     g.circle(handX, handY, gripR + 12).fill({ color: 0xd4af6a, alpha: glowAlpha * 0.3 });
     g.circle(handX, handY, gripR + 6).fill({ color: 0x5ec8ff, alpha: glowAlpha * 0.4 });
-
-    // Player hand (gloved fist from left)
     g.circle(handX - 6, handY + 1, gripR * 0.85).fill(playerGlove);
     g.circle(handX - 6, handY - 2, gripR * 0.55).fill({ color: playerSkin, alpha: 0.35 });
     for (let i = 0; i < 4; i++) {
-      g.circle(handX - 3 + i * 4.5, handY + gripR * 0.55, 3.8).fill({ color: playerSkin, alpha: 0.5 });
+      g.circle(handX - 3 + i * 4.5, handY + gripR * 0.55, 3.8).fill({
+        color: playerSkin,
+        alpha: 0.5,
+      });
     }
     g.circle(handX - 12, handY - gripR * 0.3, 4.5).fill(playerGlove);
-
-    // Opponent hand (mechanical clamp from right)
     g.circle(handX + 6, handY - 1, gripR * 0.82).fill(opponentGlove);
     g.circle(handX + 6, handY - 4, gripR * 0.5).fill({ color: opponentSkin, alpha: 0.3 });
     for (let i = 0; i < 4; i++) {
-      g.circle(handX + 3 - i * 4.5, handY - gripR * 0.55, 3.5).fill({ color: 0x6a7a8a, alpha: 0.6 });
+      g.circle(handX + 3 - i * 4.5, handY - gripR * 0.55, 3.5).fill({
+        color: 0x6a7a8a,
+        alpha: 0.6,
+      });
     }
     g.circle(handX + 12, handY + gripR * 0.25, 4).fill(opponentGlove);
-
-    // Tension ring
     g.circle(handX, handY, gripR + 2).stroke({ width: 2, color: 0xf0d9a0, alpha: glowAlpha });
-
-    // Strain sparks
     if (strain > 0.4 && !this.reducedMotion) {
       const t = performance.now() / 150;
       const sparkCount = Math.floor(strain * 5);
       for (let i = 0; i < sparkCount; i++) {
         const a = t + i * 1.8;
         const dist = gripR + 4 + Math.sin(a * 2.3) * 6;
-        const sx = handX + Math.cos(a) * dist;
-        const sy = handY + Math.sin(a) * dist;
-        g.circle(sx, sy, 1.5 + Math.random()).fill({ color: 0xf0d9a0, alpha: 0.4 + Math.random() * 0.3 });
+        g.circle(handX + Math.cos(a) * dist, handY + Math.sin(a) * dist, 1.5 + Math.random()).fill({
+          color: 0xf0d9a0,
+          alpha: 0.4 + Math.random() * 0.3,
+        });
       }
     }
   }
 
-  // === UPDATE LOOP ===
-  private update(elapsedMs: number): void {
+  private update(elapsed: number): void {
     if (!this.app || this.completed) return;
-    let active: TimelineEvent | null = null;
-    for (const ev of this.timeline) {
-      if (elapsedMs >= ev.startMs && elapsedMs < ev.startMs + ev.durationMs) {
-        active = ev;
+    const tl = this.timeline;
+    if (tl.length === 0) return;
+
+    // Find active event and interpolate strengths.
+    let activeEvent: TimelineEvent | null = null;
+    for (let i = 0; i < tl.length; i++) {
+      const ev = tl[i]!;
+      if (elapsed >= ev.startMs && elapsed < ev.startMs + ev.durationMs) {
+        activeEvent = ev;
         break;
       }
     }
-    if (!active) {
-      const last = this.timeline[this.timeline.length - 1];
-      if (last && elapsedMs >= last.startMs + last.durationMs) {
-        this.completed = true;
-        this.slamFlash = 1;
-        this.onComplete?.();
-        this.paused = true;
-        return;
-      }
-    }
-    if (active) {
-      const u = Math.min(1, Math.max(0, (elapsedMs - active.startMs) / active.durationMs));
-      const ease = this.reducedMotion ? u : easeInOut(u);
-      this.playerStr = Math.round(
-        active.playerStrengthBefore + (active.playerStrengthAfter - active.playerStrengthBefore) * ease,
-      );
-      this.opponentStr = Math.round(
-        active.opponentStrengthBefore + (active.opponentStrengthAfter - active.opponentStrengthBefore) * ease,
-      );
+
+    // Timeline complete.
+    const lastEvent = tl[tl.length - 1]!;
+    if (elapsed >= lastEvent.startMs + lastEvent.durationMs) {
+      this.playerStr = lastEvent.playerStrengthAfter;
+      this.opponentStr = lastEvent.opponentStrengthAfter;
       this.onStrength?.(this.playerStr, this.opponentStr);
+      this.completed = true;
+      this.slamFlash = 1;
+      this.targetCameraZoom = CAMERA_PRESETS[this.viewport].baseZoom * 0.9;
+      this.shake = 1;
+      this.audio.playCue('final_slam', 10000);
+      this.spawnBurst(this.scene.gripCenterX, this.scene.gripCenterY, 20, 0xd4af6a);
+      this.spawnEffectSprite(
+        'effects/slam-impact',
+        this.scene.gripCenterX,
+        this.scene.gripCenterY,
+        3,
+      );
+      this.onComplete?.();
+      this.pause();
+      return;
+    }
 
-      if (active.animationCue !== this.cue) {
-        this.cue = active.animationCue;
-        this.onEvent?.(active);
-        if (active.vfxCue.includes('critical') || active.vfxCue.includes('heavy')) {
+    if (activeEvent) {
+      const t = Math.min(1, (elapsed - activeEvent.startMs) / Math.max(1, activeEvent.durationMs));
+      const et = easeInOut(t);
+      this.playerStr = lerp(activeEvent.playerStrengthBefore, activeEvent.playerStrengthAfter, et);
+      this.opponentStr = lerp(
+        activeEvent.opponentStrengthBefore,
+        activeEvent.opponentStrengthAfter,
+        et,
+      );
+      this.onStrength?.(Math.round(this.playerStr), Math.round(this.opponentStr));
+
+      // Cue change detection.
+      const cue = activeEvent.animationCue;
+      if (cue !== this.cue) {
+        this.cue = cue;
+        this.onEvent?.(activeEvent);
+
+        // Audio cue.
+        const soundCue = activeEvent.soundCue as AudioCue;
+        if (soundCue && soundCue !== 'none') {
+          this.audio.playCue(soundCue, activeEvent.intensity);
+        }
+
+        // VFX triggers.
+        const vfx = activeEvent.vfxCue;
+        const s = this.scene;
+        if (vfx === 'grip_spark') {
+          this.spawnEffectSprite('effects/grip-flash', s.gripCenterX, s.gripCenterY, 2);
+          this.spawnBurst(s.gripCenterX, s.gripCenterY, 6, 0xf0d9a0);
+        } else if (vfx === 'dust_light') {
+          this.spawnBurst(s.gripCenterX, s.gripCenterY + 20, 4, 0x8a7a6a);
+        } else if (vfx === 'dust_heavy') {
+          this.spawnBurst(s.gripCenterX, s.gripCenterY + 20, 8, 0x8a7a6a);
+          this.spawnEffectSprite('effects/pressure-ring', s.gripCenterX, s.gripCenterY, 1);
+        } else if (vfx === 'critical_flash') {
+          this.spawnEffectSprite('effects/critical-impact', s.gripCenterX, s.gripCenterY, 2);
+          this.spawnBurst(s.gripCenterX, s.gripCenterY, 10, 0x5ec8ff);
+          this.targetCameraZoom = CAMERA_PRESETS[this.viewport].criticalZoom;
           this.flashIntensity = 0.6;
-          this.spawnBurst(12, active.vfxCue.includes('critical') ? 0x5ec8ff : 0xd4af6a);
+        } else if (vfx === 'energy_trail') {
+          this.spawnEffectSprite('effects/momentum-streak', s.gripCenterX, s.gripCenterY, 2);
+        } else if (vfx === 'final_impact') {
+          this.spawnEffectSprite('effects/slam-impact', s.gripCenterX, s.gripCenterY, 3);
+          this.spawnBurst(s.gripCenterX, s.gripCenterY, 15, 0xd4af6a);
+          this.shake = 1;
+          this.flashIntensity = 0.8;
+        } else if (vfx === 'victory_particles') {
+          this.spawnEffectSprite('effects/victory-accent', s.gripCenterX, s.gripCenterY - 30, 3);
+          this.spawnBurst(s.gripCenterX, s.gripCenterY, 12, 0x5ec8ff);
+        } else if (vfx === 'defeat_particles') {
+          this.spawnEffectSprite('effects/defeat-accent', s.gripCenterX, s.gripCenterY - 30, 2);
+          this.spawnBurst(s.gripCenterX, s.gripCenterY, 8, 0xe07a4a);
         }
-        if (active.vfxCue.includes('final') || active.animationCue === 'winning_slam') {
-          this.slamFlash = 1;
-          this.spawnBurst(24, 0xffffff);
-        }
-        if (active.animationCue === 'recovery') {
+
+        // Camera cues.
+        if (cue === 'critical') {
+          this.targetCameraZoom = CAMERA_PRESETS[this.viewport].criticalZoom;
+        } else if (cue === 'recovery') {
+          this.targetCameraZoom = CAMERA_PRESETS[this.viewport].baseZoom;
           this.recoveryGlow = 1;
-          this.spawnBurst(8, 0x3ecf8e);
+          this.spawnEffectSprite('effects/recovery-glow', s.gripCenterX, s.gripCenterY, 1);
+        } else if (cue === 'winning_slam' || cue === 'defeated') {
+          this.targetCameraZoom = CAMERA_PRESETS[this.viewport].baseZoom * 1.05;
         }
-      }
-
-      const diff = (this.opponentStr - this.playerStr) / 100;
-      if (Math.abs(diff - this.prevDiff) > 0.04) {
-        this.momentumDir = diff > this.prevDiff ? 1 : -1;
-        if (!this.reducedMotion) this.spawnBurst(4, 0xf0d9a0);
-      }
-      this.prevDiff = diff;
-
-      this.targetGripAngle = diff * 0.55;
-      this.shake = this.reducedMotion ? 0 : active.intensity > 7000 ? 2.0 : active.intensity > 4000 ? 0.9 : 0.2;
-
-      if (!this.muted && active.soundCue && active.soundCue !== 'none') {
-        this.playCue(active.soundCue, active.intensity);
       }
     }
 
+    // Compute diff and momentum.
+    const diff = (this.opponentStr - this.playerStr) / 100;
+    this.targetGripAngle = diff * 0.55;
     this.gripAngle += (this.targetGripAngle - this.gripAngle) * 0.12;
-    this.strainPhase += 0.05;
-    this.ambientPhase += 0.02;
-    this.flashIntensity *= 0.92;
-    this.slamFlash *= 0.94;
-    this.recoveryGlow *= 0.96;
 
+    // Momentum detection.
+    const momentumDelta = diff - this.prevDiff;
+    if (Math.abs(momentumDelta) > 0.02) {
+      this.momentumDir = momentumDelta > 0 ? 1 : -1;
+      if (!this.reducedMotion) {
+        this.spawnEffectSprite(
+          'effects/momentum-streak',
+          this.scene.gripCenterX,
+          this.scene.gripCenterY,
+          1,
+        );
+      }
+    }
+    this.prevDiff = diff;
+
+    // Strain phase for visual effects.
+    this.strainPhase += 0.05;
+
+    // Decay effects.
+    this.shake *= 0.92;
+    this.flashIntensity *= 0.94;
+    this.slamFlash *= 0.95;
+    this.recoveryGlow *= 0.96;
+    this.ambientPhase += 0.02;
+
+    // Camera zoom easing.
+    this.cameraZoom += (this.targetCameraZoom - this.cameraZoom) * 0.06;
+
+    // Update systems.
     this.updateParticles();
+    this.updateEffectSprites(1 / 60);
     this.drawArms();
     this.drawVfxOverlay();
+    this.applyCamera();
   }
 
-  // === PARTICLE SYSTEM ===
-  private spawnBurst(count: number, color: number): void {
+  private spawnBurst(x: number, y: number, count: number, color: number): void {
     if (this.reducedMotion) return;
-    const s = this.scene;
     for (let i = 0; i < count; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const speed = 1 + Math.random() * 3;
+      const angle = (Math.PI * 2 * i) / count + Math.random() * 0.3;
+      const speed = 1.5 + Math.random() * 3;
       this.particles.push({
-        x: s.gripCenterX + (Math.random() - 0.5) * 30,
-        y: s.gripCenterY + (Math.random() - 0.5) * 20,
+        x,
+        y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed - 1,
         life: 1,
-        maxLife: 0.6 + Math.random() * 0.6,
+        maxLife: 0.4 + Math.random() * 0.4,
         size: 2 + Math.random() * 3,
         color,
-        alpha: 0.6 + Math.random() * 0.4,
+        alpha: 0.7 + Math.random() * 0.3,
       });
     }
+    // Cap particle count.
     if (this.particles.length > 80) {
-      this.particles = this.particles.slice(-60);
+      this.particles.splice(0, this.particles.length - 60);
     }
   }
 
@@ -677,111 +1074,72 @@ export class BattleRenderer {
     if (!this.particlesG) return;
     const g = this.particlesG;
     g.clear();
-    if (this.reducedMotion) {
-      this.particles = [];
-      return;
-    }
-    // Ambient pressure particles
-    if (this.cue !== 'idle' && this.cue !== 'intro' && Math.random() < 0.3) {
-      const s = this.scene;
-      this.particles.push({
-        x: s.gripCenterX + (Math.random() - 0.5) * 40,
-        y: s.gripCenterY + (Math.random() - 0.5) * 30,
-        vx: (Math.random() - 0.5) * 0.8,
-        vy: -0.5 - Math.random() * 0.8,
-        life: 1,
-        maxLife: 0.8 + Math.random() * 0.5,
-        size: 1.5 + Math.random() * 2,
-        color: 0x8a7a60,
-        alpha: 0.3 + Math.random() * 0.3,
-      });
-    }
-
-    const dt = 1 / 60;
     this.particles = this.particles.filter((p) => {
-      p.life -= dt / p.maxLife;
+      p.life -= 1 / 60 / p.maxLife;
       if (p.life <= 0) return false;
       p.x += p.vx;
       p.y += p.vy;
-      p.vy += 0.05;
-      const a = p.alpha * p.life;
-      g.circle(p.x, p.y, p.size * p.life).fill({ color: p.color, alpha: a });
+      p.vy += 0.08; // gravity
+      p.vx *= 0.98;
+      const alpha = p.life * p.alpha;
+      const size = p.size * (0.5 + p.life * 0.5);
+      g.circle(p.x, p.y, size).fill({ color: p.color, alpha });
       return true;
     });
   }
 
-  // === VFX OVERLAY ===
   private drawVfxOverlay(): void {
-    if (!this.vfxG || !this.overlayG || !this.app) return;
-    const vfx = this.vfxG;
-    const overlay = this.overlayG;
-    vfx.clear();
-    overlay.clear();
-    if (this.reducedMotion) return;
-
+    if (!this.vfxG || !this.overlayG) return;
+    const g = this.vfxG;
+    g.clear();
     const s = this.scene;
+    const strain = Math.abs(this.gripAngle) / 0.55;
 
-    if (this.flashIntensity > 0.05) {
-      vfx.ellipse(s.gripCenterX, s.gripCenterY, s.tableW * 0.18, 40).fill({
-        color: 0xffffff, alpha: this.flashIntensity * 0.12,
+    // Grip pressure glow.
+    if (strain > 0.1) {
+      const glowR = 20 + strain * 30;
+      g.circle(s.gripCenterX, s.gripCenterY, glowR).fill({ color: 0xd4af6a, alpha: strain * 0.08 });
+      g.circle(s.gripCenterX, s.gripCenterY, glowR * 0.6).fill({
+        color: 0x5ec8ff,
+        alpha: strain * 0.05,
       });
     }
 
-    if (this.slamFlash > 0.1) {
-      overlay.rect(0, 0, s.w, s.h).fill({ color: 0xffffff, alpha: this.slamFlash * 0.08 });
-      for (let i = 0; i < 8; i++) {
-        const a = (i / 8) * Math.PI * 2 + this.strainPhase;
-        const len = 40 + this.slamFlash * 60;
-        vfx.moveTo(s.gripCenterX, s.gripCenterY)
-          .lineTo(s.gripCenterX + Math.cos(a) * len, s.gripCenterY + Math.sin(a) * len)
-          .stroke({ width: 3, color: 0xd4af6a, alpha: this.slamFlash * 0.3 });
-      }
-    }
-
-    if (this.recoveryGlow > 0.1) {
-      vfx.circle(s.playerElbowX, s.elbowY - s.forearmLen * 0.4, 50).fill({
-        color: 0x3ecf8e, alpha: this.recoveryGlow * 0.1,
+    // Recovery glow.
+    if (this.recoveryGlow > 0.05) {
+      g.circle(s.gripCenterX, s.gripCenterY, 40 + this.recoveryGlow * 20).fill({
+        color: 0x5ec8ff,
+        alpha: this.recoveryGlow * 0.15,
       });
     }
 
-    if (Math.abs(this.momentumDir) > 0 && this.shake > 0.5) {
+    // Momentum streaks (procedural fallback when reduced motion is off).
+    if (!this.reducedMotion && Math.abs(this.momentumDir) > 0 && strain > 0.2) {
       const dir = this.momentumDir;
+      const streakAlpha = strain * 0.12;
       for (let i = 0; i < 3; i++) {
-        const y = s.gripCenterY - 20 + i * 20;
-        const x = s.gripCenterX + dir * (20 + i * 15);
-        vfx.moveTo(x, y).lineTo(x + dir * 25, y).stroke({ width: 2, color: 0xf0d9a0, alpha: 0.2 });
+        const sx = s.gripCenterX + dir * (20 + i * 15);
+        const sy = s.gripCenterY - 10 + i * 8;
+        g.moveTo(sx, sy)
+          .lineTo(sx + dir * 25, sy - 3)
+          .stroke({ width: 2, color: 0xd4af6a, alpha: streakAlpha * (1 - i * 0.25), cap: 'round' });
       }
     }
 
-    const hazeAlpha = 0.015 + Math.sin(this.ambientPhase) * 0.005;
-    overlay.ellipse(s.cx, s.tableY - s.h * 0.15, s.w * 0.4, s.h * 0.12).fill({ color: 0xd4af6a, alpha: hazeAlpha });
-  }
+    // Flash overlay.
+    const ov = this.overlayG;
+    ov.clear();
+    if (this.flashIntensity > 0.02) {
+      ov.rect(0, 0, s.w, s.h).fill({ color: 0xffffff, alpha: this.flashIntensity * 0.3 });
+    }
+    if (this.slamFlash > 0.02) {
+      ov.rect(0, 0, s.w, s.h).fill({ color: 0xd4af6a, alpha: this.slamFlash * 0.2 });
+    }
 
-  // === AUDIO ===
-  private playCue(cue: string, intensity: number): void {
-    if (typeof window === 'undefined') return;
-    const now = performance.now();
-    if (now - this.lastSoundAt < 110) return;
-    this.lastSoundAt = now;
-    try {
-      this.audioCtx ??= new AudioContext();
-      const ctx = this.audioCtx;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      const base = cue.includes('critical') || cue.includes('final') ? 120
-        : cue.includes('impact') ? 90
-        : cue === 'victory' ? 440
-        : cue === 'defeat' ? 70
-        : 160;
-      osc.frequency.value = base + intensity / 100;
-      gain.gain.value = 0.025;
-      osc.start();
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-      osc.stop(ctx.currentTime + 0.09);
-    } catch {
-      // Autoplay policy
+    // Ambient haze (subtle).
+    if (!this.reducedMotion) {
+      const hazeAlpha = 0.02 + Math.sin(this.ambientPhase) * 0.01;
+      ov.rect(0, s.h * 0.6, s.w, s.h * 0.4).fill({ color: 0x1a2438, alpha: hazeAlpha });
     }
   }
 }
