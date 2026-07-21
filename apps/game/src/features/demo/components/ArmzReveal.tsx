@@ -66,7 +66,9 @@ export function ArmzReveal({
           style={{
             opacity: step >= 1 ? 1 : 0.2,
             transform: step >= 2 ? 'scale(1)' : 'scale(0.94)',
-            transition: reducedMotion ? undefined : 'opacity 350ms ease, transform 400ms var(--armz-ease-out)',
+            transition: reducedMotion
+              ? undefined
+              : 'opacity 350ms ease, transform 400ms var(--armz-ease-out)',
           }}
         >
           {step >= 2 ? (
@@ -124,7 +126,8 @@ export function ArmzReveal({
         {/* Safety line */}
         {step >= 8 && (
           <p className="text-xs text-[var(--armz-text-muted)]">
-            Temporary Demo ARMZ {'\u00b7'} Not transferable {'\u00b7'} Not a blockchain asset {'\u00b7'} Not claimable
+            Temporary Demo ARMZ {'\u00b7'} Not transferable {'\u00b7'} Not a blockchain asset{' '}
+            {'\u00b7'} Not claimable
           </p>
         )}
 

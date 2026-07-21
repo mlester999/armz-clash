@@ -32,11 +32,15 @@ export function GameHeader({ config }: { config: PublicConfig }) {
           >
             <BrandLockup subtitle="Demo Arena" />
           </Link>
-          <Badge variant="warning" className="hidden sm:inline-flex">Phase 3 demo</Badge>
+          <Badge variant="warning" className="hidden sm:inline-flex">
+            Phase 3 demo
+          </Badge>
         </div>
         <div className="flex items-center gap-2">
           <NetworkBadge network={config.networkLabel} />
-          <Badge variant="success" className="hidden lg:inline-flex">Real-value off</Badge>
+          <Badge variant="success" className="hidden lg:inline-flex">
+            Real-value off
+          </Badge>
           <GameWalletChrome />
         </div>
       </div>

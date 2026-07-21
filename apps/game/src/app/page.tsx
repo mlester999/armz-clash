@@ -31,12 +31,14 @@ export default function GameHomePage() {
                 {/* Left: Title + CTA */}
                 <div className="space-y-5">
                   <div className="space-y-2">
-                    <p className="armz-kicker">{"Armz Clash \u00b7 Phase 3"}</p>
+                    <p className="armz-kicker">{'Armz Clash \u00b7 Phase 3'}</p>
                     <h1 className="armz-display text-3xl sm:text-4xl lg:text-5xl">
                       Enter the Demo Arena
                     </h1>
                     <p className="max-w-md text-sm leading-relaxed text-[var(--armz-text-secondary)] sm:text-base">
-                      {"Temporary Common ARMZ. Server-authoritative Easy battles. Simulated rewards only \u2014 no monetary value, no claims, no chain tx."}
+                      {
+                        'Temporary Common ARMZ. Server-authoritative Easy battles. Simulated rewards only \u2014 no monetary value, no claims, no chain tx.'
+                      }
                     </p>
                   </div>
 
@@ -56,7 +58,9 @@ export default function GameHomePage() {
                   </div>
 
                   <p className="text-xs text-[var(--armz-text-muted)]" data-testid="dev-health">
-                    {"Phase 3 Demo Mode foundation \u00b7 no staking \u00b7 real-value systems disabled"}
+                    {
+                      'Phase 3 Demo Mode foundation \u00b7 no staking \u00b7 real-value systems disabled'
+                    }
                   </p>
                 </div>
 
@@ -74,7 +78,9 @@ export default function GameHomePage() {
                       }}
                       size="md"
                     />
-                    <p className="mt-1 text-center text-[10px] font-bold text-[var(--armz-cyan)]">Your ARMZ</p>
+                    <p className="mt-1 text-center text-[10px] font-bold text-[var(--armz-cyan)]">
+                      Your ARMZ
+                    </p>
                   </div>
 
                   <div className="flex flex-col items-center gap-1">
@@ -85,7 +91,9 @@ export default function GameHomePage() {
 
                   <div className="w-[45%] max-w-[180px] overflow-hidden rounded-[var(--armz-radius-lg)] border border-[rgba(224,122,74,0.25)] bg-[rgba(224,122,74,0.04)] p-2 shadow-[0_0_0_1px_rgba(224,122,74,0.2),0_12px_40px_rgba(0,0,0,0.45)]">
                     <AutomatonPortrait size="md" />
-                    <p className="mt-1 text-center text-[10px] font-bold text-[var(--armz-enemy)]">Automaton</p>
+                    <p className="mt-1 text-center text-[10px] font-bold text-[var(--armz-enemy)]">
+                      Automaton
+                    </p>
                   </div>
                 </div>
               </div>

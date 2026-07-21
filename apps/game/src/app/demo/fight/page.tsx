@@ -2,14 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  Badge,
-  Button,
-  Cluster,
-  PageContainer,
-  Section,
-  Stack,
-} from '@armz-clash/ui';
+import { Badge, Button, Cluster, PageContainer, Section, Stack } from '@armz-clash/ui';
 import {
   demoApi,
   type DemoBattlePayload,
@@ -132,7 +125,9 @@ export default function DemoFightPage() {
                           )}
                         </div>
                         <div>
-                          <h2 className="text-lg font-bold">{session.armz?.displayName ?? 'Not ready'}</h2>
+                          <h2 className="text-lg font-bold">
+                            {session.armz?.displayName ?? 'Not ready'}
+                          </h2>
                           <p className="text-xs text-[var(--armz-text-muted)]">
                             Level 1 · Common · Temporary
                           </p>
@@ -183,23 +178,37 @@ export default function DemoFightPage() {
                     {/* Matchup details */}
                     <div className="mx-auto mt-5 grid max-w-lg gap-2 sm:grid-cols-3">
                       <div className="rounded-[var(--armz-radius-md)] border border-[var(--armz-border)] bg-[rgba(0,0,0,0.3)] px-3 py-2 text-center">
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]">Simulated Reward</p>
-                        <p className="mt-0.5 text-sm font-bold text-[var(--armz-accent)]">1.00–2.00</p>
-                        <p className="text-[10px] text-[var(--armz-text-muted)]">Demo $ARMZ · no value</p>
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]">
+                          Simulated Reward
+                        </p>
+                        <p className="mt-0.5 text-sm font-bold text-[var(--armz-accent)]">
+                          1.00–2.00
+                        </p>
+                        <p className="text-[10px] text-[var(--armz-text-muted)]">
+                          Demo $ARMZ · no value
+                        </p>
                       </div>
                       <div className="rounded-[var(--armz-radius-md)] border border-[var(--armz-border)] bg-[rgba(0,0,0,0.3)] px-3 py-2 text-center">
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]">Battles Left</p>
-                        <p className="mt-0.5 text-sm font-bold text-[var(--armz-text)]">{session.session.battlesRemaining}</p>
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]">
+                          Battles Left
+                        </p>
+                        <p className="mt-0.5 text-sm font-bold text-[var(--armz-text)]">
+                          {session.session.battlesRemaining}
+                        </p>
                         <p className="text-[10px] text-[var(--armz-text-muted)]">this session</p>
                       </div>
                       <div className="rounded-[var(--armz-radius-md)] border border-[var(--armz-border)] bg-[rgba(0,0,0,0.3)] px-3 py-2 text-center">
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]">Status</p>
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]">
+                          Status
+                        </p>
                         <p className="mt-0.5 text-sm font-bold text-[var(--armz-success)]">
                           {session.session.replayAvailableInSeconds > 0
                             ? `Cooldown ${session.session.replayAvailableInSeconds}s`
                             : 'Ready'}
                         </p>
-                        <p className="text-[10px] text-[var(--armz-text-muted)]">server-authoritative</p>
+                        <p className="text-[10px] text-[var(--armz-text-muted)]">
+                          server-authoritative
+                        </p>
                       </div>
                     </div>
 
@@ -236,7 +245,8 @@ export default function DemoFightPage() {
                       )}
                       {error && <p className="text-sm text-[var(--armz-danger)]">{error}</p>}
                       <p className="text-[10px] text-[var(--armz-text-muted)]">
-                        Server rolls the outcome · your browser only plays the timeline · no real value
+                        Server rolls the outcome · your browser only plays the timeline · no real
+                        value
                       </p>
                     </div>
                   </div>

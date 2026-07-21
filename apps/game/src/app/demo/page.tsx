@@ -3,14 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import {
-  Badge,
-  Button,
-  Cluster,
-  PageContainer,
-  Section,
-  Stack,
-} from '@armz-clash/ui';
+import { Badge, Button, Cluster, PageContainer, Section, Stack } from '@armz-clash/ui';
 import { demoApi, type DemoPublicPayload } from '../../features/demo/api';
 import { DemoDisclosure } from '../../features/demo/components/DemoDisclosure';
 import { ArmzReveal } from '../../features/demo/components/ArmzReveal';
@@ -74,7 +67,8 @@ export default function DemoEntryPage() {
             <h1 className="armz-display text-2xl sm:text-3xl">Play Demo</h1>
             <p className="max-w-lg text-sm leading-relaxed text-[var(--armz-text-secondary)]">
               Receive a temporary Level 1 Common ARMZ and clash with the Easy Practice Automaton.
-              Battles are simulated on the server. Rewards have no monetary value and cannot be claimed.
+              Battles are simulated on the server. Rewards have no monetary value and cannot be
+              claimed.
             </p>
             <Cluster gap="sm">
               <Badge variant="warning">Demo Mode</Badge>
@@ -97,8 +91,8 @@ export default function DemoEntryPage() {
                     <div className="space-y-3">
                       <h2 className="text-xl font-bold">Free practice. Zero real value.</h2>
                       <p className="text-sm leading-relaxed text-[var(--armz-text-secondary)]">
-                        Demo Mode is a polished training slice of Armz Clash {'\u2014'} no blockchain
-                        transaction, no real $ARMZ, no claim path.
+                        Demo Mode is a polished training slice of Armz Clash {'\u2014'} no
+                        blockchain transaction, no real $ARMZ, no claim path.
                       </p>
                     </div>
 
@@ -171,7 +165,10 @@ export default function DemoEntryPage() {
           )}
 
           {phase === 'unavailable' && (
-            <div className="space-y-3 rounded-[var(--armz-radius-xl)] border border-[var(--armz-border)] bg-[var(--armz-surface)] p-6" data-testid="demo-unavailable">
+            <div
+              className="space-y-3 rounded-[var(--armz-radius-xl)] border border-[var(--armz-border)] bg-[var(--armz-surface)] p-6"
+              data-testid="demo-unavailable"
+            >
               <h2 className="text-lg font-semibold">Demo Mode unavailable</h2>
               <p className="text-sm text-[var(--armz-text-secondary)]">
                 ARMZ_DEMO_MODE_ENABLED is false. Demo Mode fails closed and will not start.
@@ -183,7 +180,10 @@ export default function DemoEntryPage() {
           )}
 
           {phase === 'error' && (
-            <div className="space-y-3 rounded-[var(--armz-radius-xl)] border border-[var(--armz-border)] bg-[var(--armz-surface)] p-6" data-testid="demo-start-error">
+            <div
+              className="space-y-3 rounded-[var(--armz-radius-xl)] border border-[var(--armz-border)] bg-[var(--armz-surface)] p-6"
+              data-testid="demo-start-error"
+            >
               <h2 className="text-lg font-semibold">Could not start Demo Mode</h2>
               <p
                 className="text-sm text-[var(--armz-danger)]"

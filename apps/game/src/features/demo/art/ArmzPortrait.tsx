@@ -142,23 +142,59 @@ export function ArmzPortrait({
         {detail.wrapStyle === 'leather' && (
           <>
             <rect x="132" y="172" width="26" height="18" rx="5" fill={`url(#${uid}-cloth)`} />
-            <path d="M135 178 H155" stroke={accent} strokeWidth="3" strokeLinecap="round" opacity="0.8" />
-            <path d="M136 184 H153" stroke={accent} strokeWidth="2" strokeLinecap="round" opacity="0.5" />
+            <path
+              d="M135 178 H155"
+              stroke={accent}
+              strokeWidth="3"
+              strokeLinecap="round"
+              opacity="0.8"
+            />
+            <path
+              d="M136 184 H153"
+              stroke={accent}
+              strokeWidth="2"
+              strokeLinecap="round"
+              opacity="0.5"
+            />
           </>
         )}
         {detail.wrapStyle === 'work' && (
           <>
             <rect x="131" y="170" width="28" height="20" rx="4" fill={`url(#${uid}-cloth)`} />
-            <path d="M134 176 H156" stroke={accent} strokeWidth="4" strokeLinecap="round" opacity="0.7" />
-            <path d="M135 183 H154" stroke={accent} strokeWidth="2.5" strokeLinecap="round" opacity="0.4" />
+            <path
+              d="M134 176 H156"
+              stroke={accent}
+              strokeWidth="4"
+              strokeLinecap="round"
+              opacity="0.7"
+            />
+            <path
+              d="M135 183 H154"
+              stroke={accent}
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              opacity="0.4"
+            />
             <rect x="138" y="173" width="14" height="4" rx="2" fill={accent} opacity="0.3" />
           </>
         )}
         {detail.wrapStyle === 'athletic' && (
           <>
             <rect x="132" y="171" width="26" height="18" rx="6" fill={`url(#${uid}-cloth)`} />
-            <path d="M136 175 L152 185" stroke={accent} strokeWidth="3" strokeLinecap="round" opacity="0.7" />
-            <path d="M138 172 L154 182" stroke={accent} strokeWidth="2" strokeLinecap="round" opacity="0.5" />
+            <path
+              d="M136 175 L152 185"
+              stroke={accent}
+              strokeWidth="3"
+              strokeLinecap="round"
+              opacity="0.7"
+            />
+            <path
+              d="M138 172 L154 182"
+              stroke={accent}
+              strokeWidth="2"
+              strokeLinecap="round"
+              opacity="0.5"
+            />
           </>
         )}
         {detail.wrapStyle === 'metal' && (
@@ -172,16 +208,48 @@ export function ArmzPortrait({
         {detail.wrapStyle === 'cloth' && (
           <>
             <rect x="132" y="171" width="26" height="18" rx="7" fill={`url(#${uid}-cloth)`} />
-            <path d="M135 177 C140 175 150 175 155 178" fill="none" stroke={accent} strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
-            <path d="M136 183 C142 181 148 181 153 184" fill="none" stroke={accent} strokeWidth="2" strokeLinecap="round" opacity="0.4" />
+            <path
+              d="M135 177 C140 175 150 175 155 178"
+              fill="none"
+              stroke={accent}
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              opacity="0.6"
+            />
+            <path
+              d="M136 183 C142 181 148 181 153 184"
+              fill="none"
+              stroke={accent}
+              strokeWidth="2"
+              strokeLinecap="round"
+              opacity="0.4"
+            />
           </>
         )}
         {detail.wrapStyle === 'tournament' && (
           <>
             <rect x="131" y="170" width="28" height="20" rx="4" fill={`url(#${uid}-cloth)`} />
-            <path d="M134 175 H156" stroke={accent} strokeWidth="3" strokeLinecap="round" opacity="0.7" />
-            <path d="M134 181 H156" stroke={accent} strokeWidth="2" strokeLinecap="round" opacity="0.5" />
-            <path d="M134 186 H156" stroke={accent} strokeWidth="1.5" strokeLinecap="round" opacity="0.3" />
+            <path
+              d="M134 175 H156"
+              stroke={accent}
+              strokeWidth="3"
+              strokeLinecap="round"
+              opacity="0.7"
+            />
+            <path
+              d="M134 181 H156"
+              stroke={accent}
+              strokeWidth="2"
+              strokeLinecap="round"
+              opacity="0.5"
+            />
+            <path
+              d="M134 186 H156"
+              stroke={accent}
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              opacity="0.3"
+            />
             <circle cx="145" cy="175" r="2.5" fill={accent} opacity="0.8" />
           </>
         )}
@@ -213,7 +281,15 @@ export function ArmzPortrait({
         />
 
         {/* Emblem badge */}
-        <circle cx="140" cy="290" r="12" fill="#0d121c" stroke={accent} strokeWidth="1.5" opacity="0.9" />
+        <circle
+          cx="140"
+          cy="290"
+          r="12"
+          fill="#0d121c"
+          stroke={accent}
+          strokeWidth="1.5"
+          opacity="0.9"
+        />
         <text
           x="140"
           y="295"
@@ -314,13 +390,45 @@ export function AutomatonPortrait({
         <circle cx="141" cy="215" r="10" fill="#2d3748" />
         <circle cx="141" cy="215" r="5" fill="#e07a4a" opacity="0.6" />
         {/* Joint ring */}
-        <circle cx="141" cy="215" r="13" fill="none" stroke="#718096" strokeWidth="2" opacity="0.6" />
+        <circle
+          cx="141"
+          cy="215"
+          r="13"
+          fill="none"
+          stroke="#718096"
+          strokeWidth="2"
+          opacity="0.6"
+        />
 
         {/* Piston forearm */}
-        <rect x="132" y="175" width="18" height="42" rx="6" fill="url(#auto-metal)" transform="rotate(-8 141 196)" />
+        <rect
+          x="132"
+          y="175"
+          width="18"
+          height="42"
+          rx="6"
+          fill="url(#auto-metal)"
+          transform="rotate(-8 141 196)"
+        />
         {/* Forearm pistons */}
-        <rect x="135" y="178" width="4" height="36" rx="2" fill="url(#auto-piston)" transform="rotate(-8 141 196)" />
-        <rect x="143" y="178" width="4" height="36" rx="2" fill="url(#auto-piston)" transform="rotate(-8 141 196)" />
+        <rect
+          x="135"
+          y="178"
+          width="4"
+          height="36"
+          rx="2"
+          fill="url(#auto-piston)"
+          transform="rotate(-8 141 196)"
+        />
+        <rect
+          x="143"
+          y="178"
+          width="4"
+          height="36"
+          rx="2"
+          fill="url(#auto-piston)"
+          transform="rotate(-8 141 196)"
+        />
 
         {/* Mechanical wrist */}
         <rect x="130" y="168" width="22" height="12" rx="4" fill="#4a5568" />
@@ -341,7 +449,17 @@ export function AutomatonPortrait({
         <circle cx="151" cy="140" r="2.5" fill="#e07a4a" opacity="0.5" />
 
         {/* Training label */}
-        <rect x="100" y="270" width="80" height="22" rx="6" fill="#1a202c" stroke="#e07a4a" strokeWidth="1" opacity="0.8" />
+        <rect
+          x="100"
+          y="270"
+          width="80"
+          height="22"
+          rx="6"
+          fill="#1a202c"
+          stroke="#e07a4a"
+          strokeWidth="1"
+          opacity="0.8"
+        />
         <text
           x="140"
           y="285"

@@ -88,8 +88,8 @@ export default function DemoCollectionPage() {
             <p className="armz-kicker">Demo Collection</p>
             <h1 className="armz-display text-2xl sm:text-3xl">Temporary Common ARMZ</h1>
             <p className="max-w-lg text-sm text-[var(--armz-text-secondary)]">
-              Collectible presentation for this demo session only {'\u2014'} not inventory, not mintable,
-              not a marketplace item.
+              Collectible presentation for this demo session only {'\u2014'} not inventory, not
+              mintable, not a marketplace item.
             </p>
             <Cluster gap="sm">
               <Badge variant="warning">Demo Mode</Badge>
@@ -195,7 +195,8 @@ export default function DemoCollectionPage() {
                     <AutomatonPortrait size="sm" />
                     <p className="text-sm font-semibold">Practice Automaton</p>
                     <p className="text-xs text-[var(--armz-text-muted)]">
-                      Easy {'\u00b7'} Simulated reward range 1.00{'\u2013'}2.00 Demo $ARMZ on victory
+                      Easy {'\u00b7'} Simulated reward range 1.00{'\u2013'}2.00 Demo $ARMZ on
+                      victory
                     </p>
                   </div>
                 </div>
@@ -209,7 +210,10 @@ export default function DemoCollectionPage() {
           )}
 
           {/* Battle history */}
-          <div className="space-y-3 rounded-[var(--armz-radius-xl)] border border-[var(--armz-border)] bg-[var(--armz-surface)] p-5 shadow-[var(--armz-shadow-sm)]" data-testid="demo-battle-history">
+          <div
+            className="space-y-3 rounded-[var(--armz-radius-xl)] border border-[var(--armz-border)] bg-[var(--armz-surface)] p-5 shadow-[var(--armz-shadow-sm)]"
+            data-testid="demo-battle-history"
+          >
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h3 className="font-semibold">Demo battle history</h3>
               <Badge variant="muted">Session only</Badge>
@@ -236,8 +240,8 @@ export default function DemoCollectionPage() {
                       vs {h.opponent}
                     </span>
                     <span className="text-[var(--armz-text-muted)]">
-                      {h.demoRewardDisplay ? `${h.demoRewardDisplay} Demo $ARMZ` : 'No reward'} {'\u00b7'}{' '}
-                      {(h.durationMs / 1000).toFixed(1)}s
+                      {h.demoRewardDisplay ? `${h.demoRewardDisplay} Demo $ARMZ` : 'No reward'}{' '}
+                      {'\u00b7'} {(h.durationMs / 1000).toFixed(1)}s
                     </span>
                   </li>
                 ))}

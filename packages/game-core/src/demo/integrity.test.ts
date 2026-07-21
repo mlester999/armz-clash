@@ -111,8 +111,7 @@ describe('Phase 3.3 result integrity', () => {
       });
       // A push may be retyped to 'critical' when it crits
       const firstPush = r.timeline.find(
-        (e) =>
-          e.type === 'player_push' || e.type === 'opponent_push' || e.type === 'critical',
+        (e) => e.type === 'player_push' || e.type === 'opponent_push' || e.type === 'critical',
       );
       expect(firstPush).toBeDefined();
       // Pre-action: intro(400) + approach(700) + grip(600) + countdown(500) = 2200ms
