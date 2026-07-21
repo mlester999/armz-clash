@@ -6,10 +6,8 @@ import { useRouter } from 'next/navigation';
 import {
   Badge,
   Button,
-  Card,
   Cluster,
   PageContainer,
-  PageHero,
   RarityBadge,
   Section,
   Stack,
@@ -70,11 +68,11 @@ export default function DemoCollectionPage() {
   if (error && !data) {
     return (
       <PageContainer>
-        <Card className="mt-4 space-y-3 p-6">
+        <div className="mt-4 space-y-3 rounded-[var(--armz-radius-xl)] border border-[var(--armz-border)] bg-[var(--armz-surface)] p-6">
           <h1 className="text-xl font-semibold">Demo Collection</h1>
           <p className="text-sm text-[var(--armz-danger)]">{error}</p>
           <Button onClick={() => router.push('/demo')}>Start Demo Mode</Button>
-        </Card>
+        </div>
       </PageContainer>
     );
   }
@@ -85,41 +83,50 @@ export default function DemoCollectionPage() {
     <PageContainer width="2xl">
       <Section className="pt-1">
         <Stack gap="md">
-          <PageHero
-            kicker="Demo Collection"
-            title="Temporary Common ARMZ"
-            description="Collectible presentation for this demo session only — not inventory, not mintable, not a marketplace item."
-            badges={
-              <>
-                <Badge variant="warning">Demo Mode</Badge>
-                <Badge variant="muted">Temporary collection</Badge>
-              </>
-            }
-          />
+          {/* Header */}
+          <div className="space-y-2">
+            <p className="armz-kicker">Demo Collection</p>
+            <h1 className="armz-display text-2xl sm:text-3xl">Temporary Common ARMZ</h1>
+            <p className="max-w-lg text-sm text-[var(--armz-text-secondary)]">
+              Collectible presentation for this demo session only {'\u2014'} not inventory, not mintable,
+              not a marketplace item.
+            </p>
+            <Cluster gap="sm">
+              <Badge variant="warning">Demo Mode</Badge>
+              <Badge variant="muted">Temporary collection</Badge>
+            </Cluster>
+          </div>
 
           {armz ? (
             <div
-              className="grid items-start gap-4 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]"
+              className="grid items-start gap-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]"
               data-testid="demo-collection-armz"
             >
-              <Card premium className="space-y-3 p-3 sm:p-4">
-                <ArmzPortrait
-                  presetKey={armz.presetKey}
-                  displayName={armz.displayName}
-                  palette={armz.palette}
-                  size="hero"
-                />
-                <Cluster gap="sm">
-                  <RarityBadge rarity="common" />
-                  <Badge variant="muted">Level {armz.level}</Badge>
-                  <Badge variant="warning">Temporary</Badge>
-                  <Badge variant="muted">Non-transferable</Badge>
-                  <Badge variant="muted">No blockchain asset</Badge>
-                </Cluster>
-              </Card>
+              {/* Character showcase */}
+              <div className="relative overflow-hidden rounded-[var(--armz-radius-xl)] border border-[rgba(212,175,106,0.25)] bg-[linear-gradient(170deg,rgba(20,28,44,0.97),rgba(7,11,18,0.98))] p-4 shadow-[var(--armz-shadow-glow)]">
+                <div className="pointer-events-none absolute inset-0" aria-hidden>
+                  <div className="absolute inset-0 bg-[radial-gradient(400px_280px_at_50%_30%,rgba(94,200,255,0.06),transparent_60%)]" />
+                </div>
+                <div className="relative z-10 space-y-3">
+                  <ArmzPortrait
+                    presetKey={armz.presetKey}
+                    displayName={armz.displayName}
+                    palette={armz.palette}
+                    size="hero"
+                  />
+                  <Cluster gap="sm">
+                    <RarityBadge rarity="common" />
+                    <Badge variant="muted">Level {armz.level}</Badge>
+                    <Badge variant="warning">Temporary</Badge>
+                    <Badge variant="muted">Non-transferable</Badge>
+                    <Badge variant="muted">No blockchain asset</Badge>
+                  </Cluster>
+                </div>
+              </div>
 
+              {/* Stats + actions */}
               <div className="grid gap-3">
-                <Card premium className="space-y-3 p-5">
+                <div className="space-y-4 rounded-[var(--armz-radius-xl)] border border-[var(--armz-border)] bg-[var(--armz-surface)] p-5 shadow-[var(--armz-shadow-md)]">
                   <div className="space-y-1">
                     <p className="armz-kicker">Active loadout</p>
                     <h2 className="armz-display text-2xl sm:text-3xl">{armz.displayName}</h2>
@@ -163,43 +170,46 @@ export default function DemoCollectionPage() {
                         : 'Reset temporary ARMZ'}
                     </Button>
                   </Cluster>
-                </Card>
+                </div>
 
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <Card className="space-y-2 p-4">
+                  {/* Reward summary */}
+                  <div className="space-y-2 rounded-[var(--armz-radius-lg)] border border-[rgba(212,175,106,0.2)] bg-[linear-gradient(160deg,rgba(212,175,106,0.05),rgba(7,11,18,0.95))] p-4">
                     <p className="armz-kicker">Demo reward summary</p>
                     <p className="text-3xl font-bold tabular-nums text-[var(--armz-accent)]">
                       {data?.session.demoRewardDisplay ?? '0.00'}
                     </p>
                     <p className="text-sm font-medium">Demo $ARMZ</p>
                     <ul className="space-y-0.5 text-xs text-[var(--armz-text-muted)]">
-                      <li>Simulated · No monetary value</li>
-                      <li>Not claimable · Not withdrawable</li>
+                      <li>Simulated {'\u00b7'} No monetary value</li>
+                      <li>Not claimable {'\u00b7'} Not withdrawable</li>
                     </ul>
                     <p className="text-xs text-[var(--armz-text-muted)]">
                       Battles {data?.session.battlesPlayed}/{data?.session.maxBattles}
                     </p>
-                  </Card>
+                  </div>
 
-                  <Card className="space-y-2 p-3">
+                  {/* Opponent preview */}
+                  <div className="space-y-2 rounded-[var(--armz-radius-lg)] border border-[rgba(224,122,74,0.2)] bg-[linear-gradient(160deg,rgba(224,122,74,0.04),rgba(7,11,18,0.95))] p-3">
                     <p className="armz-kicker">Next opponent</p>
                     <AutomatonPortrait size="sm" />
                     <p className="text-sm font-semibold">Practice Automaton</p>
                     <p className="text-xs text-[var(--armz-text-muted)]">
-                      Easy · Simulated reward range 1.00–2.00 Demo $ARMZ on victory
+                      Easy {'\u00b7'} Simulated reward range 1.00{'\u2013'}2.00 Demo $ARMZ on victory
                     </p>
-                  </Card>
+                  </div>
                 </div>
               </div>
             </div>
           ) : (
-            <Card className="space-y-3 p-6">
+            <div className="space-y-3 rounded-[var(--armz-radius-xl)] border border-[var(--armz-border)] bg-[var(--armz-surface)] p-6">
               <p className="text-sm">No active temporary ARMZ. Start Demo Mode first.</p>
               <Button onClick={() => router.push('/demo')}>Play Demo</Button>
-            </Card>
+            </div>
           )}
 
-          <Card className="space-y-3 p-5" data-testid="demo-battle-history">
+          {/* Battle history */}
+          <div className="space-y-3 rounded-[var(--armz-radius-xl)] border border-[var(--armz-border)] bg-[var(--armz-surface)] p-5 shadow-[var(--armz-shadow-sm)]" data-testid="demo-battle-history">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h3 className="font-semibold">Demo battle history</h3>
               <Badge variant="muted">Session only</Badge>
@@ -226,14 +236,14 @@ export default function DemoCollectionPage() {
                       vs {h.opponent}
                     </span>
                     <span className="text-[var(--armz-text-muted)]">
-                      {h.demoRewardDisplay ? `${h.demoRewardDisplay} Demo $ARMZ` : 'No reward'} ·{' '}
+                      {h.demoRewardDisplay ? `${h.demoRewardDisplay} Demo $ARMZ` : 'No reward'} {'\u00b7'}{' '}
                       {(h.durationMs / 1000).toFixed(1)}s
                     </span>
                   </li>
                 ))}
               </ul>
             )}
-          </Card>
+          </div>
 
           {error && <p className="text-sm text-[var(--armz-danger)]">{error}</p>}
 
@@ -244,7 +254,7 @@ export default function DemoCollectionPage() {
             >
               Demo home
             </Link>{' '}
-            · No sell · No transfer · No claim
+            {'\u00b7'} No sell {'\u00b7'} No transfer {'\u00b7'} No claim
           </p>
         </Stack>
       </Section>

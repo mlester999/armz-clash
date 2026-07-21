@@ -6,10 +6,8 @@ import { useRouter } from 'next/navigation';
 import {
   Badge,
   Button,
-  Card,
   Cluster,
   PageContainer,
-  PageHero,
   Section,
   Stack,
 } from '@armz-clash/ui';
@@ -70,94 +68,110 @@ export default function DemoEntryPage() {
     <PageContainer width="2xl">
       <Section className="pt-1">
         <Stack gap="md">
-          <PageHero
-            kicker="Demo Mode"
-            title="Play Demo"
-            description="Receive a temporary Level 1 Common ARMZ and clash with the Easy Practice Automaton. Battles are simulated on the server. Rewards have no monetary value and cannot be claimed."
-            badges={
-              <>
-                <Badge variant="warning">Demo Mode</Badge>
-                <Badge variant="success">No wallet required</Badge>
-                <Badge variant="muted">Simulated only</Badge>
-              </>
-            }
-          />
+          {/* Hero header */}
+          <div className="space-y-2">
+            <p className="armz-kicker">Demo Mode</p>
+            <h1 className="armz-display text-2xl sm:text-3xl">Play Demo</h1>
+            <p className="max-w-lg text-sm leading-relaxed text-[var(--armz-text-secondary)]">
+              Receive a temporary Level 1 Common ARMZ and clash with the Easy Practice Automaton.
+              Battles are simulated on the server. Rewards have no monetary value and cannot be claimed.
+            </p>
+            <Cluster gap="sm">
+              <Badge variant="warning">Demo Mode</Badge>
+              <Badge variant="success">No wallet required</Badge>
+              <Badge variant="muted">Simulated only</Badge>
+            </Cluster>
+          </div>
 
           {(phase === 'landing' || phase === 'disclosure') && (
-            <div className="grid items-stretch gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-              <Card premium className="flex flex-col gap-5 p-5 sm:p-6">
-                <div className="space-y-3">
-                  <h2 className="text-xl font-semibold">Free practice. Zero real value.</h2>
-                  <p className="text-sm leading-relaxed text-[var(--armz-text-secondary)]">
-                    Demo Mode is a polished training slice of Armz Clash — no blockchain
-                    transaction, no real $ARMZ, no claim path.
-                  </p>
-                  <Cluster>
-                    <Button
-                      size="lg"
-                      type="button"
-                      onClick={() => setPhase('disclosure')}
-                      loading={busy}
-                      data-testid="play-demo-button"
-                    >
-                      Play Demo
-                    </Button>
-                    <Link
-                      href="/"
-                      className="cursor-pointer text-sm font-medium text-[var(--armz-cyan)] underline-offset-4 hover:underline"
-                    >
-                      Back to game shell
-                    </Link>
-                  </Cluster>
-                  <ol className="grid gap-2 sm:grid-cols-2">
-                    {[
-                      'Receive a temporary Common ARMZ',
-                      'Inspect collection & stats',
-                      'Fight Practice Automaton',
-                      'See simulated outcome',
-                    ].map((step, i) => (
-                      <li
-                        key={step}
-                        className="flex gap-2 rounded-[var(--armz-radius-md)] border border-[var(--armz-border)] bg-[rgba(0,0,0,0.25)] px-3 py-2 text-sm"
-                      >
-                        <span className="font-bold text-[var(--armz-accent)]">
-                          {String(i + 1).padStart(2, '0')}
-                        </span>
-                        <span className="text-[var(--armz-text-secondary)]">{step}</span>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-              </Card>
+            <div className="relative overflow-hidden rounded-[var(--armz-radius-xl)] border border-[rgba(212,175,106,0.22)] bg-[linear-gradient(170deg,rgba(20,28,44,0.97),rgba(7,11,18,0.98))] shadow-[var(--armz-shadow-glow)]">
+              <div className="pointer-events-none absolute inset-0" aria-hidden>
+                <div className="absolute inset-0 bg-[radial-gradient(600px_320px_at_50%_20%,rgba(94,200,255,0.07),transparent_60%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(400px_260px_at_80%_80%,rgba(224,122,74,0.06),transparent_55%)]" />
+              </div>
 
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-                <Card className="space-y-2 p-3">
-                  <p className="armz-kicker">Your temporary ARMZ</p>
-                  <ArmzPortrait
-                    presetKey="street_challenger"
-                    displayName="Street Challenger"
-                    palette={{
-                      skinTone: 'a86b4a',
-                      primaryCloth: '1a1f2a',
-                      accent: '4ecdc4',
-                      glove: '2c3344',
-                    }}
-                    size="md"
-                  />
-                  <p className="text-xs text-[var(--armz-text-muted)]">
-                    One of six Common visual identities — rolled per session.
-                  </p>
-                </Card>
-                <Card className="space-y-2 p-3">
-                  <p className="armz-kicker">Easy opponent</p>
-                  <AutomatonPortrait size="md" />
-                </Card>
+              <div className="relative z-10 px-5 py-6 sm:px-7 sm:py-8">
+                <div className="grid items-center gap-6 lg:grid-cols-[1fr_auto]">
+                  {/* Left: CTA + steps */}
+                  <div className="space-y-5">
+                    <div className="space-y-3">
+                      <h2 className="text-xl font-bold">Free practice. Zero real value.</h2>
+                      <p className="text-sm leading-relaxed text-[var(--armz-text-secondary)]">
+                        Demo Mode is a polished training slice of Armz Clash {'\u2014'} no blockchain
+                        transaction, no real $ARMZ, no claim path.
+                      </p>
+                    </div>
+
+                    <Cluster>
+                      <Button
+                        size="lg"
+                        type="button"
+                        onClick={() => setPhase('disclosure')}
+                        loading={busy}
+                        data-testid="play-demo-button"
+                      >
+                        Play Demo
+                      </Button>
+                      <Link
+                        href="/"
+                        className="cursor-pointer text-sm font-medium text-[var(--armz-cyan)] underline-offset-4 hover:underline"
+                      >
+                        Back to game shell
+                      </Link>
+                    </Cluster>
+
+                    <ol className="grid gap-2 sm:grid-cols-2">
+                      {[
+                        'Receive a temporary Common ARMZ',
+                        'Inspect collection & stats',
+                        'Fight Practice Automaton',
+                        'See simulated outcome',
+                      ].map((step, i) => (
+                        <li
+                          key={step}
+                          className="flex gap-2 rounded-[var(--armz-radius-md)] border border-[var(--armz-border)] bg-[rgba(0,0,0,0.25)] px-3 py-2 text-sm"
+                        >
+                          <span className="font-bold text-[var(--armz-accent)]">
+                            {String(i + 1).padStart(2, '0')}
+                          </span>
+                          <span className="text-[var(--armz-text-secondary)]">{step}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+
+                  {/* Right: Fighter preview */}
+                  <div className="flex items-center justify-center gap-3">
+                    <div className="w-[130px] overflow-hidden rounded-[var(--armz-radius-lg)] border border-[rgba(94,200,255,0.2)] bg-[rgba(94,200,255,0.03)] p-2 sm:w-[150px]">
+                      <ArmzPortrait
+                        presetKey="street_challenger"
+                        displayName="Street Challenger"
+                        palette={{
+                          skinTone: 'a86b4a',
+                          primaryCloth: '1a1f2a',
+                          accent: '4ecdc4',
+                          glove: '2c3344',
+                        }}
+                        size="md"
+                      />
+                      <p className="mt-1 text-center text-[9px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]">
+                        Your ARMZ
+                      </p>
+                    </div>
+                    <div className="w-[130px] overflow-hidden rounded-[var(--armz-radius-lg)] border border-[rgba(224,122,74,0.2)] bg-[rgba(224,122,74,0.03)] p-2 sm:w-[150px]">
+                      <AutomatonPortrait size="md" />
+                      <p className="mt-1 text-center text-[9px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]">
+                        Easy Opponent
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
 
           {phase === 'unavailable' && (
-            <Card className="space-y-3 p-6" data-testid="demo-unavailable">
+            <div className="space-y-3 rounded-[var(--armz-radius-xl)] border border-[var(--armz-border)] bg-[var(--armz-surface)] p-6" data-testid="demo-unavailable">
               <h2 className="text-lg font-semibold">Demo Mode unavailable</h2>
               <p className="text-sm text-[var(--armz-text-secondary)]">
                 ARMZ_DEMO_MODE_ENABLED is false. Demo Mode fails closed and will not start.
@@ -165,11 +179,11 @@ export default function DemoEntryPage() {
               <Button variant="ghost" onClick={() => router.push('/')}>
                 Return Home
               </Button>
-            </Card>
+            </div>
           )}
 
           {phase === 'error' && (
-            <Card className="space-y-3 p-6" data-testid="demo-start-error">
+            <div className="space-y-3 rounded-[var(--armz-radius-xl)] border border-[var(--armz-border)] bg-[var(--armz-surface)] p-6" data-testid="demo-start-error">
               <h2 className="text-lg font-semibold">Could not start Demo Mode</h2>
               <p
                 className="text-sm text-[var(--armz-danger)]"
@@ -178,7 +192,7 @@ export default function DemoEntryPage() {
                 {error}
               </p>
               <Button onClick={() => setPhase('landing')}>Try again</Button>
-            </Card>
+            </div>
           )}
 
           {phase === 'reveal' && payload?.armz && (
@@ -190,29 +204,33 @@ export default function DemoEntryPage() {
           )}
 
           {phase === 'ready' && payload?.armz && (
-            <div className="grid items-stretch gap-4 lg:grid-cols-[0.9fr_1.1fr]">
-              <ArmzPortrait
-                presetKey={payload.armz.presetKey}
-                displayName={payload.armz.displayName}
-                palette={payload.armz.palette}
-                size="lg"
-              />
-              <Card premium className="flex flex-col justify-center space-y-4 p-6">
-                <div className="space-y-2">
-                  <Badge variant="success">Session ready</Badge>
-                  <h2 className="text-2xl font-semibold">{payload.armz.displayName}</h2>
-                  <p className="text-sm text-[var(--armz-text-secondary)]">
-                    Your temporary Common is loaded. Inspect the collection or challenge the
-                    Practice Automaton.
-                  </p>
+            <div className="relative overflow-hidden rounded-[var(--armz-radius-xl)] border border-[rgba(94,200,255,0.2)] bg-[linear-gradient(160deg,rgba(94,200,255,0.05),rgba(7,11,18,0.97))] p-5 shadow-[var(--armz-shadow-cyan)] sm:p-6">
+              <div className="grid items-center gap-5 sm:grid-cols-[auto_1fr]">
+                <div className="mx-auto w-[160px] overflow-hidden rounded-[var(--armz-radius-lg)] border border-[rgba(94,200,255,0.25)] bg-[rgba(94,200,255,0.04)] p-2">
+                  <ArmzPortrait
+                    presetKey={payload.armz.presetKey}
+                    displayName={payload.armz.displayName}
+                    palette={payload.armz.palette}
+                    size="lg"
+                  />
                 </div>
-                <Cluster>
-                  <Button onClick={() => router.push('/demo/collection')}>Demo Collection</Button>
-                  <Button variant="secondary" onClick={() => router.push('/demo/fight')}>
-                    Fight Easy
-                  </Button>
-                </Cluster>
-              </Card>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Badge variant="success">Session ready</Badge>
+                    <h2 className="text-2xl font-bold">{payload.armz.displayName}</h2>
+                    <p className="text-sm text-[var(--armz-text-secondary)]">
+                      Your temporary Common is loaded. Inspect the collection or challenge the
+                      Practice Automaton.
+                    </p>
+                  </div>
+                  <Cluster>
+                    <Button onClick={() => router.push('/demo/collection')}>Demo Collection</Button>
+                    <Button variant="secondary" onClick={() => router.push('/demo/fight')}>
+                      Fight Easy
+                    </Button>
+                  </Cluster>
+                </div>
+              </div>
             </div>
           )}
         </Stack>
