@@ -2,11 +2,17 @@
  * Server-authoritative Easy demo battle engine.
  * Integer math for combat power; deterministic timeline from seed.
  *
- * Balance targets (demo-combat-v2, 1M sims):
+ * Balance targets (demo-combat-v3, 1M sims):
  * - Average Common roll: 69–75% win vs Easy
  * - Min Common stats: 58–62%
  * - Max Common stats: 82–86%
  * - Recovery: ~2–5% of battles (at most once)
+ *
+ * Phase 3.3 pacing targets:
+ * - Grip lock by ~2.2s
+ * - Active struggle by ~2.8s
+ * - Total battle 8–12s (max 14s)
+ * - Loser Control reaches 0 at final_slam
  */
 
 import type { DemoCombatStats } from './stats';
@@ -22,6 +28,25 @@ import {
   type VfxCue,
 } from './timeline';
 import { DEMO_CONFIG_VERSION } from './stats';
+
+/** Phase 3.3 pacing: compressed pre-action sequence */
+const TIMING = {
+  intro: 400,
+  approach: 700,
+  gripLock: 600,
+  countdown: 500,
+  pushLight: 480,
+  pushHeavy: 620,
+  counter: 420,
+  recovery: 520,
+  fatigue: 320,
+  struggle: 260,
+  finalStruggle: 650,
+  finalSlam: 950,
+  resultReveal: 850,
+  rewardReveal: 750,
+  complete: 300,
+} as const;
 
 function clampStrength(v: number): number {
   return Math.max(0, Math.min(STRENGTH_MAX, Math.round(v)));
@@ -72,14 +97,15 @@ function exchangeDamage(
 ): { damage: number; critical: boolean } {
   const atk = offensiveRating(attacker);
   const def = defensiveRating(defender);
-  const base = Math.max(2, Math.floor((atk - def / 2) / 55) + (heavy ? 3 : 2));
-  let damage = base + rng.intInclusive(0, 2);
+  // Phase 3.3: higher per-exchange damage so bars drop meaningfully in fewer rounds
+  const base = Math.max(5, Math.floor((atk - def / 2) / 22) + (heavy ? 6 : 4));
+  let damage = base + rng.intInclusive(0, 3);
   let critical = false;
   if (rng.chanceBps(attacker.criticalChance)) {
     critical = true;
-    damage = Math.floor((damage * 130) / 100) + 1;
+    damage = Math.floor((damage * 140) / 100) + 2;
   }
-  damage = Math.max(2, damage - Math.floor(defender.endurance / 40));
+  damage = Math.max(4, damage - Math.floor(defender.endurance / 50));
   return { damage, critical };
 }
 
@@ -94,7 +120,7 @@ export function simulateDemoBattle(input: {
 }): DemoBattleResult {
   const rng = createSeededRng(input.seed);
   const reduced = Boolean(input.reducedMotion);
-  const scale = reduced ? 0.45 : 1;
+  const scale = reduced ? 0.5 : 1;
 
   // Decide authoritative outcome first (hidden from browser until end), then stage bars to match.
   const winBps = easyWinChanceBps(input.player, input.opponent);
@@ -141,42 +167,29 @@ export function simulateDemoBattle(input: {
     t += duration;
   };
 
-  emit('intro', 1800, () => ({
+  // Phase 3.3: compressed pre-action — fighters visible immediately, grip by ~2.2s
+  emit('intro', TIMING.intro, () => ({
     animationCue: 'idle',
     soundCue: 'ambience_loop',
     vfxCue: 'none',
     intensity: 1000,
     side: 'both',
   }));
-  emit('armz_entrance', 1200, () => ({
-    animationCue: 'entrance',
-    soundCue: 'cloth_move',
-    vfxCue: 'dust_light',
-    intensity: 2000,
-    side: 'player',
-  }));
-  emit('opponent_entrance', 1200, () => ({
-    animationCue: 'entrance',
-    soundCue: 'metal_move',
-    vfxCue: 'dust_light',
-    intensity: 2000,
-    side: 'opponent',
-  }));
-  emit('hands_approaching', 900, () => ({
+  emit('hands_approaching', TIMING.approach, () => ({
     animationCue: 'approach',
     soundCue: 'cloth_move',
-    vfxCue: 'none',
+    vfxCue: 'dust_light',
     intensity: 2500,
     side: 'both',
   }));
-  emit('hands_locked', 1000, () => ({
+  emit('hands_locked', TIMING.gripLock, () => ({
     animationCue: 'grip',
     soundCue: 'hands_lock',
     vfxCue: 'grip_spark',
     intensity: 4000,
     side: 'both',
   }));
-  emit('countdown', 1500, () => ({
+  emit('countdown', TIMING.countdown, () => ({
     animationCue: 'strain_light',
     soundCue: 'strain',
     vfxCue: 'none',
@@ -184,7 +197,7 @@ export function simulateDemoBattle(input: {
     side: 'both',
   }));
 
-  const rounds = rng.intInclusive(6, 9);
+  const rounds = rng.intInclusive(5, 7);
   // Bias mid-fight exchanges toward the pre-rolled outcome without making bars static
   const playerLeadBias = playerWins ? 6200 : 3800;
 
@@ -195,7 +208,7 @@ export function simulateDemoBattle(input: {
 
     if (playerLeads) {
       const heavy = rng.chanceBps(3000);
-      emit('player_push', heavy ? 850 : 650, () => {
+      emit('player_push', heavy ? TIMING.pushHeavy : TIMING.pushLight, () => {
         const { damage, critical } = exchangeDamage(input.player, input.opponent, rng, heavy);
         if (critical) {
           criticalEvents += 1;
@@ -215,7 +228,7 @@ export function simulateDemoBattle(input: {
       }
     } else {
       const heavy = rng.chanceBps(3400);
-      emit('opponent_push', heavy ? 850 : 650, () => {
+      emit('opponent_push', heavy ? TIMING.pushHeavy : TIMING.pushLight, () => {
         const { damage, critical } = exchangeDamage(input.opponent, input.player, rng, heavy);
         if (critical) criticalEvents += 1;
         pStr = clampStrength(pStr - damage);
@@ -234,7 +247,7 @@ export function simulateDemoBattle(input: {
     }
 
     if (pStr > 15 && oStr > 15 && rng.chanceBps(2000)) {
-      emit('counter', 600, () => {
+      emit('counter', TIMING.counter, () => {
         const playerCounter = rng.chanceBps(playerLeadBias);
         const dmg = rng.intInclusive(2, 5);
         if (playerCounter) oStr = clampStrength(oStr - dmg);
@@ -255,7 +268,7 @@ export function simulateDemoBattle(input: {
     if (!recoveryUsed && i === Math.floor(rounds / 2) && rng.chanceBps(320)) {
       recoveryUsed = true;
       recoveryEvents += 1;
-      emit('recovery', 700, () => {
+      emit('recovery', TIMING.recovery, () => {
         // Modest heal that never exceeds STRENGTH_MAX.
         pStr = clampStrength(Math.min(STRENGTH_MAX, pStr + rng.intInclusive(4, 8)));
         return {
@@ -269,7 +282,7 @@ export function simulateDemoBattle(input: {
     }
 
     if (i === Math.floor(rounds / 2)) {
-      emit('fatigue', 450, () => ({
+      emit('fatigue', TIMING.fatigue, () => ({
         animationCue: 'fatigue',
         soundCue: 'strain',
         vfxCue: 'none',
@@ -278,7 +291,7 @@ export function simulateDemoBattle(input: {
       }));
     }
 
-    emit('struggle', 350, () => ({
+    emit('struggle', TIMING.struggle, () => ({
       animationCue: 'strain_light',
       soundCue: 'table_creak',
       vfxCue: 'none',
@@ -287,7 +300,7 @@ export function simulateDemoBattle(input: {
     }));
   }
 
-  emit('final_struggle', 850, () => ({
+  emit('final_struggle', TIMING.finalStruggle, () => ({
     animationCue: 'strain_heavy',
     soundCue: 'strain',
     vfxCue: 'dust_light',
@@ -306,7 +319,7 @@ export function simulateDemoBattle(input: {
 
   const outcome = playerWins ? 'victory' : 'defeat';
 
-  emit('final_slam', 1400, () => ({
+  emit('final_slam', TIMING.finalSlam, () => ({
     animationCue: outcome === 'victory' ? 'winning_slam' : 'defeated',
     soundCue: 'final_slam',
     vfxCue: 'final_impact',
@@ -314,7 +327,7 @@ export function simulateDemoBattle(input: {
     side: outcome === 'victory' ? 'player' : 'opponent',
   }));
 
-  emit(outcome === 'victory' ? 'victory' : 'defeat', 1200, () => ({
+  emit(outcome === 'victory' ? 'victory' : 'defeat', TIMING.resultReveal, () => ({
     animationCue: outcome === 'victory' ? 'winning_slam' : 'defeated',
     soundCue: outcome === 'victory' ? 'victory' : 'defeat',
     vfxCue: outcome === 'victory' ? 'victory_particles' : 'defeat_particles',
@@ -334,7 +347,7 @@ export function simulateDemoBattle(input: {
       transferable: false,
       simulated: true,
     };
-    emit('reward_reveal', 1000, () => ({
+    emit('reward_reveal', TIMING.rewardReveal, () => ({
       animationCue: 'idle',
       soundCue: 'reward_reveal',
       vfxCue: 'victory_particles',
@@ -343,7 +356,7 @@ export function simulateDemoBattle(input: {
     }));
   }
 
-  emit('complete', 400, () => ({
+  emit('complete', TIMING.complete, () => ({
     animationCue: 'idle',
     soundCue: 'none',
     vfxCue: 'none',

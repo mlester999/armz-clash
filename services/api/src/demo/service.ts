@@ -1,4 +1,4 @@
-﻿import {
+import {
   DEMO_ARMZ_PRESETS,
   formatDemoArmzAmount,
   generateDemoArmzIdentity,
@@ -10,6 +10,7 @@
 import { type DemoConfig } from '@armz-clash/config';
 import { loadDemoConfig } from '@armz-clash/config/demo-server';
 import { generateToken, hashToken, sha256Hex } from '../lib/crypto';
+import { validateBattleResultIntegrity } from './integrity';
 import {
   deactivateDemoArmz,
   findActiveDemoArmz,
@@ -323,6 +324,27 @@ export async function startDemoBattle(input: {
     opponent: opponent.stats,
     reducedMotion: input.reducedMotion,
   });
+
+  // Phase 3.3: server-side result integrity gate
+  const integrity = validateBattleResultIntegrity(result);
+  if (!integrity.valid) {
+    const correlationId = generateToken(16);
+    console.error(
+      JSON.stringify({
+        level: 'error',
+        event: 'battle_result_integrity_failure',
+        correlationId,
+        code: integrity.code,
+        detail: integrity.detail,
+        sessionId: input.session.id,
+      }),
+    );
+    throw Object.assign(new Error('Battle result validation failed'), {
+      statusCode: 500,
+      code: integrity.code,
+      correlationId,
+    });
+  }
 
   const battle = await insertDemoBattle({
     demo_session_id: input.session.id,

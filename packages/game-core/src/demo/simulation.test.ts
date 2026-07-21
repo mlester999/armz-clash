@@ -194,7 +194,10 @@ describe('demo balance simulation (1M)', () => {
     expect(recoveryBattleRate).toBeGreaterThanOrEqual(0.02);
     expect(recoveryBattleRate).toBeLessThanOrEqual(0.05);
     expect(crits / N).toBeGreaterThan(0);
-    expect(durationSum / N).toBeGreaterThan(8_000);
+    // Phase 3.3: target 8-12s average duration (max 14s)
+    const avgDuration = durationSum / N;
+    expect(avgDuration).toBeGreaterThanOrEqual(8_000);
+    expect(avgDuration).toBeLessThanOrEqual(12_000);
     expect(rewardCount).toBe(wins);
     if (rewardCount > 0) {
       const avgReward = rewardSum / rewardCount;

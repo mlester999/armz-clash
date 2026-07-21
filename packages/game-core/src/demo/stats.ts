@@ -40,8 +40,8 @@ export const COMMON_DEMO_STAT_RANGES: CommonStatRanges = {
   criticalChance: [300, 700],
 };
 
-/** Phase 3.2 balance + recovery retune. */
-export const DEMO_CONFIG_VERSION = 'demo-combat-v2';
+/** Phase 3.3 pacing: 8-12s battles, higher per-exchange damage. */
+export const DEMO_CONFIG_VERSION = 'demo-combat-v3';
 
 function rollInRange(rng: SeededRng, [min, max]: [number, number]): number {
   return rng.intInclusive(min, max);
