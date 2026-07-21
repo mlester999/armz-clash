@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Badge, Button, Cluster, ControlBar } from '@armz-clash/ui';
+import { Button, Cluster, ControlBar } from '@armz-clash/ui';
 import type { DemoBattlePayload } from '../api';
 import { BattleRenderer } from '../renderer/BattleRenderer';
 import { ArmzPortrait, AutomatonPortrait } from '../art/ArmzPortrait';
@@ -117,67 +117,70 @@ export function BattleStage({
   };
 
   const isVictory = battle.outcome === 'victory';
+  // Result integrity: overlay only shows when the loser has reached 0 Control
+  // and final state is synchronized with the server payload.
+  const showResult = done && finalSynced;
 
   return (
-    <div className="space-y-3" data-testid="demo-battle-stage">
+    <div className='space-y-3' data-testid='demo-battle-stage'>
       {/* Fighter HUD Headers */}
-      <div className="grid gap-2 sm:grid-cols-2">
+      <div className='grid gap-2 sm:grid-cols-2'>
         {/* Player panel */}
-        <div className="flex items-center gap-3 rounded-[var(--armz-radius-lg)] border border-[rgba(94,200,255,0.25)] bg-[linear-gradient(135deg,rgba(94,200,255,0.06),rgba(7,11,18,0.9))] p-3">
-          <div className="h-12 w-12 shrink-0 overflow-hidden rounded-[var(--armz-radius-md)] border border-[rgba(94,200,255,0.3)]">
+        <div className='flex items-center gap-3 rounded-[var(--armz-radius-lg)] border border-[rgba(94,200,255,0.25)] bg-[linear-gradient(135deg,rgba(94,200,255,0.06),rgba(7,11,18,0.9))] p-3'>
+          <div className='h-12 w-12 shrink-0 overflow-hidden rounded-[var(--armz-radius-md)] border border-[rgba(94,200,255,0.3)]'>
             <ArmzPortrait
               presetKey={battle.armz.presetKey}
               displayName={battle.armz.displayName}
               palette={battle.armz.palette}
-              size="sm"
+              size='sm'
             />
           </div>
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <h3 className="truncate text-sm font-bold">{battle.armz.displayName}</h3>
-              <span className="shrink-0 rounded-full border border-[rgba(94,200,255,0.3)] bg-[rgba(94,200,255,0.08)] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[var(--armz-cyan)]">
+          <div className='min-w-0 flex-1'>
+            <div className='flex items-center gap-2'>
+              <h3 className='truncate text-sm font-bold'>{battle.armz.displayName}</h3>
+              <span className='shrink-0 rounded-full border border-[rgba(94,200,255,0.3)] bg-[rgba(94,200,255,0.08)] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[var(--armz-cyan)]'>
                 Common
               </span>
             </div>
-            <ControlBar label="" value={playerStr} tone="player" />
+            <ControlBar label='' value={playerStr} tone='player' />
           </div>
-          <span className="shrink-0 text-lg font-bold tabular-nums text-[var(--armz-cyan)]">
+          <span className='shrink-0 text-lg font-bold tabular-nums text-[var(--armz-cyan)]'>
             {playerStr}
           </span>
         </div>
 
         {/* Opponent panel */}
-        <div className="flex items-center gap-3 rounded-[var(--armz-radius-lg)] border border-[rgba(224,122,74,0.25)] bg-[linear-gradient(135deg,rgba(224,122,74,0.06),rgba(7,11,18,0.9))] p-3">
-          <div className="h-12 w-12 shrink-0 overflow-hidden rounded-[var(--armz-radius-md)] border border-[rgba(224,122,74,0.3)]">
-            <AutomatonPortrait size="sm" />
+        <div className='flex items-center gap-3 rounded-[var(--armz-radius-lg)] border border-[rgba(224,122,74,0.25)] bg-[linear-gradient(135deg,rgba(224,122,74,0.06),rgba(7,11,18,0.9))] p-3'>
+          <div className='h-12 w-12 shrink-0 overflow-hidden rounded-[var(--armz-radius-md)] border border-[rgba(224,122,74,0.3)]'>
+            <AutomatonPortrait size='sm' />
           </div>
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <h3 className="truncate text-sm font-bold">{battle.opponent.displayName}</h3>
-              <span className="shrink-0 rounded-full border border-[rgba(224,122,74,0.3)] bg-[rgba(224,122,74,0.08)] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[var(--armz-enemy)]">
+          <div className='min-w-0 flex-1'>
+            <div className='flex items-center gap-2'>
+              <h3 className='truncate text-sm font-bold'>{battle.opponent.displayName}</h3>
+              <span className='shrink-0 rounded-full border border-[rgba(224,122,74,0.3)] bg-[rgba(224,122,74,0.08)] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[var(--armz-enemy)]'>
                 Easy
               </span>
             </div>
-            <ControlBar label="" value={opponentStr} tone="opponent" />
+            <ControlBar label='' value={opponentStr} tone='opponent' />
           </div>
-          <span className="shrink-0 text-lg font-bold tabular-nums text-[var(--armz-enemy)]">
+          <span className='shrink-0 text-lg font-bold tabular-nums text-[var(--armz-enemy)]'>
             {opponentStr}
           </span>
         </div>
       </div>
 
       {/* Event indicator + controls */}
-      <div className="flex flex-wrap items-center justify-between gap-2">
+      <div className='flex flex-wrap items-center justify-between gap-2'>
         <p
-          className="rounded-full border border-[var(--armz-border)] bg-[rgba(0,0,0,0.4)] px-3.5 py-1 text-sm font-semibold capitalize tracking-wide text-[var(--armz-text-secondary)]"
-          aria-live="polite"
+          className='rounded-full border border-[var(--armz-border)] bg-[rgba(0,0,0,0.4)] px-3.5 py-1 text-sm font-semibold capitalize tracking-wide text-[var(--armz-text-secondary)]'
+          aria-live='polite'
         >
           {eventLabel}
         </p>
-        <Cluster gap="sm">
+        <Cluster gap='sm'>
           <Button
-            variant="ghost"
-            size="sm"
+            variant='ghost'
+            size='sm'
             onClick={() => setMuted((m) => !m)}
             aria-pressed={!muted}
             aria-label={`Sound effects ${muted ? 'off' : 'on'}`}
@@ -185,8 +188,8 @@ export function BattleStage({
             SFX {muted ? 'Off' : 'On'}
           </Button>
           <Button
-            variant="ghost"
-            size="sm"
+            variant='ghost'
+            size='sm'
             onClick={() => setMusicOn((m) => !m)}
             aria-pressed={musicOn}
             aria-label={`Music ${musicOn ? 'on' : 'off'}`}
@@ -194,131 +197,107 @@ export function BattleStage({
             Music {musicOn ? 'On' : 'Off'}
           </Button>
           {!done && (
-            <Button variant="secondary" size="sm" onClick={skipToResult}>
+            <Button variant='secondary' size='sm' onClick={skipToResult}>
               Skip to result
             </Button>
           )}
         </Cluster>
       </div>
 
-      {/* Battle Canvas */}
+      {/* Battle Arena + In-Viewport Result Overlay */}
       <div
-        ref={hostRef}
-        className="relative aspect-[16/10] w-full overflow-hidden rounded-[var(--armz-radius-xl)] border border-[rgba(212,175,106,0.28)] bg-[#070b12] shadow-[var(--armz-shadow-glow)]"
-        data-testid="demo-battle-canvas-host"
-      />
+        className='relative aspect-[16/10] w-full overflow-hidden rounded-[var(--armz-radius-xl)] border border-[rgba(212,175,106,0.28)] bg-[#070b12] shadow-[var(--armz-shadow-glow)]'
+        data-testid='demo-battle-canvas-host'
+      >
+        <div ref={hostRef} className='absolute inset-0' />
 
-      {/* Result Scene */}
-      {done && finalSynced && (
-        <div
-          className={`relative overflow-hidden rounded-[var(--armz-radius-xl)] border p-5 sm:p-7 ${
-            isVictory
-              ? 'border-[rgba(94,200,255,0.35)] bg-[linear-gradient(160deg,rgba(94,200,255,0.08),rgba(7,11,18,0.97))]'
-              : 'border-[rgba(240,113,120,0.3)] bg-[linear-gradient(160deg,rgba(240,113,120,0.06),rgba(7,11,18,0.97))]'
-          }`}
-          data-testid="demo-battle-result"
-        >
-          <div className="pointer-events-none absolute inset-0" aria-hidden>
-            {isVictory ? (
-              <div className="absolute inset-0 bg-[radial-gradient(500px_300px_at_50%_0%,rgba(94,200,255,0.1),transparent_60%)]" />
-            ) : (
-              <div className="absolute inset-0 bg-[radial-gradient(500px_300px_at_50%_0%,rgba(240,113,120,0.08),transparent_60%)]" />
-            )}
-          </div>
+        {/* Result overlay: fills the arena viewport so the player never scrolls to see the outcome */}
+        {showResult && (
+          <div
+            className={'absolute inset-0 z-20 flex flex-col overflow-y-auto p-4 sm:p-6 bg-[rgba(7,11,18,0.92)] backdrop-blur-sm'}
+            data-testid='demo-battle-result'
+            role='dialog'
+            aria-modal='true'
+            aria-label={isVictory ? 'Victory result' : 'Defeat result'}
+          >
+            <div className='pointer-events-none absolute inset-0' aria-hidden>
+              {isVictory ? (
+                <div className='absolute inset-0 bg-[radial-gradient(600px_360px_at_50%_0%,rgba(94,200,255,0.18),transparent_60%)]' />
+              ) : (
+                <div className='absolute inset-0 bg-[radial-gradient(600px_360px_at_50%_0%,rgba(240,113,120,0.14),transparent_60%)]' />
+              )}
+            </div>
 
-          <div className="relative z-10">
-            {isVictory ? (
-              <div className="space-y-4">
-                <div className="space-y-1">
-                  <p className="armz-kicker">Simulated Result</p>
-                  <h2 className="armz-display text-3xl text-[var(--armz-cyan)] sm:text-4xl">
-                    Victory
-                  </h2>
-                  <p className="text-sm text-[var(--armz-text-secondary)]">
-                    {battle.armz.displayName} pinned the Practice Automaton in a simulated Easy clash.
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-3">
-                  <div className="rounded-[var(--armz-radius-md)] border border-[rgba(94,200,255,0.25)] bg-[rgba(94,200,255,0.06)] px-3 py-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]">Your Control</p>
-                    <p className="text-lg font-bold tabular-nums text-[var(--armz-cyan)]">{battle.playerFinalStrength}</p>
-                  </div>
-                  <div className="rounded-[var(--armz-radius-md)] border border-[rgba(224,122,74,0.25)] bg-[rgba(224,122,74,0.06)] px-3 py-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]">Opponent Control</p>
-                    <p className="text-lg font-bold tabular-nums text-[var(--armz-enemy)]">{battle.opponentFinalStrength}</p>
-                  </div>
-                </div>
-
-                {battle.reward && (
-                  <div className="rounded-[var(--armz-radius-md)] border border-[rgba(212,175,106,0.3)] bg-[rgba(212,175,106,0.06)] p-4">
-                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--armz-accent)]">
-                      Simulated Reward
-                    </p>
-                    <p className="mt-1 text-2xl font-bold text-[var(--armz-accent)]">
-                      {battle.reward.display}
-                    </p>
-                    <ul className="mt-2 grid gap-1 text-xs text-[var(--armz-text-muted)] sm:grid-cols-2">
-                      <li>Simulated only</li>
-                      <li>No monetary value</li>
-                      <li>Not claimable</li>
-                      <li>Not withdrawable</li>
-                    </ul>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="space-y-1">
-                  <p className="armz-kicker">Simulated Result</p>
-                  <h2 className="armz-display text-3xl text-[var(--armz-danger)] sm:text-4xl">
-                    Defeat
-                  </h2>
-                  <p className="text-sm text-[var(--armz-text-secondary)]">
-                    The Practice Automaton held the line. Train again after the cooldown.
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-3">
-                  <div className="rounded-[var(--armz-radius-md)] border border-[rgba(94,200,255,0.25)] bg-[rgba(94,200,255,0.06)] px-3 py-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]">Your Control</p>
-                    <p className="text-lg font-bold tabular-nums text-[var(--armz-cyan)]">{battle.playerFinalStrength}</p>
-                  </div>
-                  <div className="rounded-[var(--armz-radius-md)] border border-[rgba(224,122,74,0.25)] bg-[rgba(224,122,74,0.06)] px-3 py-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]">Opponent Control</p>
-                    <p className="text-lg font-bold tabular-nums text-[var(--armz-enemy)]">{battle.opponentFinalStrength}</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            <p className="mt-4 text-xs text-[var(--armz-text-muted)]">
-              Battle ID {battle.battleId.slice(0, 8)}{'\u2026'} {'\u00b7'} duration{' '}
-              {(battle.durationMs / 1000).toFixed(1)}s {'\u00b7'} server-authoritative
-            </p>
-
-            <Cluster className="mt-4">
-              <Button
-                onClick={onReplay}
-                disabled={cooldown > 0 || battle.session.battlesRemaining <= 0}
-                data-testid="demo-replay"
+            <div className='relative z-10 m-auto flex w-full max-w-md flex-col items-center text-center'>
+              <p className='armz-kicker'>Simulated Result</p>
+              <h2
+                className={`armz-display text-4xl sm:text-5xl ${isVictory ? 'text-[var(--armz-cyan)]' : 'text-[var(--armz-danger)]'}`}
               >
-                {cooldown > 0
-                  ? `Replay in ${formatCooldown(cooldown)}`
-                  : battle.session.battlesRemaining <= 0
-                    ? 'Battle limit reached'
-                    : 'Replay Easy fight'}
-              </Button>
-              <Button variant="secondary" onClick={onCollection}>
-                Demo Collection
-              </Button>
-              <Button variant="ghost" onClick={onHome}>
-                Return Home
-              </Button>
-            </Cluster>
+                {isVictory ? 'Victory' : 'Defeat'}
+              </h2>
+              <p className='mt-1 text-sm text-[var(--armz-text-secondary)]'>
+                {isVictory
+                  ? `${battle.armz.displayName} pinned the Practice Automaton in a simulated Easy clash.`
+                  : 'The Practice Automaton held the line. Train again after the cooldown.'}
+              </p>
+
+              {/* Final Control snapshot */}
+              <div className='mt-4 flex w-full justify-center gap-3'>
+                <div className='rounded-[var(--armz-radius-md)] border border-[rgba(94,200,255,0.25)] bg-[rgba(94,200,255,0.06)] px-3 py-2'>
+                  <p className='text-[10px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]'>Your Control</p>
+                  <p className='text-lg font-bold tabular-nums text-[var(--armz-cyan)]'>{battle.playerFinalStrength}</p>
+                </div>
+                <div className='rounded-[var(--armz-radius-md)] border border-[rgba(224,122,74,0.25)] bg-[rgba(224,122,74,0.06)] px-3 py-2'>
+                  <p className='text-[10px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]'>Opponent Control</p>
+                  <p className='text-lg font-bold tabular-nums text-[var(--armz-enemy)]'>{battle.opponentFinalStrength}</p>
+                </div>
+              </div>
+
+              {isVictory && battle.reward && (
+                <div className='mt-4 w-full rounded-[var(--armz-radius-md)] border border-[rgba(212,175,106,0.3)] bg-[rgba(212,175,106,0.06)] p-4 text-left'>
+                  <p className='text-xs font-bold uppercase tracking-[0.14em] text-[var(--armz-accent)]'>
+                    Simulated Reward
+                  </p>
+                  <p className='mt-1 text-2xl font-bold text-[var(--armz-accent)]'>
+                    {battle.reward.display}
+                  </p>
+                  <ul className='mt-2 grid gap-1 text-xs text-[var(--armz-text-muted)] sm:grid-cols-2'>
+                    <li>Simulated only</li>
+                    <li>No monetary value</li>
+                    <li>Not claimable</li>
+                    <li>Not withdrawable</li>
+                  </ul>
+                </div>
+              )}
+
+              <p className='mt-3 text-xs text-[var(--armz-text-muted)]'>
+                Battle ID {battle.battleId.slice(0, 8)}{'\u2026'} {'\u00b7'} duration{' '}
+                {(battle.durationMs / 1000).toFixed(1)}s {'\u00b7'} server-authoritative
+              </p>
+
+              <Cluster className='mt-4 justify-center'>
+                <Button
+                  onClick={onReplay}
+                  disabled={cooldown > 0 || battle.session.battlesRemaining <= 0}
+                  data-testid='demo-replay'
+                >
+                  {cooldown > 0
+                    ? `Replay in ${formatCooldown(cooldown)}`
+                    : battle.session.battlesRemaining <= 0
+                      ? 'Battle limit reached'
+                      : 'Replay Easy fight'}
+                </Button>
+                <Button variant='secondary' onClick={onCollection}>
+                  Demo Collection
+                </Button>
+                <Button variant='ghost' onClick={onHome}>
+                  Return Home
+                </Button>
+              </Cluster>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
