@@ -1,4 +1,4 @@
-import Fastify from 'fastify';
+﻿import Fastify from 'fastify';
 import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
@@ -23,7 +23,7 @@ import { loadSessionFromToken, renewSession, revokeSession, updateProfile } from
 import { fetchWalletBalances } from './auth/balances';
 import { sha256Hex } from './lib/crypto';
 import { loadApiRootEnv } from './lib/load-root-env';
-import { loadDemoConfig } from '@armz-clash/config';
+import { loadDemoConfig } from '@armz-clash/config/demo-server';
 import {
   buildDemoPublicPayload,
   createOrRestoreDemoSession,
@@ -419,7 +419,7 @@ app.get('/api/v1/wallet/balances', async (request, reply) => {
 });
 
 // ---------------------------------------------------------------------------
-// Phase 3 — Demo Mode (temporary, simulated, no real value)
+// Phase 3 â€” Demo Mode (temporary, simulated, no real value)
 // ---------------------------------------------------------------------------
 const demoConfig = loadDemoConfig();
 
@@ -630,7 +630,7 @@ app.get('/api/v1/demo/config', async (_request, reply) => {
     maxBattlesPerSession: demoConfig.maxBattlesPerSession,
     sessionTtlSeconds: demoConfig.sessionTtlSeconds,
     difficulty: 'easy',
-    // Public-safe status only — never secrets or connection strings.
+    // Public-safe status only â€” never secrets or connection strings.
     demoPersistence: probed.publicLabel,
     demoPersistenceHealthy: probed.healthy,
     demoApi: probed.healthy || !isDemoModeEnabled() ? 'Operational' : 'Degraded',

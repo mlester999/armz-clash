@@ -26,7 +26,8 @@ function main() {
   const result = spawnSync('pnpm', args, {
     encoding: 'utf8',
     env: process.env,
-    shell: false,
+    // On Windows `pnpm` is a shim, not a Win32 executable; resolve it via the shell.
+    shell: process.platform === 'win32',
   });
 
   const combined = `${result.stdout ?? ''}\n${result.stderr ?? ''}`;

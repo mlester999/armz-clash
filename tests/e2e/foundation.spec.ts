@@ -83,7 +83,8 @@ test.describe('Armz Clash Phase 2 foundation', () => {
   test('game shell loads without fake balances', async ({ page }, testInfo) => {
     await page.goto(GAME, { waitUntil: 'domcontentloaded' });
     await expectBrandVisible(page);
-    await expect(page.getByRole('heading', { name: /Game shell/i })).toBeVisible();
+    // Phase 3.1 shell rebuild: hero heading is "Enter the Demo Arena".
+    await expect(page.getByRole('heading', { name: /Enter the Demo Arena/i })).toBeVisible();
     await expect(page.getByTestId('play-demo-link')).toBeVisible();
     await expect(page.getByText(/Real-value disabled/i).first()).toBeVisible();
 

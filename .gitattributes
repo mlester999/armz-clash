@@ -1,0 +1,43 @@
+# Armz Clash — cross-platform line-ending policy
+# Prettier enforces endOfLine: "lf". Force LF for all text files on every OS
+# so `pnpm format:check` and CI behave identically on Windows/macOS/Linux.
+* text=auto eol=lf
+
+# Explicit text (source, config, docs)
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+*.json text eol=lf
+*.sql text eol=lf
+*.md text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.html text eol=lf
+*.svg text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.sh text eol=lf
+*.env.example text eol=lf
+
+# Shell scripts must stay LF even on Windows
+*.sh text eol=lf
+
+# Binary assets — never touch line endings
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.mp3 binary
+*.ogg binary
+*.wav binary
+*.zip binary

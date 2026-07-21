@@ -1,7 +1,8 @@
-/**
+﻿/**
  * Client-safe package root.
  * Server-only env loading lives at `@armz-clash/config/env/server`.
- * Do not re-export server env from this entry — Next apps import the root.
+ * Server-only demo persistence lives at `@armz-clash/config/demo-server`.
+ * Do not re-export server env from this entry - Next apps import the root.
  */
 export * from './product';
 export * from './network';

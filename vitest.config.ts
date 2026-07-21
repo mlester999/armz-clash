@@ -28,6 +28,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '@armz-clash/config/demo-server': path.resolve(
+        __dirname,
+        'packages/config/src/demo-server.ts',
+      ),
       '@armz-clash/config': path.resolve(__dirname, 'packages/config/src/index.ts'),
       '@armz-clash/game-core': path.resolve(__dirname, 'packages/game-core/src/index.ts'),
       '@armz-clash/economy-core': path.resolve(__dirname, 'packages/economy-core/src/index.ts'),

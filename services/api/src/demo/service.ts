@@ -1,4 +1,4 @@
-import {
+﻿import {
   DEMO_ARMZ_PRESETS,
   formatDemoArmzAmount,
   generateDemoArmzIdentity,
@@ -7,7 +7,8 @@ import {
   simulateDemoBattle,
   type DemoBattleResult,
 } from '@armz-clash/game-core';
-import { loadDemoConfig, type DemoConfig } from '@armz-clash/config';
+import { type DemoConfig } from '@armz-clash/config';
+import { loadDemoConfig } from '@armz-clash/config/demo-server';
 import { generateToken, hashToken, sha256Hex } from '../lib/crypto';
 import {
   deactivateDemoArmz,
@@ -392,8 +393,8 @@ export function buildDemoPublicPayload(session: DemoSessionRow, armz: DemoArmzRo
       difficulty: opponent.difficulty,
       tagline: opponent.tagline,
       animationSetKey: opponent.animationSetKey,
-      // Stats visible as estimated matchup labels only — not editable
-      estimatedMatchupLabel: 'Estimated demo matchup — not a guaranteed win',
+      // Stats visible as estimated matchup labels only â€” not editable
+      estimatedMatchupLabel: 'Estimated demo matchup â€” not a guaranteed win',
       palette: {
         skinTone: opponent.skinTone,
         primaryCloth: opponent.primaryCloth,

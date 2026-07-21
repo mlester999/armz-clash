@@ -1,10 +1,6 @@
-import { describe, expect, it } from 'vitest';
-import {
-  DemoPersistenceConfigError,
-  demoPersistencePublicLabel,
-  loadDemoConfig,
-  resolveDemoPersistenceMode,
-} from './demo';
+﻿import { describe, expect, it } from 'vitest';
+import { DemoPersistenceConfigError, demoPersistencePublicLabel } from './demo';
+import { loadDemoConfig, resolveDemoPersistenceMode } from './demo-server';
 
 describe('demo persistence mode', () => {
   it('defaults to database', () => {

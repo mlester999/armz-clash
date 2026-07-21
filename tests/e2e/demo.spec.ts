@@ -121,10 +121,8 @@ test.describe('Phase 3 Demo Mode', () => {
     const play = page.getByTestId('play-demo-button');
     await expect(play).toBeVisible({ timeout: 15_000 });
     await expect(play).toBeEnabled();
-    // Prefer role click at center; force as fallback for overlays.
-    await play.scrollIntoViewIfNeeded();
-    await play.click({ trial: true }).catch(() => undefined);
-    await play.click();
+    // Click with retry to survive React re-renders that detach the element.
+    await play.click({ timeout: 10_000 });
     const disclosure = page.getByTestId('demo-disclosure');
     try {
       await expect(disclosure).toBeVisible({ timeout: 5_000 });
@@ -201,11 +199,14 @@ test.describe('Phase 3 Demo Mode', () => {
     await page.goto(`${GAME}/demo`, { waitUntil: 'domcontentloaded' });
     const play = page.getByTestId('play-demo-button');
     await expect(play).toBeVisible({ timeout: 15_000 });
-    const cursor = await play.evaluate((el) => getComputedStyle(el).cursor);
-    expect(cursor).toBe('pointer');
+    // Poll: under parallel load the stylesheet may apply slightly after visibility.
+    await expect
+      .poll(() => play.evaluate((el) => getComputedStyle(el).cursor), { timeout: 15_000 })
+      .toBe('pointer');
     const disabledNav = page.getByTestId('nav-future-marketplace');
     await expect(disabledNav).toBeVisible();
-    const disabledCursor = await disabledNav.evaluate((el) => getComputedStyle(el).cursor);
-    expect(disabledCursor).toBe('not-allowed');
+    await expect
+      .poll(() => disabledNav.evaluate((el) => getComputedStyle(el).cursor), { timeout: 15_000 })
+      .toBe('not-allowed');
   });
 });

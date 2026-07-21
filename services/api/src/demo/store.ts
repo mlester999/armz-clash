@@ -1,6 +1,6 @@
-/**
- * Demo Mode persistence — explicit modes only.
- * No silent database → memory fallback.
+﻿/**
+ * Demo Mode persistence â€” explicit modes only.
+ * No silent database â†’ memory fallback.
  *
  * Modes:
  * - database: hosted/dev with Supabase (fail closed on errors)
@@ -9,12 +9,11 @@
  */
 
 import { randomUUID } from 'node:crypto';
+import { demoPersistencePublicLabel, type DemoPersistenceMode } from '@armz-clash/config';
 import {
   assertDemoDatabaseConfigured,
-  demoPersistencePublicLabel,
   resolveDemoPersistenceMode,
-  type DemoPersistenceMode,
-} from '@armz-clash/config';
+} from '@armz-clash/config/demo-server';
 import { getServiceDb } from '../lib/db';
 
 export type DemoSessionRow = {
@@ -111,7 +110,7 @@ export function getDemoPersistenceMode(): DemoPersistenceMode {
   return cachedMode;
 }
 
-/** Test helper — reset mode cache between unit tests. */
+/** Test helper â€” reset mode cache between unit tests. */
 export function resetDemoPersistenceCacheForTests(): void {
   cachedMode = null;
   lastHealth = null;

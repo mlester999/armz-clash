@@ -84,32 +84,34 @@ async function main() {
   // Specific dangerous mutations
   const sessionTamper = await client
     .from('demo_sessions')
-    .update({ battles_played: 0, expires_at: '2099-01-01T00:00:00Z' } as never)
+    .update({ battles_played: 0, expires_at: '2099-01-01T00:00:00Z' } as never, {
+      count: 'exact',
+    })
     .neq('id', '00000000-0000-0000-0000-000000000000');
   results.push({
     name: 'anon cannot change demo session battle counts or expiry',
-    ok: Boolean(sessionTamper.error),
-    detail: sessionTamper.error?.code ?? 'denied/empty',
+    ok: Boolean(sessionTamper.error) || (sessionTamper.count ?? 0) === 0,
+    detail: sessionTamper.error?.code ?? `rows_affected=${sessionTamper.count ?? 0} (RLS filtered)`,
   });
 
   const armzTamper = await client
     .from('demo_armz')
-    .update({ rarity: 'legendary', level: 99, power: 999 } as never)
+    .update({ rarity: 'legendary', level: 99, power: 999 } as never, { count: 'exact' })
     .neq('id', '00000000-0000-0000-0000-000000000000');
   results.push({
     name: 'anon cannot change demo ARMZ stats/rarity/level',
-    ok: Boolean(armzTamper.error),
-    detail: armzTamper.error?.code ?? 'denied/empty',
+    ok: Boolean(armzTamper.error) || (armzTamper.count ?? 0) === 0,
+    detail: armzTamper.error?.code ?? `rows_affected=${armzTamper.count ?? 0} (RLS filtered)`,
   });
 
   const battleWinner = await client
     .from('demo_battles')
-    .update({ outcome: 'victory' } as never)
+    .update({ outcome: 'victory' } as never, { count: 'exact' })
     .neq('id', '00000000-0000-0000-0000-000000000000');
   results.push({
     name: 'anon cannot submit or modify battle winner',
-    ok: Boolean(battleWinner.error),
-    detail: battleWinner.error?.code ?? 'denied/empty',
+    ok: Boolean(battleWinner.error) || (battleWinner.count ?? 0) === 0,
+    detail: battleWinner.error?.code ?? `rows_affected=${battleWinner.count ?? 0} (RLS filtered)`,
   });
 
   const rewardInsert = await client.from('demo_reward_events').insert({

@@ -30,7 +30,9 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   // next dev compiles routes on demand; parallel projects thrash under load.
-  workers: process.env.CI ? 1 : 2,
+  // Deterministic acceptance runs: serialize workers everywhere to avoid
+  // shared API/dev-server contention flakes (Phase 3.2 QA).
+  workers: 1,
   timeout: 60_000,
   expect: { timeout: 20_000 },
   reporter: [['list'], ['html', { open: 'never', outputFolder: 'playwright-report' }]],
