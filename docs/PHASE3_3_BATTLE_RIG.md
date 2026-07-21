@@ -8,32 +8,35 @@ Reengineer the arm-wrestling battle so it reads as real arm wrestling: fighters 
 
 ## Pacing Targets (demo-combat-v3)
 
-| Phase | Target | Implementation |
-|-------|--------|----------------|
-| Fighters visible | Immediate | Rendered on mount, no long intro |
-| Hands approaching | ~0.7s | `TIMING.approach: 700` |
-| Grip lock | ~2.2s | `TIMING.gripLock: 600` after approach |
-| Active struggle | ~2.8s | First push/counter events |
-| Struggle tick | ~0.26s | `TIMING.struggle: 260` |
-| Final struggle | ~0.65s | `TIMING.finalStruggle: 650` |
-| Final slam | ~0.95s | `TIMING.finalSlam: 950` |
-| Total duration | 8-12s (max 14s) | Server timeline length |
+| Phase             | Target          | Implementation                        |
+| ----------------- | --------------- | ------------------------------------- |
+| Fighters visible  | Immediate       | Rendered on mount, no long intro      |
+| Hands approaching | ~0.7s           | `TIMING.approach: 700`                |
+| Grip lock         | ~2.2s           | `TIMING.gripLock: 600` after approach |
+| Active struggle   | ~2.8s           | First push/counter events             |
+| Struggle tick     | ~0.26s          | `TIMING.struggle: 260`                |
+| Final struggle    | ~0.65s          | `TIMING.finalStruggle: 650`           |
+| Final slam        | ~0.95s          | `TIMING.finalSlam: 950`               |
+| Total duration    | 8-12s (max 14s) | Server timeline length                |
 
 ## Rig Architecture
 
 ### Vertical Arm-Wrestling Layout
+
 - Elbows planted on visible pads (stable anchors)
 - Forearms rise to a central grip point
 - Grip rotates around a pivot above table center
 - `gripAngle`: 0 = neutral, negative = player winning, positive = opponent winning
 
 ### Anatomical Connection
+
 - Shoulder → elbow → forearm → wrist → hand chain drawn as connected segments
 - Hand position derived from grip angle (no teleporting fists)
 - Interlocked hands drawn at grip center
 - Strain visualization scales with control differential
 
 ### Layer Order
+
 1. Table/arena base
 2. Pin pads (where hands get slammed)
 3. Player arm (faction-tinted)

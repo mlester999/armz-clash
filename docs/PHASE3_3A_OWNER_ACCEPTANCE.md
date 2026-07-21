@@ -113,25 +113,25 @@
 
 ## Automated Validation Summary
 
-| Gate | Result |
-|------|--------|
-| TypeScript (`tsc --noEmit`) | PASSED |
-| Unit tests (97 tests, 20 files) | PASSED |
-| 1M battle simulation balance gate | PASSED |
-| E2E desktop (24 tests) | PASSED |
-| E2E tablet (24 tests) | PASSED |
-| E2E mobile (24 tests) | PASSED |
-| Total E2E | 72 passed |
+| Gate                              | Result    |
+| --------------------------------- | --------- |
+| TypeScript (`tsc --noEmit`)       | PASSED    |
+| Unit tests (97 tests, 20 files)   | PASSED    |
+| 1M battle simulation balance gate | PASSED    |
+| E2E desktop (24 tests)            | PASSED    |
+| E2E tablet (24 tests)             | PASSED    |
+| E2E mobile (24 tests)             | PASSED    |
+| Total E2E                         | 72 passed |
 
 ## Balance Confirmation (1M Simulation)
 
-| Metric | Value | Target | Status |
-|--------|-------|--------|--------|
-| Overall win rate | 71.99% | 69–75% | PASS |
-| Min preset rate | 59.35% | 58–62% | PASS |
-| Max preset rate | 84.70% | 82–86% | PASS |
-| Recovery per battle | 3.21% | 2–5% | PASS |
-| Avg duration | ~11.0s | 8–12s | PASS |
+| Metric              | Value  | Target | Status |
+| ------------------- | ------ | ------ | ------ |
+| Overall win rate    | 71.99% | 69–75% | PASS   |
+| Min preset rate     | 59.35% | 58–62% | PASS   |
+| Max preset rate     | 84.70% | 82–86% | PASS   |
+| Recovery per battle | 3.21%  | 2–5%   | PASS   |
+| Avg duration        | ~11.0s | 8–12s  | PASS   |
 
 ## Safety Confirmation
 

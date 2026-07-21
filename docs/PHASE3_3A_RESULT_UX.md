@@ -8,23 +8,25 @@
 
 ## Owner-Reported Issues Addressed
 
-| # | Issue | Resolution |
-|---|-------|------------|
-| 1 | No strong visible win/loss presentation | Large centered Victory/Defeat overlay with color-coded typography |
-| 2 | Player has to scroll to see outcome | Result renders as absolute overlay over the arena canvas — zero scroll required |
-| 3 | Result feels like a debug screen | Premium result card with reward summary, final Control snapshot, battle metadata |
-| 4 | Defeat feels dead or blank | Respectful defeat copy, clear next actions, polished styling |
+| #   | Issue                                   | Resolution                                                                       |
+| --- | --------------------------------------- | -------------------------------------------------------------------------------- |
+| 1   | No strong visible win/loss presentation | Large centered Victory/Defeat overlay with color-coded typography                |
+| 2   | Player has to scroll to see outcome     | Result renders as absolute overlay over the arena canvas — zero scroll required  |
+| 3   | Result feels like a debug screen        | Premium result card with reward summary, final Control snapshot, battle metadata |
+| 4   | Defeat feels dead or blank              | Respectful defeat copy, clear next actions, polished styling                     |
 
 ---
 
 ## Architecture: In-Viewport Result Overlay
 
 ### Before (Phase 3.3)
+
 - Result rendered below the battle canvas in the page flow
 - Player had to scroll down to see Victory/Defeat
 - Result was a separate section, disconnected from the arena
 
 ### After (Phase 3.3A)
+
 - Result renders as an **absolute overlay** filling the arena viewport
 - `position: absolute; inset: 0; z-index: 20`
 - Player sees the result immediately without scrolling
@@ -33,19 +35,23 @@
 ### Implementation
 
 ```tsx
-<div className="relative aspect-[16/10] w-full overflow-hidden rounded-..."
-     data-testid="demo-battle-canvas-host">
+<div
+  className="relative aspect-[16/10] w-full overflow-hidden rounded-..."
+  data-testid="demo-battle-canvas-host"
+>
   {/* PixiJS canvas */}
   <div ref={hostRef} className="absolute inset-0" />
 
   {/* Result overlay fills the arena viewport */}
   {showResult && (
-    <div className="absolute inset-0 z-20 flex flex-col overflow-y-auto p-4 sm:p-6
+    <div
+      className="absolute inset-0 z-20 flex flex-col overflow-y-auto p-4 sm:p-6
                     bg-[rgba(7,11,18,0.92)] backdrop-blur-sm"
-         data-testid="demo-battle-result"
-         role="dialog"
-         aria-modal="true"
-         aria-label={isVictory ? 'Victory result' : 'Defeat result'}>
+      data-testid="demo-battle-result"
+      role="dialog"
+      aria-modal="true"
+      aria-label={isVictory ? 'Victory result' : 'Defeat result'}
+    >
       {/* Centered result content */}
     </div>
   )}
@@ -53,6 +59,7 @@
 ```
 
 ### No-Scroll Guarantee
+
 - Overlay uses `absolute inset-0` within the `relative` arena container
 - Content is centered with `m-auto` inside a flex column
 - `overflow-y-auto` handles small viewports gracefully
@@ -63,30 +70,36 @@
 ## Result Integrity Protection
 
 ### Client Gate
+
 ```tsx
 const showResult = done && finalSynced;
 ```
+
 - `done`: battle timeline has completed (or skip was pressed)
 - `finalSynced`: final Control values have been applied from server payload
 - Overlay cannot appear before both conditions are true
 
 ### Victory Condition
+
 - `battle.outcome === 'victory'`
 - `battle.opponentFinalStrength === 0` (server-validated)
 - `battle.playerFinalStrength > 0`
 
 ### Defeat Condition
+
 - `battle.outcome === 'defeat'`
 - `battle.playerFinalStrength === 0` (server-validated)
 - `battle.opponentFinalStrength > 0`
 
 ### Skip-to-Result
+
 - Calls `renderer.pause()` to stop the timeline
 - Applies `battle.playerFinalStrength` and `battle.opponentFinalStrength` directly
 - Sets `finalSynced = true` and `done = true`
 - Same truthful final state as natural completion
 
 ### Server Validation
+
 - `services/api/src/demo/integrity.ts` validates final state
 - Rejects `BATTLE_RESULT_STATE_MISMATCH` if Control values don't match outcome
 - Client cannot override server-authoritative result
@@ -96,11 +109,13 @@ const showResult = done && finalSynced;
 ## Victory Presentation
 
 ### Visual
+
 - Large "Victory" heading in cyan (`--armz-cyan`)
 - Radial gradient glow (cyan, 18% opacity) behind content
 - "Simulated Result" kicker label
 
 ### Content
+
 - ARMZ name + "pinned the Practice Automaton in a simulated Easy clash"
 - Final Control snapshot: player Control (cyan) vs opponent Control (orange)
 - Simulated Reward card (gold accent border):
@@ -109,6 +124,7 @@ const showResult = done && finalSynced;
 - Battle metadata: ID, duration, "server-authoritative"
 
 ### Actions
+
 - "Replay Easy fight" (disabled during cooldown or battle limit)
 - "Demo Collection"
 - "Return Home"
@@ -118,17 +134,20 @@ const showResult = done && finalSynced;
 ## Defeat Presentation
 
 ### Visual
+
 - Large "Defeat" heading in danger red (`--armz-danger`)
 - Radial gradient glow (red, 14% opacity) behind content
 - "Simulated Result" kicker label
 
 ### Content
+
 - "The Practice Automaton held the line. Train again after the cooldown."
 - Final Control snapshot: player Control (cyan) vs opponent Control (orange)
 - No reward card (defeat = no reward)
 - Battle metadata: ID, duration, "server-authoritative"
 
 ### Actions
+
 - Same as Victory: Replay, Collection, Home
 - Respectful copy — no punitive language
 
@@ -146,12 +165,12 @@ const showResult = done && finalSynced;
 
 ## Responsive Behavior
 
-| Viewport | Behavior |
-|----------|----------|
-| Desktop (1440x900) | Centered card, full reward details visible |
-| Tablet (768x1024) | Centered card, slight padding reduction |
-| Mobile (390x844) | Full-width overlay, `overflow-y-auto` for small screens |
-| Mobile (360x800) | Compact padding, all actions reachable |
+| Viewport           | Behavior                                                |
+| ------------------ | ------------------------------------------------------- |
+| Desktop (1440x900) | Centered card, full reward details visible              |
+| Tablet (768x1024)  | Centered card, slight padding reduction                 |
+| Mobile (390x844)   | Full-width overlay, `overflow-y-auto` for small screens |
+| Mobile (360x800)   | Compact padding, all actions reachable                  |
 
 ---
 
@@ -169,3 +188,11 @@ const showResult = done && finalSynced;
 - Result integrity: loser reaches 0 Control before overlay appears
 - Skip-to-result: preserves truthful final state
 - No scroll required to see result on any viewport
+
+---
+
+## Phase 3.3B Supersession Note (2026-07-21)
+
+Phase 3.3B supersedes the procedural rendering described in this document for **Rookie Brawler** and **Practice Automaton** only. These two fighters now use hand-authored SVG sprite rigs rasterized by the deterministic asset pipeline. The remaining five Common ARMZ retain the procedural system described here.
+
+See [Phase 3.3B Asset Pipeline](PHASE3_3B_QWEN_ONLY_ASSET_PIPELINE.md) for details.

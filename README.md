@@ -1,10 +1,10 @@
-# Armz Clash
+﻿# Armz Clash
 
 **ARMZ CLASH** — premium browser-based Solana arm-wrestling game.
 
-**Current phase: Phase 1.1 — Hosted setup & CI hardening**
+**Current phase: Phase 3.3B — Qwen-only premium vector asset pipeline**
 
-This repository contains infrastructure, design system, configuration, database foundations, hosted Supabase validation tooling, and developer tooling. Wallet authentication, battles, minting, rewards, claims, and marketplace settlement are **not** active yet.
+This repository contains infrastructure, design system, configuration, database foundations, hosted Supabase validation tooling, developer tooling, and a fully functional Demo Mode battle experience. Wallet authentication, minting, rewards, claims, and marketplace settlement are **not** active yet.
 
 ## Safety posture
 
@@ -67,6 +67,12 @@ pnpm dev:api
 pnpm dev:game
 # Browser
 open http://127.0.0.1:3001/demo
+```
+
+Build game assets (SVG → texture pipeline):
+
+```bash
+pnpm build:assets
 ```
 
 See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) and [docs/REOWN_SETUP.md](docs/REOWN_SETUP.md).
@@ -145,17 +151,19 @@ The temporary game token ticker is centralized as **ARMZ** (`$ARMZ` display) in 
 - [docs/SECURITY.md](docs/SECURITY.md)
 - [docs/ECONOMY_SAFETY.md](docs/ECONOMY_SAFETY.md)
 - [docs/PHASE1_REPORT_TEMPLATE.md](docs/PHASE1_REPORT_TEMPLATE.md)
+- [docs/DEMO_MODE.md](docs/DEMO_MODE.md)
+- [docs/PHASE3_3B_QWEN_ONLY_ASSET_PIPELINE.md](docs/PHASE3_3B_QWEN_ONLY_ASSET_PIPELINE.md)
+- [docs/PHASE3_3B_OWNER_ACCEPTANCE.md](docs/PHASE3_3B_OWNER_ACCEPTANCE.md)
 
 ## Current limitations
 
 - No wallet connection
 - No authentication sessions
-- No battles or Demo Mode gameplay
 - No minting, rewards, claims, marketplace settlement
-- No PixiJS battle renderer yet
 - Hosted Supabase validation pending owner credentials
-- No remote GitHub repository until owner connects one
+- Phase 3.3B owner visual acceptance: PENDING OWNER TEST
+- Phase 4 not started
 
 ## Next phase
 
-**Phase 2** — premium landing refinements (as needed), Reown wallet connection, signed wallet authentication, and player profile foundation.
+**Phase 4** — pending owner acceptance of Phase 3.3B visual quality.
