@@ -2,96 +2,92 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Badge, BrandLockup, Cluster, NavRail, NavTab, NetworkBadge } from '@armz-clash/ui';
+import { Badge, BrandLockup, NetworkBadge } from '@armz-clash/ui';
 import type { PublicConfig } from '@armz-clash/config';
 import { GameWalletChrome } from './game-wallet-chrome';
 
-const futureItems = [
-  { label: 'Fight', hint: 'Phase 5+' },
-  { label: 'Marketplace', hint: 'Phase 9' },
-  { label: 'Claim Rewards', hint: 'Phase 8' },
+const liveNav = [
+  { href: '/demo', label: 'Arena', testId: 'nav-demo' },
+  { href: '/demo/collection', label: 'Collection', testId: 'nav-demo-collection' },
+  { href: '/demo/fight', label: 'Battle', testId: 'nav-demo-fight' },
 ] as const;
 
-function ShellNavLink({
-  href,
-  active,
-  children,
-  testId,
-}: {
-  href: string;
-  active: boolean;
-  children: React.ReactNode;
-  testId?: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className="armz-nav-tab"
-      data-active={active ? 'true' : 'false'}
-      aria-current={active ? 'page' : undefined}
-      data-testid={testId}
-    >
-      {children}
-    </Link>
-  );
-}
+const futureNav = [
+  { label: 'Fight', hint: 'Phase 5+', testId: 'nav-future-fight' },
+  { label: 'Marketplace', hint: 'Phase 9', testId: 'nav-future-marketplace' },
+  { label: 'Claim Rewards', hint: 'Phase 8', testId: 'nav-future-claim-rewards' },
+] as const;
 
 export function GameHeader({ config }: { config: PublicConfig }) {
   const pathname = usePathname() || '/';
-  const demoActive = pathname === '/demo' || pathname === '/demo/';
-  const collectionActive = pathname.startsWith('/demo/collection');
-  const fightActive = pathname.startsWith('/demo/fight');
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--armz-border)] bg-[rgba(7,11,18,0.88)] backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-3 px-[var(--armz-page-x)] py-3 pt-[calc(0.65rem+var(--armz-safe-top))] lg:flex-row lg:items-center lg:justify-between lg:gap-4">
-        <div className="flex min-w-0 flex-wrap items-center gap-3">
+    <header className="sticky top-0 z-40 border-b border-[var(--armz-border)] bg-[rgba(5,8,16,0.92)] backdrop-blur-xl">
+      {/* Top row: logo + status + wallet */}
+      <div className="mx-auto flex w-full max-w-[90rem] items-center justify-between gap-2 px-[var(--armz-page-x)] pt-[calc(0.5rem+var(--armz-safe-top))] pb-1.5">
+        <div className="flex min-w-0 items-center gap-2.5">
           <Link
             href="/"
             className="cursor-pointer rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--armz-cyan)]"
           >
-            <BrandLockup subtitle="Demo Arena · Phase 3" />
+            <BrandLockup subtitle="Demo Arena" />
           </Link>
-          <Badge variant="warning">Phase 3 demo</Badge>
+          <Badge variant="warning" className="hidden sm:inline-flex">Phase 3 demo</Badge>
         </div>
+        <div className="flex items-center gap-2">
+          <NetworkBadge network={config.networkLabel} />
+          <Badge variant="success" className="hidden lg:inline-flex">Real-value off</Badge>
+          <GameWalletChrome />
+        </div>
+      </div>
 
-        <NavRail label="Game" className="max-w-full overflow-x-auto">
-          <ShellNavLink href="/demo" active={demoActive} testId="nav-demo">
-            Demo
-            <span className="rounded-full bg-black/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider">
-              Live
-            </span>
-          </ShellNavLink>
-          <ShellNavLink
-            href="/demo/collection"
-            active={collectionActive}
-            testId="nav-demo-collection"
-          >
-            Collection
-          </ShellNavLink>
-          <ShellNavLink href="/demo/fight" active={fightActive} testId="nav-demo-fight">
-            Easy Fight
-          </ShellNavLink>
-          {futureItems.map((item) => (
-            <NavTab
-              key={item.label}
-              disabled
-              title={`${item.label} unavailable — ${item.hint}`}
-              data-testid={`nav-future-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
+      {/* Nav row — always visible, horizontal scroll on small screens */}
+      <nav
+        aria-label="Game navigation"
+        className="mx-auto flex w-full max-w-[90rem] items-center gap-0.5 overflow-x-auto px-[var(--armz-page-x)] pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {liveNav.map((item) => {
+          const active =
+            item.href === '/demo'
+              ? pathname === '/demo' || pathname === '/demo/'
+              : pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="armz-nav-tab shrink-0"
+              data-active={active ? 'true' : 'false'}
+              aria-current={active ? 'page' : undefined}
+              data-testid={item.testId}
             >
               {item.label}
-              <span className="text-[9px] font-bold uppercase tracking-wider opacity-70">
-                {item.hint}
-              </span>
-            </NavTab>
-          ))}
-        </NavRail>
+            </Link>
+          );
+        })}
+        <span className="mx-1 h-5 w-px shrink-0 bg-[var(--armz-border)]" aria-hidden />
+        {futureNav.map((item) => (
+          <span
+            key={item.label}
+            className="armz-nav-tab shrink-0"
+            data-disabled="true"
+            data-active="false"
+            aria-disabled="true"
+            title={`${item.label} unavailable — ${item.hint}`}
+            data-testid={item.testId}
+          >
+            {item.label}
+            <span className="ml-1 text-[9px] font-bold uppercase tracking-wider opacity-60">
+              {item.hint}
+            </span>
+          </span>
+        ))}
+      </nav>
 
-        <Cluster gap="sm" className="justify-start lg:justify-end">
-          <NetworkBadge network={config.networkLabel} />
-          <Badge variant="success">Real-value off</Badge>
-          <GameWalletChrome />
-        </Cluster>
+      {/* Safety line */}
+      <div className="mx-auto max-w-[90rem] px-[var(--armz-page-x)] pb-1">
+        <p className="text-[10px] leading-tight text-[var(--armz-text-muted)]">
+          Demo Mode active · no staking · real-value systems disabled · Phase 9 marketplace locked
+        </p>
       </div>
     </header>
   );
