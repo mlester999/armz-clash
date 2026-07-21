@@ -53,7 +53,11 @@ export function StatGrid({
   );
 }
 
-export function StrengthBar({
+/**
+ * Phase 3.3 Task 16: Renamed from "Strength" to "Control".
+ * Each side starts at 100 Control. The defeated side reaches 0.
+ */
+export function ControlBar({
   label,
   value,
   tone = 'player',
@@ -78,7 +82,7 @@ export function StrengthBar({
         aria-valuenow={value}
         aria-valuemin={0}
         aria-valuemax={100}
-        aria-label={`${label} strength`}
+        aria-label={`${label} control`}
       >
         <div
           className={cn(
@@ -91,3 +95,6 @@ export function StrengthBar({
     </div>
   );
 }
+
+/** @deprecated Use ControlBar instead. Kept for backward compatibility. */
+export const StrengthBar = ControlBar;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Badge, Button, Card, Cluster, StrengthBar } from '@armz-clash/ui';
+import { Badge, Button, Card, Cluster, ControlBar } from '@armz-clash/ui';
 import type { DemoBattlePayload } from '../api';
 import { BattleRenderer } from '../renderer/BattleRenderer';
 
@@ -52,7 +52,7 @@ export function BattleStage({
   const [finalSynced, setFinalSynced] = useState(false);
   const [muted, setMuted] = useState(true);
   const [musicOn, setMusicOn] = useState(false);
-  const [eventLabel, setEventLabel] = useState('Preparing arenaâ€¦');
+  const [eventLabel, setEventLabel] = useState('Preparing arenaÃ¢â‚¬Â¦');
   const [cooldown, setCooldown] = useState(battle.session.replayAvailableInSeconds);
 
   useEffect(() => {
@@ -74,7 +74,7 @@ export function BattleStage({
       reducedMotion,
       muted,
       onComplete: () => {
-        // Phase 3.3: final_sync gate — snap to authoritative final values before revealing result
+        // Phase 3.3: final_sync gate â€” snap to authoritative final values before revealing result
         setPlayerStr(battle.playerFinalStrength);
         setOpponentStr(battle.opponentFinalStrength);
         setFinalSynced(true);
@@ -128,8 +128,8 @@ export function BattleStage({
       </Cluster>
 
       <div className="grid gap-3 sm:grid-cols-2">
-        <StrengthBar label={battle.armz.displayName} value={playerStr} tone="player" />
-        <StrengthBar label={battle.opponent.displayName} value={opponentStr} tone="opponent" />
+        <ControlBar label={battle.armz.displayName} value={playerStr} tone="player" />
+        <ControlBar label={battle.opponent.displayName} value={opponentStr} tone="opponent" />
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -215,14 +215,14 @@ export function BattleStage({
                   Defeat
                 </h2>
                 <p className="text-sm text-[var(--armz-text-secondary)]">
-                  The Practice Automaton held the line. No simulated reward this round â€” train again
+                  The Practice Automaton held the line. No simulated reward this round Ã¢â‚¬â€ train again
                   after the cooldown.
                 </p>
               </div>
             </>
           )}
           <p className="text-xs text-[var(--armz-text-muted)]">
-            Battle ID {battle.battleId.slice(0, 8)}â€¦ Â· duration{' '}
+            Battle ID {battle.battleId.slice(0, 8)}Ã¢â‚¬Â¦ Ã‚Â· duration{' '}
             {(battle.durationMs / 1000).toFixed(1)}s
           </p>
           <Cluster>
