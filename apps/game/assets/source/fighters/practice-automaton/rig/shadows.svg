@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" width="120" height="200">
+  <defs>
+    <linearGradient id="pa-sh-ambient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a1520" stop-opacity="0"/>
+      <stop offset="60%" stop-color="#0a1520" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#060d14" stop-opacity="0.55"/>
+    </linearGradient>
+    <radialGradient id="pa-sh-joint" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#0a1520" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0a1520" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="pa-sh-under" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#060d14" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#060d14" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Right-side ambient occlusion -->
+  <path d="M85 20 C92 35 96 55 96 80 C96 110 94 140 90 165 L96 165 C100 140 102 110 102 80 C102 55 98 35 92 20Z" fill="url(#pa-sh-ambient)"/>
+  <!-- Under-shoulder shadow -->
+  <path d="M30 28 C40 34 55 38 72 38 C82 38 90 36 95 32 L95 40 C88 44 78 46 68 46 C52 46 38 42 28 36Z" fill="url(#pa-sh-under)"/>
+  <!-- Elbow bearing occlusion -->
+  <path d="M50 100 C55 106 62 110 70 110 C78 110 84 106 88 100 L88 108 C84 114 78 118 70 118 C62 118 55 114 50 108Z" fill="url(#pa-sh-joint)" fill-opacity="0.8"/>
+  <!-- Under-forearm shadow -->
+  <path d="M35 160 C42 166 52 170 62 170 C70 170 76 168 80 164 L80 172 C76 176 70 178 62 178 C52 178 42 174 35 168Z" fill="url(#pa-sh-under)"/>
+  <!-- Hand chassis underside -->
+  <path d="M30 190 C40 196 55 200 70 200 C80 200 88 198 92 194 L92 200 L30 200Z" fill="url(#pa-sh-under)" fill-opacity="0.7"/>
+  <!-- Panel gap shadows -->
+  <path d="M30 60 L88 60" stroke="#0a1520" stroke-width="3" stroke-opacity="0.2" stroke-linecap="round"/>
+  <path d="M32 130 L86 130" stroke="#0a1520" stroke-width="3" stroke-opacity="0.2" stroke-linecap="round"/>
+  <!-- Contact shadow at wrist junction -->
+  <path d="M42 170 C48 174 56 176 64 176 L64 180 C56 180 48 178 42 174Z" fill="#0a1520" fill-opacity="0.3"/>
+</svg>

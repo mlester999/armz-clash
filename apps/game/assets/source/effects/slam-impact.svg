@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <defs>
+    <radialGradient id="fx-si-core" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
+      <stop offset="15%" stop-color="#f0d9a0" stop-opacity="0.8"/>
+      <stop offset="35%" stop-color="#d4af6a" stop-opacity="0.5"/>
+      <stop offset="60%" stop-color="#d4af6a" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="fx-si-wave" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="65%" stop-color="#f0d9a0" stop-opacity="0.35"/>
+      <stop offset="75%" stop-color="#d4af6a" stop-opacity="0.2"/>
+      <stop offset="85%" stop-color="#d4af6a" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="fx-si-wave2" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#5ec8ff" stop-opacity="0"/>
+      <stop offset="82%" stop-color="#5ec8ff" stop-opacity="0.25"/>
+      <stop offset="92%" stop-color="#5ec8ff" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Outer shockwave -->
+  <path d="M96 2 C148 2 190 44 190 96 C190 148 148 190 96 190 C44 190 2 148 2 96 C2 44 44 2 96 2Z" fill="url(#fx-si-wave)"/>
+  <!-- Inner cyan shockwave -->
+  <path d="M96 16 C140 16 176 52 176 96 C176 140 140 176 96 176 C52 176 16 140 16 96 C16 52 52 16 96 16Z" fill="url(#fx-si-wave2)"/>
+  <!-- Core flash -->
+  <path d="M96 40 C127 40 152 65 152 96 C152 127 127 152 96 152 C65 152 40 127 40 96 C40 65 65 40 96 40Z" fill="url(#fx-si-core)"/>
+  <!-- Major impact spikes (8 directions) -->
+  <path d="M96 0 L102 60 L96 44 L90 60Z" fill="#f0d9a0" fill-opacity="0.7"/>
+  <path d="M96 192 L102 132 L96 148 L90 132Z" fill="#f0d9a0" fill-opacity="0.7"/>
+  <path d="M0 96 L60 90 L44 96 L60 102Z" fill="#f0d9a0" fill-opacity="0.7"/>
+  <path d="M192 96 L132 90 L148 96 L132 102Z" fill="#f0d9a0" fill-opacity="0.7"/>
+  <path d="M28 28 L72 66 L60 60 L66 72Z" fill="#d4af6a" fill-opacity="0.5"/>
+  <path d="M164 28 L120 66 L132 60 L126 72Z" fill="#d4af6a" fill-opacity="0.5"/>
+  <path d="M28 164 L72 126 L60 132 L66 120Z" fill="#d4af6a" fill-opacity="0.5"/>
+  <path d="M164 164 L120 126 L132 132 L126 120Z" fill="#d4af6a" fill-opacity="0.5"/>
+  <!-- Debris scatter -->
+  <path d="M50 35 a4 4 0 1 0 8 0 a4 4 0 1 0 -8 0" fill="#f0d9a0" fill-opacity="0.6"/>
+  <path d="M135 30 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0" fill="#ffffff" fill-opacity="0.5"/>
+  <path d="M30 130 a3.5 3.5 0 1 0 7 0 a3.5 3.5 0 1 0 -7 0" fill="#d4af6a" fill-opacity="0.5"/>
+  <path d="M155 140 a4 4 0 1 0 8 0 a4 4 0 1 0 -8 0" fill="#f0d9a0" fill-opacity="0.5"/>
+  <path d="M70 15 a2.5 2.5 0 1 0 5 0 a2.5 2.5 0 1 0 -5 0" fill="#5ec8ff" fill-opacity="0.5"/>
+  <path d="M120 170 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0" fill="#5ec8ff" fill-opacity="0.4"/>
+  <path d="M15 70 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#ffffff" fill-opacity="0.4"/>
+  <path d="M175 120 a2.5 2.5 0 1 0 5 0 a2.5 2.5 0 1 0 -5 0" fill="#ffffff" fill-opacity="0.4"/>
+  <!-- Ground crack lines -->
+  <path d="M96 152 L80 185 M96 152 L112 185 M96 152 L96 190" stroke="#d4af6a" stroke-width="2" stroke-opacity="0.3" fill="none" stroke-linecap="round"/>
+</svg>

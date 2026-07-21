@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 64" width="160" height="64">
+  <defs>
+    <linearGradient id="fx-ms-streak" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f0d9a0" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#f0d9a0" stop-opacity="0.4"/>
+      <stop offset="70%" stop-color="#d4af6a" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="fx-ms-cyan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0"/>
+      <stop offset="40%" stop-color="#5ec8ff" stop-opacity="0.3"/>
+      <stop offset="80%" stop-color="#5ec8ff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Main streak -->
+  <path d="M4 28 C30 24 80 22 140 26 C150 27 156 30 156 32 C156 34 150 37 140 38 C80 42 30 40 4 36Z" fill="url(#fx-ms-streak)"/>
+  <!-- Secondary streak above -->
+  <path d="M20 14 C50 12 100 11 145 14 C150 15 152 16 152 17 C152 18 150 19 145 20 C100 23 50 22 20 20Z" fill="url(#fx-ms-cyan)"/>
+  <!-- Secondary streak below -->
+  <path d="M20 44 C50 42 100 41 145 44 C150 45 152 46 152 47 C152 48 150 49 145 50 C100 53 50 52 20 50Z" fill="url(#fx-ms-cyan)" fill-opacity="0.6"/>
+  <!-- Speed particles -->
+  <path d="M30 32 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#f0d9a0" fill-opacity="0.5"/>
+  <path d="M60 30 a1.5 1.5 0 1 0 3 0 a1.5 1.5 0 1 0 -3 0" fill="#f0d9a0" fill-opacity="0.4"/>
+  <path d="M90 33 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#d4af6a" fill-opacity="0.5"/>
+  <path d="M120 31 a1.5 1.5 0 1 0 3 0 a1.5 1.5 0 1 0 -3 0" fill="#d4af6a" fill-opacity="0.4"/>
+</svg>

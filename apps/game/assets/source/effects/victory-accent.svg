@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <radialGradient id="fx-va-glow" cx="0.5" cy="0.4" r="0.55">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0.3"/>
+      <stop offset="40%" stop-color="#5ec8ff" stop-opacity="0.12"/>
+      <stop offset="70%" stop-color="#3aa0dd" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#3aa0dd" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fx-va-ray" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="fx-va-gold" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#d4af6a" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Central glow -->
+  <path d="M128 20 C188 20 236 68 236 128 C236 188 188 236 128 236 C68 236 20 188 20 128 C20 68 68 20 128 20Z" fill="url(#fx-va-glow)"/>
+  <!-- Victory rays (upward fan) -->
+  <path d="M128 128 L108 10 L118 12Z" fill="url(#fx-va-ray)"/>
+  <path d="M128 128 L148 10 L138 12Z" fill="url(#fx-va-ray)"/>
+  <path d="M128 128 L70 25 L82 22Z" fill="url(#fx-va-ray)" fill-opacity="0.7"/>
+  <path d="M128 128 L186 25 L174 22Z" fill="url(#fx-va-ray)" fill-opacity="0.7"/>
+  <path d="M128 128 L35 55 L48 48Z" fill="url(#fx-va-ray)" fill-opacity="0.5"/>
+  <path d="M128 128 L221 55 L208 48Z" fill="url(#fx-va-ray)" fill-opacity="0.5"/>
+  <!-- Gold accent rays -->
+  <path d="M128 128 L120 5 L128 8 L136 5Z" fill="url(#fx-va-gold)"/>
+  <path d="M128 128 L55 35 L65 30Z" fill="url(#fx-va-gold)" fill-opacity="0.6"/>
+  <path d="M128 128 L201 35 L191 30Z" fill="url(#fx-va-gold)" fill-opacity="0.6"/>
+  <!-- Sparkle diamonds -->
+  <path d="M60 80 L65 70 L70 80 L65 90Z" fill="#5ec8ff" fill-opacity="0.5"/>
+  <path d="M190 75 L195 65 L200 75 L195 85Z" fill="#5ec8ff" fill-opacity="0.45"/>
+  <path d="M45 140 L49 132 L53 140 L49 148Z" fill="#a0e8ff" fill-opacity="0.35"/>
+  <path d="M205 145 L209 137 L213 145 L209 153Z" fill="#a0e8ff" fill-opacity="0.35"/>
+  <path d="M100 45 L103 38 L106 45 L103 52Z" fill="#d4af6a" fill-opacity="0.4"/>
+  <path d="M155 40 L158 33 L161 40 L158 47Z" fill="#d4af6a" fill-opacity="0.4"/>
+  <!-- Rising particles -->
+  <path d="M80 180 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0" fill="#5ec8ff" fill-opacity="0.3"/>
+  <path d="M170 190 a2.5 2.5 0 1 0 5 0 a2.5 2.5 0 1 0 -5 0" fill="#5ec8ff" fill-opacity="0.25"/>
+  <path d="M128 200 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#a0e8ff" fill-opacity="0.3"/>
+  <!-- Soft ring -->
+  <path d="M128 50 C171 50 206 85 206 128 C206 171 171 206 128 206 C85 206 50 171 50 128 C50 85 85 50 128 50Z" fill="none" stroke="#5ec8ff" stroke-width="1.5" stroke-opacity="0.12"/>
+</svg>

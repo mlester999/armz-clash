@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="800" height="200">
+  <defs>
+    <linearGradient id="ar-tb-surface" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a3020"/>
+      <stop offset="30%" stop-color="#282018"/>
+      <stop offset="100%" stop-color="#1a1510"/>
+    </linearGradient>
+    <linearGradient id="ar-tb-edge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a3a28"/>
+      <stop offset="100%" stop-color="#2a2018"/>
+    </linearGradient>
+    <linearGradient id="ar-tb-gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#d4af6a" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#d4af6a" stop-opacity="0.6"/>
+      <stop offset="80%" stop-color="#d4af6a" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="ar-tb-wood">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02 0.15" numOctaves="3" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="m"/>
+      <feBlend in="SourceGraphic" in2="m" mode="overlay" result="t"/>
+      <feComposite in="t" in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+  <!-- Table shadow -->
+  <path d="M60 180 C60 170 200 160 400 160 C600 160 740 170 740 180 C740 190 600 200 400 200 C200 200 60 190 60 180Z" fill="#000000" fill-opacity="0.5"/>
+  <!-- Table top surface -->
+  <path d="M40 40 C40 30 180 20 400 20 C620 20 760 30 760 40 L760 120 C760 130 620 140 400 140 C180 140 40 130 40 120Z" fill="url(#ar-tb-surface)" filter="url(#ar-tb-wood)"/>
+  <!-- Surface sheen -->
+  <path d="M60 35 C60 28 200 22 400 22 C600 22 740 28 740 35 L740 55 C740 48 600 42 400 42 C200 42 60 48 60 55Z" fill="#ffffff" fill-opacity="0.04"/>
+  <!-- Gold inlay line -->
+  <path d="M100 80 L700 80" stroke="url(#ar-tb-gold)" stroke-width="3" stroke-linecap="round"/>
+  <!-- Center emblem circle -->
+  <path d="M370 60 C370 50 382 42 400 42 C418 42 430 50 430 60 L430 100 C430 110 418 118 400 118 C382 118 370 110 370 100Z" fill="#2a2018" fill-opacity="0.6"/>
+  <path d="M378 62 C378 54 387 48 400 48 C413 48 422 54 422 62 L422 98 C422 106 413 112 400 112 C387 112 378 106 378 98Z" fill="none" stroke="#d4af6a" stroke-width="1.5" stroke-opacity="0.3"/>
+  <!-- Emblem inner design (crossed arms) -->
+  <path d="M390 70 L400 85 L410 70" fill="none" stroke="#d4af6a" stroke-width="2" stroke-opacity="0.25" stroke-linecap="round"/>
+  <path d="M390 95 L400 80 L410 95" fill="none" stroke="#d4af6a" stroke-width="2" stroke-opacity="0.25" stroke-linecap="round"/>
+  <!-- Front edge -->
+  <path d="M40 120 C40 130 180 140 400 140 C620 140 760 130 760 120 L760 145 C760 155 620 165 400 165 C180 165 40 155 40 145Z" fill="url(#ar-tb-edge)"/>
+  <!-- Edge highlight -->
+  <path d="M50 122 C50 130 190 138 400 138 C610 138 750 130 750 122" fill="none" stroke="#d4af6a" stroke-width="1.5" stroke-opacity="0.2"/>
+  <!-- Edge shadow line -->
+  <path d="M50 142 C50 150 190 158 400 158 C610 158 750 150 750 142" fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.3"/>
+  <!-- Wood grain lines -->
+  <path d="M80 50 C200 46 600 46 720 50" fill="none" stroke="#4a3a28" stroke-width="1" stroke-opacity="0.2"/>
+  <path d="M70 65 C200 61 600 61 730 65" fill="none" stroke="#4a3a28" stroke-width="1" stroke-opacity="0.15"/>
+  <path d="M70 95 C200 91 600 91 730 95" fill="none" stroke="#4a3a28" stroke-width="1" stroke-opacity="0.15"/>
+  <path d="M80 110 C200 106 600 106 720 110" fill="none" stroke="#4a3a28" stroke-width="1" stroke-opacity="0.2"/>
+</svg>

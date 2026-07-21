@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 50" width="80" height="50">
+  <defs>
+    <linearGradient id="pa-gp-surface" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5a6a7a"/>
+      <stop offset="50%" stop-color="#4a5a6a"/>
+      <stop offset="100%" stop-color="#3a4a5a"/>
+    </linearGradient>
+    <radialGradient id="pa-gp-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="pa-gp-grid" width="8" height="8" patternUnits="userSpaceOnUse">
+      <path d="M0 4 L8 4 M4 0 L4 8" stroke="#2a3a4a" stroke-width="0.8" stroke-opacity="0.4"/>
+    </pattern>
+  </defs>
+  <!-- Pad base -->
+  <path d="M6 4 C3 6 2 10 2 16 L2 34 C2 40 3 44 6 46 L14 48 L66 48 L74 46 C77 44 78 40 78 34 L78 16 C78 10 77 6 74 4 L66 2 L14 2Z" fill="url(#pa-gp-surface)"/>
+  <!-- Friction grid texture -->
+  <path d="M8 6 L72 6 L74 10 L74 40 L72 44 L8 44 L6 40 L6 10Z" fill="url(#pa-gp-grid)"/>
+  <!-- Central pressure sensor -->
+  <path d="M30 16 L50 16 L54 25 L50 34 L30 34 L26 25Z" fill="url(#pa-gp-glow)"/>
+  <path d="M34 20 L46 20 L49 25 L46 30 L34 30 L31 25Z" fill="#5ec8ff" fill-opacity="0.2"/>
+  <!-- Grip ridges -->
+  <path d="M10 12 L70 12" stroke="#6a7a8a" stroke-width="2" stroke-opacity="0.5" stroke-linecap="round"/>
+  <path d="M10 20 L24 20 M56 20 L70 20" stroke="#6a7a8a" stroke-width="2" stroke-opacity="0.4" stroke-linecap="round"/>
+  <path d="M10 30 L24 30 M56 30 L70 30" stroke="#6a7a8a" stroke-width="2" stroke-opacity="0.4" stroke-linecap="round"/>
+  <path d="M10 38 L70 38" stroke="#6a7a8a" stroke-width="2" stroke-opacity="0.5" stroke-linecap="round"/>
+  <!-- Corner bolts -->
+  <path d="M8 8 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#7a8a98"/>
+  <path d="M68 8 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#7a8a98"/>
+  <path d="M8 42 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#7a8a98"/>
+  <path d="M68 42 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#7a8a98"/>
+  <!-- Edge highlight -->
+  <path d="M6 4 C3 6 2 10 2 16 L2 34" fill="none" stroke="#b0c8e0" stroke-width="1" stroke-opacity="0.25" stroke-linecap="round"/>
+</svg>

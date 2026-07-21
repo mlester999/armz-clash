@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <defs>
+    <radialGradient id="pa-eb-metal" cx="0.45" cy="0.42" r="0.55">
+      <stop offset="0%" stop-color="#8a9aaa"/>
+      <stop offset="50%" stop-color="#6a7a8a"/>
+      <stop offset="100%" stop-color="#3a4a5a"/>
+    </radialGradient>
+    <radialGradient id="pa-eb-inner" cx="0.5" cy="0.5" r="0.35">
+      <stop offset="0%" stop-color="#2a3a4a"/>
+      <stop offset="70%" stop-color="#1a2a3a"/>
+      <stop offset="100%" stop-color="#0a1a2a"/>
+    </radialGradient>
+    <radialGradient id="pa-eb-cyan" cx="0.5" cy="0.5" r="0.25">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="pa-eb-brush">
+      <feTurbulence type="fractalNoise" baseFrequency="0.5 1.0" numOctaves="2" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="m"/>
+      <feBlend in="SourceGraphic" in2="m" mode="overlay"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+  <!-- Outer bearing ring -->
+  <path d="M8 40 C8 20 20 6 40 5 C60 4 74 16 76 36 C78 56 68 72 48 76 C28 80 10 62 8 40Z" fill="url(#pa-eb-metal)" filter="url(#pa-eb-brush)"/>
+  <!-- Inner bearing race -->
+  <path d="M18 40 C18 26 26 16 40 15 C54 14 64 24 65 38 C66 52 58 64 44 66 C30 68 20 56 18 40Z" fill="url(#pa-eb-inner)"/>
+  <!-- Bearing ball hints -->
+  <path d="M25 25 C26 23 29 23 30 25 C31 27 29 29 27 29 C25 29 24 27 25 25Z" fill="#8a9aaa" fill-opacity="0.6"/>
+  <path d="M52 22 C53 20 56 20 57 22 C58 24 56 26 54 26 C52 26 51 24 52 22Z" fill="#8a9aaa" fill-opacity="0.6"/>
+  <path d="M60 42 C61 40 64 40 65 42 C66 44 64 46 62 46 C60 46 59 44 60 42Z" fill="#8a9aaa" fill-opacity="0.5"/>
+  <path d="M55 58 C56 56 59 56 60 58 C61 60 59 62 57 62 C55 62 54 60 55 58Z" fill="#8a9aaa" fill-opacity="0.5"/>
+  <path d="M22 55 C23 53 26 53 27 55 C28 57 26 59 24 59 C22 59 21 57 22 55Z" fill="#8a9aaa" fill-opacity="0.5"/>
+  <!-- Center cyan glow -->
+  <path d="M30 40 C30 32 34 27 40 27 C46 27 50 32 50 40 C50 48 46 53 40 53 C34 53 30 48 30 40Z" fill="url(#pa-eb-cyan)"/>
+  <path d="M35 40 C35 35 37 32 40 32 C43 32 45 35 45 40 C45 45 43 48 40 48 C37 48 35 45 35 40Z" fill="#5ec8ff" fill-opacity="0.35"/>
+  <!-- Outer ring bolts -->
+  <path d="M12 30 C13 28 16 28 17 30 C18 32 16 34 14 34 C12 34 11 32 12 30Z" fill="#9aaaba"/>
+  <path d="M62 28 C63 26 66 26 67 28 C68 30 66 32 64 32 C62 32 61 30 62 28Z" fill="#9aaaba"/>
+  <path d="M14 55 C15 53 18 53 19 55 C20 57 18 59 16 59 C14 59 13 57 14 55Z" fill="#9aaaba"/>
+  <path d="M60 55 C61 53 64 53 65 55 C66 57 64 59 62 59 C60 59 59 57 60 55Z" fill="#9aaaba"/>
+  <!-- Edge highlight -->
+  <path d="M12 25 C18 12 30 5 42 5 C55 5 66 12 72 25" fill="none" stroke="#b0c8e0" stroke-width="1.5" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Seam line -->
+  <path d="M10 40 C10 22 22 8 40 7 C58 6 72 18 74 38" fill="none" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.4" stroke-linecap="round"/>
+</svg>

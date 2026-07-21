@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+  <defs>
+    <linearGradient id="ui-vf-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0e1a2c"/>
+      <stop offset="55%" stop-color="#0a1220"/>
+      <stop offset="100%" stop-color="#070b12"/>
+    </linearGradient>
+    <radialGradient id="ui-vf-glow" cx="0.5" cy="0.18" r="0.7">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0.28"/>
+      <stop offset="45%" stop-color="#5ec8ff" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ui-vf-border" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0d9a0"/>
+      <stop offset="50%" stop-color="#d4af6a"/>
+      <stop offset="100%" stop-color="#a8843f"/>
+    </linearGradient>
+    <linearGradient id="ui-vf-ray" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <path d="M24 4 L616 4 C627 4 636 13 636 24 L636 336 C636 347 627 356 616 356 L24 356 C13 356 4 347 4 336 L4 24 C4 13 13 4 24 4 Z" fill="url(#ui-vf-bg)"/>
+  <path d="M24 4 L616 4 C627 4 636 13 636 24 L636 336 C636 347 627 356 616 356 L24 356 C13 356 4 347 4 336 L4 24 C4 13 13 4 24 4 Z" fill="url(#ui-vf-glow)"/>
+  <!-- Rising light rays behind title -->
+  <path d="M320 120 L280 8 L300 8 Z" fill="url(#ui-vf-ray)"/>
+  <path d="M320 120 L360 8 L340 8 Z" fill="url(#ui-vf-ray)"/>
+  <path d="M320 120 L200 20 L222 14 Z" fill="url(#ui-vf-ray)" fill-opacity="0.7"/>
+  <path d="M320 120 L440 20 L418 14 Z" fill="url(#ui-vf-ray)" fill-opacity="0.7"/>
+  <path d="M320 120 L120 55 L140 44 Z" fill="url(#ui-vf-ray)" fill-opacity="0.5"/>
+  <path d="M320 120 L520 55 L500 44 Z" fill="url(#ui-vf-ray)" fill-opacity="0.5"/>
+  <!-- Ornate border -->
+  <path d="M24 4 L616 4 C627 4 636 13 636 24 L636 336 C636 347 627 356 616 356 L24 356 C13 356 4 347 4 336 L4 24 C4 13 13 4 24 4 Z" fill="none" stroke="url(#ui-vf-border)" stroke-width="3"/>
+  <path d="M34 14 L606 14 C613 14 620 20 620 28 L620 332 C620 339 613 346 606 346 L34 346 C27 346 20 339 20 332 L20 28 C20 20 27 14 34 14 Z" fill="none" stroke="#5ec8ff" stroke-width="1" stroke-opacity="0.25"/>
+  <!-- Corner laurels -->
+  <path d="M40 40 C56 34 70 36 80 46 C70 44 58 46 50 54 C46 48 42 44 40 40 Z" fill="url(#ui-vf-border)" fill-opacity="0.6"/>
+  <path d="M600 40 C584 34 570 36 560 46 C570 44 582 46 590 54 C594 48 598 44 600 40 Z" fill="url(#ui-vf-border)" fill-opacity="0.6"/>
+  <!-- Title banner plate -->
+  <path d="M180 60 L460 60 L480 96 L460 132 L180 132 L160 96 Z" fill="#0c1626" stroke="url(#ui-vf-border)" stroke-width="2"/>
+  <path d="M180 60 L460 60 L480 96 L460 132 L180 132 L160 96 Z" fill="url(#ui-vf-glow)" fill-opacity="0.5"/>
+  <!-- Sparkles -->
+  <path d="M120 180 L125 168 L130 180 L125 192 Z" fill="#5ec8ff" fill-opacity="0.5"/>
+  <path d="M520 175 L525 163 L530 175 L525 187 Z" fill="#a0e8ff" fill-opacity="0.45"/>
+  <path d="M90 250 L94 242 L98 250 L94 258 Z" fill="#d4af6a" fill-opacity="0.4"/>
+  <path d="M550 255 L554 247 L558 255 L554 263 Z" fill="#d4af6a" fill-opacity="0.4"/>
+</svg>

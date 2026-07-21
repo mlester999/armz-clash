@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 180" width="90" height="180">
+  <defs>
+    <linearGradient id="rb-uarm-skin" x1="0" y1="0" x2="1" y2="0.5">
+      <stop offset="0%" stop-color="#d4956e"/>
+      <stop offset="50%" stop-color="#c48a6a"/>
+      <stop offset="100%" stop-color="#a87050"/>
+    </linearGradient>
+    <linearGradient id="rb-uarm-bicep" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#daa882" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#c48a6a" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="rb-uarm-tricep-shadow" x1="0.8" y1="0" x2="0.2" y2="1">
+      <stop offset="0%" stop-color="#7a4a30" stop-opacity="0"/>
+      <stop offset="60%" stop-color="#6b3f28" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#5a3020" stop-opacity="0.6"/>
+    </linearGradient>
+    <filter id="rb-uarm-tex">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="m"/>
+      <feBlend in="SourceGraphic" in2="m" mode="overlay"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+  <!-- Upper arm mass - bicep/tricep form -->
+  <path d="M20 8 C12 20 8 45 10 75 C12 105 16 135 22 160 C26 172 34 178 45 180 C56 178 64 172 68 160 C74 135 78 105 80 75 C82 45 78 20 70 8 C60 2 50 0 45 0 C40 0 30 2 20 8Z" fill="url(#rb-uarm-skin)" filter="url(#rb-uarm-tex)"/>
+  <!-- Bicep bulge highlight -->
+  <path d="M22 30 C26 20 35 14 45 12 C52 14 58 20 60 32 C62 48 60 70 56 90 C52 75 46 55 42 40 C38 30 30 28 22 30Z" fill="url(#rb-uarm-bicep)"/>
+  <!-- Tricep shadow region -->
+  <path d="M68 25 C74 40 78 65 78 90 C78 115 74 140 68 158 C72 140 74 115 74 90 C74 65 72 40 68 25Z" fill="url(#rb-uarm-tricep-shadow)"/>
+  <!-- Bicep/tricep separation -->
+  <path d="M62 15 C66 35 68 60 68 90 C68 120 66 148 62 168" fill="none" stroke="#8a5535" stroke-width="2" stroke-opacity="0.35" stroke-linecap="round"/>
+  <!-- Muscle fiber striations -->
+  <path d="M30 40 C34 38 38 40 40 45 M28 60 C32 58 37 60 39 65 M30 80 C34 78 38 80 40 85 M32 100 C36 98 40 100 42 105" fill="none" stroke="#a06b4a" stroke-width="1" stroke-opacity="0.2" stroke-linecap="round"/>
+  <!-- Vein detail -->
+  <path d="M35 25 C33 45 34 70 36 95 C37 110 36 130 34 150" fill="none" stroke="#7a5540" stroke-width="1.5" stroke-opacity="0.2" stroke-linecap="round"/>
+  <!-- Edge rim light -->
+  <path d="M20 8 C12 20 8 45 10 75 C12 105 16 135 22 160" fill="none" stroke="#f0d8b8" stroke-width="1.5" stroke-opacity="0.25" stroke-linecap="round"/>
+  <!-- Bottom connection fade -->
+  <path d="M22 160 C26 172 34 178 45 180 C56 178 64 172 68 160" fill="none" stroke="#8a5535" stroke-width="1" stroke-opacity="0.3" stroke-linecap="round"/>
+</svg>

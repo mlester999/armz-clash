@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <radialGradient id="fx-da-glow" cx="0.5" cy="0.55" r="0.55">
+      <stop offset="0%" stop-color="#f07178" stop-opacity="0.26"/>
+      <stop offset="42%" stop-color="#c85058" stop-opacity="0.1"/>
+      <stop offset="72%" stop-color="#8a3038" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#8a3038" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fx-da-ray" x1="0.5" y1="1" x2="0.5" y2="0">
+      <stop offset="0%" stop-color="#f07178" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#f07178" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="fx-da-ash" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#5a6a7a" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#3a4a5a" stop-opacity="0.28"/>
+    </linearGradient>
+  </defs>
+  <!-- Central somber glow -->
+  <path d="M128 20 C188 20 236 68 236 128 C236 188 188 236 128 236 C68 236 20 188 20 128 C20 68 68 20 128 20Z" fill="url(#fx-da-glow)"/>
+  <!-- Downward falling rays -->
+  <path d="M128 128 L110 246 L120 244Z" fill="url(#fx-da-ray)"/>
+  <path d="M128 128 L146 246 L136 244Z" fill="url(#fx-da-ray)"/>
+  <path d="M128 128 L72 232 L84 234Z" fill="url(#fx-da-ray)" fill-opacity="0.7"/>
+  <path d="M128 128 L184 232 L172 234Z" fill="url(#fx-da-ray)" fill-opacity="0.7"/>
+  <path d="M128 128 L38 200 L50 206Z" fill="url(#fx-da-ray)" fill-opacity="0.5"/>
+  <path d="M128 128 L218 200 L206 206Z" fill="url(#fx-da-ray)" fill-opacity="0.5"/>
+  <!-- Ash fall columns -->
+  <path d="M128 128 L122 250 L128 246 L134 250Z" fill="url(#fx-da-ash)"/>
+  <path d="M128 128 L60 220 L70 224Z" fill="url(#fx-da-ash)" fill-opacity="0.6"/>
+  <path d="M128 128 L196 220 L186 224Z" fill="url(#fx-da-ash)" fill-opacity="0.6"/>
+  <!-- Falling embers -->
+  <path d="M64 175 L68 168 L72 175 L68 182Z" fill="#f07178" fill-opacity="0.4"/>
+  <path d="M188 182 L192 175 L196 182 L192 189Z" fill="#f07178" fill-opacity="0.36"/>
+  <path d="M96 205 L99 199 L102 205 L99 211Z" fill="#c85058" fill-opacity="0.3"/>
+  <path d="M158 210 L161 204 L164 210 L161 216Z" fill="#c85058" fill-opacity="0.3"/>
+  <path d="M128 220 a2.5 2.5 0 1 0 5 0 a2.5 2.5 0 1 0 -5 0" fill="#f07178" fill-opacity="0.28"/>
+  <path d="M80 150 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#8a9aa8" fill-opacity="0.24"/>
+  <path d="M176 152 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#8a9aa8" fill-opacity="0.24"/>
+  <!-- Dim ring -->
+  <path d="M128 54 C169 54 202 87 202 128 C202 169 169 202 128 202 C87 202 54 169 54 128 C54 87 87 54 128 54Z" fill="none" stroke="#f07178" stroke-width="1.5" stroke-opacity="0.1"/>
+</svg>

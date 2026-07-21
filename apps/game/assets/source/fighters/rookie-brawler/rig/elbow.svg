@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70" width="70" height="70">
+  <defs>
+    <radialGradient id="rb-elbow-skin" cx="0.45" cy="0.45" r="0.55">
+      <stop offset="0%" stop-color="#d4956e"/>
+      <stop offset="60%" stop-color="#c48a6a"/>
+      <stop offset="100%" stop-color="#a06b4a"/>
+    </radialGradient>
+    <radialGradient id="rb-elbow-shadow" cx="0.6" cy="0.6" r="0.5">
+      <stop offset="0%" stop-color="#6b3f28" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#6b3f28" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="rb-elbow-tex">
+      <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="m"/>
+      <feBlend in="SourceGraphic" in2="m" mode="overlay"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+  <!-- Elbow joint mass -->
+  <path d="M10 35 C10 18 20 6 35 5 C50 4 62 14 64 30 C66 46 58 60 42 64 C26 68 12 55 10 35Z" fill="url(#rb-elbow-skin)" filter="url(#rb-elbow-tex)"/>
+  <!-- Olecranon bump -->
+  <path d="M48 20 C54 24 58 32 58 40 C58 48 54 54 48 56 C52 48 53 38 50 28 C49 24 48 22 48 20Z" fill="url(#rb-elbow-shadow)"/>
+  <!-- Joint crease lines -->
+  <path d="M18 30 C25 28 35 28 45 30" fill="none" stroke="#8a5535" stroke-width="1.5" stroke-opacity="0.35" stroke-linecap="round"/>
+  <path d="M20 38 C28 36 38 36 48 38" fill="none" stroke="#8a5535" stroke-width="1.2" stroke-opacity="0.25" stroke-linecap="round"/>
+  <!-- Highlight -->
+  <path d="M20 18 C26 12 34 10 42 12" fill="none" stroke="#f0d8b8" stroke-width="2" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Tendon hint -->
+  <path d="M30 8 C32 15 33 25 33 35 C33 45 32 55 30 62" fill="none" stroke="#a06b4a" stroke-width="1.5" stroke-opacity="0.2" stroke-linecap="round"/>
+</svg>

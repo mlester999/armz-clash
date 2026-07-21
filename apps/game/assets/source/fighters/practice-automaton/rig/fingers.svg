@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 80" width="110" height="80">
+  <defs>
+    <linearGradient id="pa-fg-metal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8a9aaa"/>
+      <stop offset="50%" stop-color="#6a7a8a"/>
+      <stop offset="100%" stop-color="#4a5a6a"/>
+    </linearGradient>
+    <linearGradient id="pa-fg-tip" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7a8a9a"/>
+      <stop offset="100%" stop-color="#3a4a5a"/>
+    </linearGradient>
+  </defs>
+  <!-- Finger 1 (index) -->
+  <path d="M8 6 C5 8 4 12 4 18 L4 52 C4 58 6 62 10 64 L16 64 C20 62 22 58 22 52 L22 18 C22 12 20 8 17 6Z" fill="url(#pa-fg-metal)"/>
+  <path d="M6 30 L20 30" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.5"/>
+  <path d="M6 44 L20 44" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.4"/>
+  <path d="M8 64 L10 72 C10 75 12 77 13 77 C14 77 16 75 16 72 L18 64Z" fill="url(#pa-fg-tip)"/>
+  <path d="M10 68 L16 68" stroke="#5ec8ff" stroke-width="1.5" stroke-opacity="0.4" stroke-linecap="round"/>
+  <!-- Finger 2 (middle) -->
+  <path d="M30 3 C27 5 26 9 26 15 L26 54 C26 60 28 64 32 66 L38 66 C42 64 44 60 44 54 L44 15 C44 9 42 5 39 3Z" fill="url(#pa-fg-metal)"/>
+  <path d="M28 28 L42 28" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.5"/>
+  <path d="M28 44 L42 44" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.4"/>
+  <path d="M30 66 L32 74 C32 77 34 79 35 79 C36 79 38 77 38 74 L40 66Z" fill="url(#pa-fg-tip)"/>
+  <path d="M32 70 L38 70" stroke="#5ec8ff" stroke-width="1.5" stroke-opacity="0.4" stroke-linecap="round"/>
+  <!-- Finger 3 (ring) -->
+  <path d="M52 5 C49 7 48 11 48 17 L48 52 C48 58 50 62 54 64 L60 64 C64 62 66 58 66 52 L66 17 C66 11 64 7 61 5Z" fill="url(#pa-fg-metal)"/>
+  <path d="M50 28 L64 28" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.5"/>
+  <path d="M50 44 L64 44" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.4"/>
+  <path d="M52 64 L54 72 C54 75 56 77 57 77 C58 77 60 75 60 72 L62 64Z" fill="url(#pa-fg-tip)"/>
+  <path d="M54 68 L60 68" stroke="#5ec8ff" stroke-width="1.5" stroke-opacity="0.4" stroke-linecap="round"/>
+  <!-- Finger 4 (pinky) -->
+  <path d="M74 10 C71 12 70 16 70 22 L70 48 C70 54 72 58 76 60 L82 60 C86 58 88 54 88 48 L88 22 C88 16 86 12 83 10Z" fill="url(#pa-fg-metal)"/>
+  <path d="M72 30 L86 30" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.5"/>
+  <path d="M72 42 L86 42" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.4"/>
+  <path d="M74 60 L76 66 C76 69 78 71 79 71 C80 71 82 69 82 66 L84 60Z" fill="url(#pa-fg-tip)"/>
+  <path d="M76 63 L82 63" stroke="#5ec8ff" stroke-width="1.5" stroke-opacity="0.4" stroke-linecap="round"/>
+  <!-- Thumb clamp -->
+  <path d="M94 14 C98 16 100 20 100 26 L100 50 C100 56 98 60 94 62 L90 62 C88 60 87 56 87 50 L87 26 C87 20 88 16 90 14Z" fill="url(#pa-fg-metal)"/>
+  <path d="M89 32 L99 32" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.5"/>
+  <path d="M90 62 L92 68 C92 70 93 71 94 71 C95 71 96 70 96 68 L98 62Z" fill="url(#pa-fg-tip)"/>
+  <!-- Joint rivets on each finger -->
+  <path d="M11 18 a1.5 1.5 0 1 0 3 0 a1.5 1.5 0 1 0 -3 0" fill="#8a9aaa"/>
+  <path d="M33 15 a1.5 1.5 0 1 0 3 0 a1.5 1.5 0 1 0 -3 0" fill="#8a9aaa"/>
+  <path d="M55 17 a1.5 1.5 0 1 0 3 0 a1.5 1.5 0 1 0 -3 0" fill="#8a9aaa"/>
+  <path d="M77 22 a1.5 1.5 0 1 0 3 0 a1.5 1.5 0 1 0 -3 0" fill="#8a9aaa"/>
+  <!-- Edge highlights -->
+  <path d="M8 6 C5 8 4 12 4 18 L4 52" fill="none" stroke="#b0c8e0" stroke-width="1" stroke-opacity="0.25" stroke-linecap="round"/>
+  <path d="M30 3 C27 5 26 9 26 15 L26 54" fill="none" stroke="#b0c8e0" stroke-width="1" stroke-opacity="0.25" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+  <defs>
+    <linearGradient id="rbv-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#141c2c"/>
+      <stop offset="100%" stop-color="#070a10"/>
+    </linearGradient>
+    <radialGradient id="rbv-glow" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rbv-skin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d4956e"/>
+      <stop offset="50%" stop-color="#c48a6a"/>
+      <stop offset="100%" stop-color="#a06b4a"/>
+    </linearGradient>
+    <linearGradient id="rbv-cloth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a3828"/>
+      <stop offset="100%" stop-color="#2d2118"/>
+    </linearGradient>
+    <linearGradient id="rbv-metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8a8a7a"/>
+      <stop offset="100%" stop-color="#5a5a4a"/>
+    </linearGradient>
+    <filter id="rbv-tex">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="m"/>
+      <feBlend in="SourceGraphic" in2="m" mode="overlay"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+  <rect width="300" height="400" fill="url(#rbv-bg)"/>
+  <ellipse cx="150" cy="160" rx="120" ry="100" fill="url(#rbv-glow)"/>
+  <!-- Diagonal energy slash -->
+  <path d="M0 350 L120 0 L140 0 L20 350Z" fill="#5ec8ff" fill-opacity="0.06"/>
+  <path d="M280 400 L160 50 L180 50 L300 400Z" fill="#d4af6a" fill-opacity="0.05"/>
+  <!-- === FIGHTING STANCE ARM === -->
+  <!-- Shoulder -->
+  <path d="M85 260 C78 230 82 195 96 170 C108 150 130 140 150 146 C170 152 182 172 180 200 C178 225 170 250 156 268 L110 272 C95 268 87 265 85 260Z" fill="url(#rbv-skin)" filter="url(#rbv-tex)"/>
+  <path d="M128 144 C124 170 122 200 124 230 C125 252 128 268 132 278" fill="none" stroke="#8a5535" stroke-width="2.5" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Strap -->
+  <path d="M98 158 C112 146 132 140 155 143 C165 145 172 149 178 155 L174 164 C168 158 158 155 148 155 C132 155 114 162 104 172Z" fill="url(#rbv-cloth)"/>
+  <!-- Upper arm -->
+  <path d="M152 210 C160 235 166 265 170 295 C172 310 170 322 162 328 L142 326 C136 318 134 302 136 280 C138 258 144 232 152 210Z" fill="url(#rbv-skin)" filter="url(#rbv-tex)"/>
+  <!-- Elbow -->
+  <path d="M140 320 C136 328 136 338 142 345 C148 352 160 352 166 345 C172 338 172 328 168 320 C160 314 148 314 140 320Z" fill="url(#rbv-skin)"/>
+  <!-- Forearm raised -->
+  <path d="M142 342 C134 322 128 296 126 268 C124 242 128 222 136 210 C144 200 154 196 162 200 C170 206 176 220 178 242 C180 268 176 298 170 325 C166 342 160 354 152 360 C146 362 143 356 142 342Z" fill="url(#rbv-skin)" filter="url(#rbv-tex)"/>
+  <!-- Wrist wraps -->
+  <path d="M128 252 C126 260 126 272 128 280 C130 286 136 290 142 292 L170 290 C176 286 180 278 180 268 C180 258 178 252 174 248 L134 246 C131 246 129 249 128 252Z" fill="url(#rbv-cloth)"/>
+  <path d="M130 256 C142 254 162 254 176 256" fill="none" stroke="#d4c8b0" stroke-width="4" stroke-opacity="0.6" stroke-linecap="round"/>
+  <path d="M129 264 C142 262 162 262 177 264" fill="none" stroke="#d4c8b0" stroke-width="3.5" stroke-opacity="0.5" stroke-linecap="round"/>
+  <path d="M129 272 C142 270 162 270 177 272" fill="none" stroke="#d4c8b0" stroke-width="4" stroke-opacity="0.55" stroke-linecap="round"/>
+  <!-- Bracer -->
+  <path d="M136 258 C134 264 134 272 136 278 C138 283 142 286 148 287 L164 286 C170 283 173 277 173 270 C173 263 171 258 168 255 L142 254 C139 254 137 256 136 258Z" fill="url(#rbv-metal)"/>
+  <path d="M140 260 C146 258 158 257 166 260" fill="none" stroke="#c0c0b0" stroke-width="1.5" stroke-opacity="0.4" stroke-linecap="round"/>
+  <!-- Fist -->
+  <path d="M132 208 C128 200 128 188 132 180 C136 174 144 170 154 170 C164 170 172 174 176 180 C180 188 180 200 176 208 C172 216 164 220 154 220 C144 220 136 216 132 208Z" fill="url(#rbv-skin)"/>
+  <path d="M138 184 C136 178 138 172 144 170 C150 168 155 170 156 176 C157 180 156 186 154 190 L142 188 C139 187 138 186 138 184Z" fill="url(#rbv-skin)"/>
+  <path d="M155 180 C154 174 156 168 162 166 C168 164 173 167 174 172 C175 178 173 184 171 188 L158 186 C156 184 155 182 155 180Z" fill="url(#rbv-skin)"/>
+  <path d="M130 200 C126 196 124 190 126 184 C128 180 132 178 136 180 C138 184 138 190 136 196 C135 200 132 202 130 200Z" fill="url(#rbv-skin)"/>
+  <!-- Rim light -->
+  <path d="M96 170 C108 150 130 140 150 146 C170 152 182 172 180 200" fill="none" stroke="#5ec8ff" stroke-width="2" stroke-opacity="0.25" stroke-linecap="round"/>
+  <!-- VS energy -->
+  <path d="M150 380 L155 370 L160 380 L155 390Z" fill="#5ec8ff" fill-opacity="0.3"/>
+</svg>

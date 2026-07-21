@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120" width="100" height="120">
+  <defs>
+    <linearGradient id="rb-hand-skin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d4956e"/>
+      <stop offset="50%" stop-color="#c48a6a"/>
+      <stop offset="100%" stop-color="#a87050"/>
+    </linearGradient>
+    <radialGradient id="rb-hand-palm" cx="0.45" cy="0.4" r="0.5">
+      <stop offset="0%" stop-color="#daa882" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#c48a6a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rb-hand-shadow" x1="0.7" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#7a4a30" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#5a3020" stop-opacity="0.4"/>
+    </linearGradient>
+  </defs>
+  <!-- Palm base -->
+  <path d="M20 45 C15 35 14 22 18 12 C22 5 32 2 45 2 C58 2 70 5 76 12 C82 20 82 35 78 48 C74 60 68 72 60 82 C52 90 42 94 34 90 C26 86 22 72 20 60 C19 52 19 48 20 45Z" fill="url(#rb-hand-skin)"/>
+  <!-- Palm pad highlight -->
+  <path d="M28 20 C34 12 46 8 58 10 C66 12 72 18 74 28 C72 22 64 16 54 14 C42 12 32 15 28 20Z" fill="url(#rb-hand-palm)"/>
+  <!-- Index finger -->
+  <path d="M22 12 C20 6 22 0 28 -2 C34 -4 38 0 38 6 C38 12 36 18 34 22 L26 20 C24 18 22 15 22 12Z" fill="url(#rb-hand-skin)"/>
+  <!-- Middle finger -->
+  <path d="M38 8 C37 2 39 -4 45 -6 C51 -8 55 -4 55 2 C55 8 53 14 51 18 L43 16 C40 14 38 11 38 8Z" fill="url(#rb-hand-skin)"/>
+  <!-- Ring finger -->
+  <path d="M55 10 C54 4 56 -2 62 -3 C68 -4 72 0 72 6 C72 12 70 18 68 22 L60 20 C57 18 55 14 55 10Z" fill="url(#rb-hand-skin)"/>
+  <!-- Pinky finger -->
+  <path d="M70 16 C70 10 72 5 77 4 C82 3 86 7 86 12 C86 18 84 24 82 28 L74 26 C71 24 70 20 70 16Z" fill="url(#rb-hand-skin)"/>
+  <!-- Thumb -->
+  <path d="M18 45 C12 42 8 36 8 28 C8 20 12 14 18 12 C22 14 24 20 24 28 C24 36 22 42 20 46Z" fill="url(#rb-hand-skin)"/>
+  <!-- Knuckle bumps -->
+  <path d="M26 10 C28 8 32 8 34 10 M42 6 C44 4 48 4 50 6 M58 8 C60 6 64 6 66 8 M72 14 C74 12 78 12 80 14" fill="none" stroke="#a06b4a" stroke-width="1.5" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Finger separation lines -->
+  <path d="M36 18 L38 8 M52 16 L54 8 M68 20 L70 12" stroke="#8a5535" stroke-width="1" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Palm crease lines -->
+  <path d="M24 35 C32 30 44 28 58 32" fill="none" stroke="#8a5535" stroke-width="1.2" stroke-opacity="0.25" stroke-linecap="round"/>
+  <path d="M22 50 C30 45 42 44 56 48" fill="none" stroke="#8a5535" stroke-width="1" stroke-opacity="0.2" stroke-linecap="round"/>
+  <!-- Shadow side -->
+  <path d="M76 12 C82 20 82 35 78 48 C74 60 68 72 60 82 C66 70 72 55 74 40 C76 28 76 18 76 12Z" fill="url(#rb-hand-shadow)"/>
+  <!-- Rim light -->
+  <path d="M18 12 C22 5 32 2 45 2 C58 2 70 5 76 12" fill="none" stroke="#f0d8b8" stroke-width="1.2" stroke-opacity="0.3" stroke-linecap="round"/>
+</svg>

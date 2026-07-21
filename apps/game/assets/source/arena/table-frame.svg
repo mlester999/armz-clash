@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 260" width="800" height="260">
+  <defs>
+    <linearGradient id="ar-tf-metal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3a4048"/>
+      <stop offset="50%" stop-color="#2a3038"/>
+      <stop offset="100%" stop-color="#1a2028"/>
+    </linearGradient>
+    <linearGradient id="ar-tf-leg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4a5058"/>
+      <stop offset="50%" stop-color="#3a4048"/>
+      <stop offset="100%" stop-color="#2a3038"/>
+    </linearGradient>
+    <linearGradient id="ar-tf-gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#d4af6a" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#d4af6a" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Frame shadow -->
+  <path d="M100 240 C100 232 240 226 400 226 C560 226 700 232 700 240 C700 248 560 254 400 254 C240 254 100 248 100 240Z" fill="#000000" fill-opacity="0.4"/>
+  <!-- Left leg -->
+  <path d="M120 20 L150 20 L160 230 L110 230Z" fill="url(#ar-tf-leg)"/>
+  <path d="M125 25 L145 25 L153 225 L117 225Z" fill="url(#ar-tf-metal)"/>
+  <!-- Left leg cross brace -->
+  <path d="M115 120 L155 120 L157 135 L113 135Z" fill="#3a4048"/>
+  <!-- Right leg -->
+  <path d="M650 20 L680 20 L690 230 L640 230Z" fill="url(#ar-tf-leg)"/>
+  <path d="M655 25 L675 25 L683 225 L647 225Z" fill="url(#ar-tf-metal)"/>
+  <!-- Right leg cross brace -->
+  <path d="M645 120 L685 120 L687 135 L643 135Z" fill="#3a4048"/>
+  <!-- Center support -->
+  <path d="M380 20 L420 20 L425 225 L375 225Z" fill="url(#ar-tf-metal)"/>
+  <path d="M385 25 L415 25 L419 220 L381 220Z" fill="#2a3038"/>
+  <!-- Horizontal frame bar -->
+  <path d="M100 30 L700 30 L700 50 L100 50Z" fill="url(#ar-tf-metal)"/>
+  <path d="M105 33 L695 33 L695 47 L105 47Z" fill="#2a3038"/>
+  <!-- Gold accent strip on frame -->
+  <path d="M110 38 L690 38" stroke="url(#ar-tf-gold)" stroke-width="2"/>
+  <!-- Leg bolts -->
+  <path d="M130 60 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0" fill="#5a6068"/>
+  <path d="M130 180 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0" fill="#5a6068"/>
+  <path d="M660 60 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0" fill="#5a6068"/>
+  <path d="M660 180 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0" fill="#5a6068"/>
+  <path d="M395 60 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0" fill="#5a6068"/>
+  <path d="M395 180 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0" fill="#5a6068"/>
+  <!-- Foot pads -->
+  <path d="M105 225 L165 225 L168 240 L102 240Z" fill="#2a3038"/>
+  <path d="M635 225 L695 225 L698 240 L632 240Z" fill="#2a3038"/>
+  <path d="M370 220 L430 220 L433 240 L367 240Z" fill="#2a3038"/>
+  <!-- Edge highlights -->
+  <path d="M120 20 L150 20" stroke="#6a7078" stroke-width="1" stroke-opacity="0.4"/>
+  <path d="M650 20 L680 20" stroke="#6a7078" stroke-width="1" stroke-opacity="0.4"/>
+  <path d="M100 30 L700 30" stroke="#6a7078" stroke-width="1" stroke-opacity="0.3"/>
+</svg>

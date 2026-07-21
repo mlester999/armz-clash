@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" width="120" height="200">
+  <defs>
+    <linearGradient id="pa-hl-spec" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e0f0ff" stop-opacity="0"/>
+      <stop offset="40%" stop-color="#e0f0ff" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#e0f0ff" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#e0f0ff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="pa-hl-spot" cx="0.4" cy="0.3" r="0.5">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="pa-hl-cyan" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Shoulder specular -->
+  <path d="M30 15 C40 8 55 5 70 8 C80 10 88 16 92 24 L88 30 C82 22 72 16 60 14 C48 12 38 15 32 22Z" fill="url(#pa-hl-spec)"/>
+  <!-- Upper arm specular stripe -->
+  <path d="M38 35 C36 50 36 70 38 90 L42 90 C40 70 40 50 42 35Z" fill="url(#pa-hl-spec)" fill-opacity="0.6"/>
+  <!-- Elbow bearing highlight -->
+  <path d="M48 95 C52 90 60 88 68 90 C74 92 78 96 80 102 L76 106 C74 100 70 96 64 94 C58 92 52 94 50 98Z" fill="url(#pa-hl-spot)"/>
+  <!-- Forearm casing specular -->
+  <path d="M42 110 C40 125 40 145 42 165 L46 165 C44 145 44 125 46 110Z" fill="url(#pa-hl-spec)" fill-opacity="0.5"/>
+  <!-- Wrist assembly highlight -->
+  <path d="M40 168 C44 165 52 164 60 166 L58 172 C52 170 46 170 42 172Z" fill="url(#pa-hl-spot)" fill-opacity="0.7"/>
+  <!-- Hand chassis specular -->
+  <path d="M35 175 C40 172 50 170 60 172 C68 174 74 178 78 184 L74 188 C70 182 64 178 56 176 C48 174 40 176 37 180Z" fill="url(#pa-hl-spec)" fill-opacity="0.5"/>
+  <!-- Cyan accent glows at joints -->
+  <path d="M55 92 L65 92 L66 96 L64 100 L56 100 L54 96Z" fill="url(#pa-hl-cyan)"/>
+  <path d="M45 165 L55 165 L56 169 L54 173 L46 173 L44 169Z" fill="url(#pa-hl-cyan)"/>
+  <!-- Rim light along left edge -->
+  <path d="M28 20 C24 35 22 55 22 80 C22 110 24 140 28 165" fill="none" stroke="#c0e0ff" stroke-width="2" stroke-opacity="0.2" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 70" width="50" height="70">
+  <defs>
+    <linearGradient id="rb-thumb-skin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d4956e"/>
+      <stop offset="50%" stop-color="#c48a6a"/>
+      <stop offset="100%" stop-color="#a87050"/>
+    </linearGradient>
+  </defs>
+  <!-- Thumb mass -->
+  <path d="M15 65 C8 58 4 45 5 32 C6 20 10 10 18 5 C26 0 35 2 40 10 C45 18 46 32 44 45 C42 55 38 62 32 66 C26 70 20 69 15 65Z" fill="url(#rb-thumb-skin)"/>
+  <!-- Thumb pad highlight -->
+  <path d="M18 15 C22 8 30 5 36 8 C40 12 42 20 42 30 C38 22 32 16 26 14 C22 13 19 14 18 15Z" fill="#daa882" fill-opacity="0.4"/>
+  <!-- Thumb joint crease -->
+  <path d="M10 35 C16 32 26 32 36 35" fill="none" stroke="#8a5535" stroke-width="1.5" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Thumbnail -->
+  <path d="M20 8 C24 4 32 4 36 8 C38 12 38 18 36 22 C32 18 26 16 22 18 C20 14 20 10 20 8Z" fill="#e0b898" fill-opacity="0.5"/>
+  <!-- Shadow edge -->
+  <path d="M40 10 C45 18 46 32 44 45 C42 55 38 62 32 66" fill="none" stroke="#7a4a30" stroke-width="1.5" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Rim light -->
+  <path d="M18 5 C26 0 35 2 40 10" fill="none" stroke="#f0d8b8" stroke-width="1.2" stroke-opacity="0.3" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" width="320" height="400">
+  <defs>
+    <linearGradient id="parv-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a1a28"/>
+      <stop offset="100%" stop-color="#060d14"/>
+    </linearGradient>
+    <linearGradient id="parv-metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8a9aaa"/>
+      <stop offset="40%" stop-color="#6a7a8a"/>
+      <stop offset="100%" stop-color="#4a5a6a"/>
+    </linearGradient>
+    <linearGradient id="parv-dark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a4a5a"/>
+      <stop offset="100%" stop-color="#2a3a4a"/>
+    </linearGradient>
+    <radialGradient id="parv-eye" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#5ec8ff"/>
+      <stop offset="60%" stop-color="#3aa0dd"/>
+      <stop offset="100%" stop-color="#2a7ab0"/>
+    </radialGradient>
+    <radialGradient id="parv-glow" cx="0.5" cy="0.3" r="0.6">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="parv-brush">
+      <feTurbulence type="fractalNoise" baseFrequency="0.05 0.4" numOctaves="2" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="m"/>
+      <feBlend in="SourceGraphic" in2="m" mode="overlay" result="t"/>
+      <feComposite in="t" in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+  <!-- Background with victory glow -->
+  <path d="M0 0 L320 0 L320 400 L0 400Z" fill="url(#parv-bg)"/>
+  <path d="M0 0 L320 0 L320 400 L0 400Z" fill="url(#parv-glow)"/>
+  <!-- Victory energy rays -->
+  <path d="M160 80 L100 0 M160 80 L160 0 M160 80 L220 0 M160 80 L60 20 M160 80 L260 20" stroke="#5ec8ff" stroke-width="1.5" stroke-opacity="0.1"/>
+  <!-- Torso - triumphant pose -->
+  <path d="M100 160 C90 170 85 185 85 205 L85 300 C85 315 90 325 100 332 L120 342 L200 342 L220 332 C230 325 235 315 235 300 L235 205 C235 185 230 170 220 160 L195 148 L125 148Z" fill="url(#parv-metal)" filter="url(#parv-brush)"/>
+  <!-- Chest plate -->
+  <path d="M110 165 L210 165 L215 175 L215 260 L210 270 L110 270 L105 260 L105 175Z" fill="url(#parv-dark)"/>
+  <!-- Chest core - bright victory state -->
+  <path d="M140 190 L180 190 L188 215 L180 240 L140 240 L132 215Z" fill="#1a2a3a"/>
+  <path d="M146 196 L174 196 L180 215 L174 234 L146 234 L140 215Z" fill="#5ec8ff" fill-opacity="0.25"/>
+  <path d="M152 202 L168 202 L172 215 L168 228 L152 228 L148 215Z" fill="#5ec8ff" fill-opacity="0.5"/>
+  <path d="M156 208 L164 208 L166 215 L164 222 L156 222 L154 215Z" fill="#a0e8ff" fill-opacity="0.7"/>
+  <!-- Shoulder mounts -->
+  <path d="M80 155 C70 158 65 165 65 175 L65 205 C65 215 70 222 80 225 L100 225 L100 155Z" fill="url(#parv-metal)"/>
+  <path d="M240 155 C250 158 255 165 255 175 L255 205 C255 215 250 222 240 225 L220 225 L220 155Z" fill="url(#parv-metal)"/>
+  <!-- Raised arms - victory pose -->
+  <path d="M65 170 C55 160 48 145 45 125 L42 95 C40 82 44 72 52 68 L62 65 L78 70 L80 100 L82 135 C82 150 76 162 70 168Z" fill="url(#parv-metal)"/>
+  <path d="M255 170 C265 160 272 145 275 125 L278 95 C280 82 276 72 268 68 L258 65 L242 70 L240 100 L238 135 C238 150 244 162 250 168Z" fill="url(#parv-metal)"/>
+  <!-- Raised fists -->
+  <path d="M38 60 C34 64 32 70 32 78 C32 86 34 92 38 96 L50 102 L68 102 L78 96 C82 92 84 86 84 78 C84 70 82 64 78 60 L68 56 L48 56Z" fill="url(#parv-metal)"/>
+  <path d="M242 60 C238 64 236 70 236 78 C236 86 238 92 242 96 L252 102 L270 102 L280 96 C284 92 286 86 286 78 C286 70 284 64 280 60 L270 56 L252 56Z" fill="url(#parv-metal)"/>
+  <!-- Fist knuckle lines -->
+  <path d="M42 72 L74 72 M42 82 L74 82" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.4"/>
+  <path d="M246 72 L278 72 M246 82 L278 82" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.4"/>
+  <!-- Cyan power lines on raised arms -->
+  <path d="M52 80 L52 155" stroke="#5ec8ff" stroke-width="2" stroke-opacity="0.35" stroke-linecap="round"/>
+  <path d="M268 80 L268 155" stroke="#5ec8ff" stroke-width="2" stroke-opacity="0.35" stroke-linecap="round"/>
+  <!-- Head -->
+  <path d="M130 80 C124 86 120 96 120 108 L120 135 C120 143 124 149 130 153 L140 158 L180 158 L190 153 C196 149 200 143 200 135 L200 108 C200 96 196 86 190 80 L178 74 L142 74Z" fill="url(#parv-metal)" filter="url(#parv-brush)"/>
+  <!-- Head crest -->
+  <path d="M138 76 C142 70 150 66 160 66 C170 66 178 70 182 76 L184 80 L136 80Z" fill="url(#parv-dark)"/>
+  <path d="M146 72 L174 72" stroke="#5ec8ff" stroke-width="1.5" stroke-opacity="0.5" stroke-linecap="round"/>
+  <!-- Visor -->
+  <path d="M128 92 L192 92 L196 100 L196 122 L192 130 L128 130 L124 122 L124 100Z" fill="#1a2a3a"/>
+  <!-- Eyes - bright, triumphant -->
+  <path d="M136 100 C136 96 140 93 146 93 C152 93 156 96 156 100 L156 118 C156 122 152 125 146 125 C140 125 136 122 136 118Z" fill="url(#parv-eye)"/>
+  <path d="M164 100 C164 96 168 93 174 93 C180 93 184 96 184 100 L184 118 C184 122 180 125 174 125 C168 125 164 122 164 118Z" fill="url(#parv-eye)"/>
+  <path d="M140 102 C140 100 142 98 146 98 C150 98 152 100 152 102 L152 110 C152 112 150 114 146 114 C142 114 140 112 140 110Z" fill="#a0e8ff" fill-opacity="0.6"/>
+  <path d="M168 102 C168 100 170 98 174 98 C178 98 180 100 180 102 L180 110 C180 112 178 114 174 114 C170 114 168 112 168 110Z" fill="#a0e8ff" fill-opacity="0.6"/>
+  <!-- Mouth grille -->
+  <path d="M142 134 L178 134 L180 138 L180 148 L178 150 L142 150 L140 148 L140 138Z" fill="#1a2a3a"/>
+  <path d="M146 138 L174 138 M146 142 L174 142 M146 146 L174 146" stroke="#3a4a5a" stroke-width="1.5" stroke-opacity="0.6"/>
+  <!-- Antenna -->
+  <path d="M157 66 L157 56 C157 53 159 51 160 51 C161 51 163 53 163 56 L163 66" fill="none" stroke="#6a7a8a" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M158 53 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#5ec8ff"/>
+  <!-- Waist -->
+  <path d="M115 330 L205 330 L210 340 L210 400 L110 400 L110 340Z" fill="url(#parv-dark)"/>
+  <!-- Panel seams and rivets -->
+  <path d="M110 165 L210 165" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.5"/>
+  <path d="M110 270 L210 270" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.5"/>
+  <path d="M112 170 a2.5 2.5 0 1 0 5 0 a2.5 2.5 0 1 0 -5 0" fill="#7a8a98"/>
+  <path d="M203 170 a2.5 2.5 0 1 0 5 0 a2.5 2.5 0 1 0 -5 0" fill="#7a8a98"/>
+  <!-- Edge rim light -->
+  <path d="M100 160 C90 170 85 185 85 205 L85 300" fill="none" stroke="#b0c8e0" stroke-width="2" stroke-opacity="0.2" stroke-linecap="round"/>
+  <!-- Victory sparkles -->
+  <path d="M50 40 L54 32 L58 40 L54 48Z" fill="#5ec8ff" fill-opacity="0.4"/>
+  <path d="M270 35 L274 27 L278 35 L274 43Z" fill="#5ec8ff" fill-opacity="0.35"/>
+  <path d="M30 120 L33 114 L36 120 L33 126Z" fill="#5ec8ff" fill-opacity="0.3"/>
+  <path d="M290 110 L293 104 L296 110 L293 116Z" fill="#5ec8ff" fill-opacity="0.3"/>
+</svg>

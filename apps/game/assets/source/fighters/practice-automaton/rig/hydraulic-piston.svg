@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 160" width="40" height="160">
+  <defs>
+    <linearGradient id="pa-hp-cylinder" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8a9aaa"/>
+      <stop offset="30%" stop-color="#6a7a8a"/>
+      <stop offset="70%" stop-color="#5a6a7a"/>
+      <stop offset="100%" stop-color="#3a4a5a"/>
+    </linearGradient>
+    <linearGradient id="pa-hp-rod" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c0d0e0"/>
+      <stop offset="30%" stop-color="#a0b0c0"/>
+      <stop offset="70%" stop-color="#8a9aaa"/>
+      <stop offset="100%" stop-color="#6a7a8a"/>
+    </linearGradient>
+    <linearGradient id="pa-hp-cyan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#5ec8ff" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Cylinder body -->
+  <path d="M6 10 C4 12 3 16 3 22 L3 95 C3 100 5 104 10 106 L30 106 C35 104 37 100 37 95 L37 22 C37 16 36 12 34 10 L10 8 C8 8 7 9 6 10Z" fill="url(#pa-hp-cylinder)"/>
+  <!-- Cylinder cap top -->
+  <path d="M8 8 C8 4 12 2 20 2 C28 2 32 4 32 8 L34 10 L6 10Z" fill="#8a9aaa"/>
+  <!-- Piston rod -->
+  <path d="M14 106 L14 150 C14 154 16 156 20 156 C24 156 26 154 26 150 L26 106Z" fill="url(#pa-hp-rod)"/>
+  <!-- Rod shine -->
+  <path d="M17 108 L17 148" fill="none" stroke="#e0f0ff" stroke-width="2" stroke-opacity="0.4" stroke-linecap="round"/>
+  <!-- Cylinder bands -->
+  <path d="M4 30 L36 30" stroke="#2a3a4a" stroke-width="2" stroke-opacity="0.4"/>
+  <path d="M4 55 L36 55" stroke="#2a3a4a" stroke-width="2" stroke-opacity="0.4"/>
+  <path d="M4 80 L36 80" stroke="#2a3a4a" stroke-width="2" stroke-opacity="0.4"/>
+  <!-- Cyan pressure indicator -->
+  <path d="M8 35 L8 75" stroke="url(#pa-hp-cyan)" stroke-width="4" stroke-linecap="round"/>
+  <!-- Mounting brackets -->
+  <path d="M2 18 C0 18 -1 20 0 22 L2 22Z" fill="#6a7a8a"/>
+  <path d="M38 18 C40 18 41 20 40 22 L38 22Z" fill="#6a7a8a"/>
+  <path d="M2 88 C0 88 -1 90 0 92 L2 92Z" fill="#6a7a8a"/>
+  <path d="M38 88 C40 88 41 90 40 92 L38 92Z" fill="#6a7a8a"/>
+  <!-- Bottom mount -->
+  <path d="M12 150 C10 152 10 156 12 158 L28 158 C30 156 30 152 28 150Z" fill="#6a7a8a"/>
+  <!-- Edge highlight -->
+  <path d="M6 10 C4 12 3 16 3 22 L3 95" fill="none" stroke="#b0c8e0" stroke-width="1" stroke-opacity="0.25" stroke-linecap="round"/>
+</svg>

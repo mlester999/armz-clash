@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  <defs>
+    <linearGradient id="ar-bg-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#04070d"/>
+      <stop offset="40%" stop-color="#080e18"/>
+      <stop offset="70%" stop-color="#0a1020"/>
+      <stop offset="100%" stop-color="#0c1225"/>
+    </linearGradient>
+    <radialGradient id="ar-bg-spot" cx="0.5" cy="0.65" r="0.5">
+      <stop offset="0%" stop-color="#d4af6a" stop-opacity="0.08"/>
+      <stop offset="60%" stop-color="#d4af6a" stop-opacity="0.03"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ar-bg-floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a0e14"/>
+      <stop offset="100%" stop-color="#060a10"/>
+    </linearGradient>
+    <pattern id="ar-bg-wall" width="80" height="120" patternUnits="userSpaceOnUse">
+      <path d="M0 0 L80 0 L80 120 L0 120Z" fill="#0e1420"/>
+      <path d="M2 2 L78 2 L78 118 L2 118Z" fill="#101828"/>
+      <path d="M4 4 L76 4 L76 116 L4 116Z" fill="#0c1420"/>
+      <path d="M38 4 L42 4 L42 116 L38 116Z" fill="#0a1018" fill-opacity="0.5"/>
+      <path d="M4 58 L76 58" stroke="#0a1018" stroke-width="1" stroke-opacity="0.4"/>
+    </pattern>
+    <linearGradient id="ar-bg-pillar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1a2438"/>
+      <stop offset="50%" stop-color="#141c2e"/>
+      <stop offset="100%" stop-color="#0e1420"/>
+    </linearGradient>
+  </defs>
+  <!-- Sky / upper arena -->
+  <path d="M0 0 L1280 0 L1280 720 L0 720Z" fill="url(#ar-bg-sky)"/>
+  <!-- Wall panels (tiling) -->
+  <path d="M0 0 L1280 0 L1280 400 L0 400Z" fill="url(#ar-bg-wall)" fill-opacity="0.6"/>
+  <!-- Arena pillars -->
+  <path d="M100 0 L116 0 L116 400 L100 400Z" fill="url(#ar-bg-pillar)" fill-opacity="0.7"/>
+  <path d="M310 0 L326 0 L326 400 L310 400Z" fill="url(#ar-bg-pillar)" fill-opacity="0.7"/>
+  <path d="M520 0 L536 0 L536 400 L520 400Z" fill="url(#ar-bg-pillar)" fill-opacity="0.7"/>
+  <path d="M744 0 L760 0 L760 400 L744 400Z" fill="url(#ar-bg-pillar)" fill-opacity="0.7"/>
+  <path d="M954 0 L970 0 L970 400 L954 400Z" fill="url(#ar-bg-pillar)" fill-opacity="0.7"/>
+  <path d="M1164 0 L1180 0 L1180 400 L1164 400Z" fill="url(#ar-bg-pillar)" fill-opacity="0.7"/>
+  <!-- Pillar accent strips -->
+  <path d="M106 20 L110 20 L110 380 L106 380Z" fill="#d4af6a" fill-opacity="0.06"/>
+  <path d="M316 20 L320 20 L320 380 L316 380Z" fill="#d4af6a" fill-opacity="0.06"/>
+  <path d="M526 20 L530 20 L530 380 L526 380Z" fill="#d4af6a" fill-opacity="0.06"/>
+  <path d="M750 20 L754 20 L754 380 L750 380Z" fill="#d4af6a" fill-opacity="0.06"/>
+  <path d="M960 20 L964 20 L964 380 L960 380Z" fill="#d4af6a" fill-opacity="0.06"/>
+  <path d="M1170 20 L1174 20 L1174 380 L1170 380Z" fill="#d4af6a" fill-opacity="0.06"/>
+  <!-- Spotlight cones -->
+  <path d="M540 0 L740 0 L900 520 L380 520Z" fill="#ffffff" fill-opacity="0.025"/>
+  <path d="M590 0 L690 0 L780 520 L500 520Z" fill="#fff8e0" fill-opacity="0.02"/>
+  <!-- Central spotlight pool -->
+  <path d="M380 460 C380 420 500 390 640 390 C780 390 900 420 900 460 C900 500 780 530 640 530 C500 530 380 500 380 460Z" fill="url(#ar-bg-spot)"/>
+  <!-- Floor -->
+  <path d="M0 520 L1280 520 L1280 720 L0 720Z" fill="url(#ar-bg-floor)"/>
+  <!-- Floor edge highlight -->
+  <path d="M0 520 L1280 520" stroke="#d4af6a" stroke-width="2" stroke-opacity="0.12"/>
+  <!-- Floor reflection hints -->
+  <path d="M400 560 L880 560" stroke="#d4af6a" stroke-width="1" stroke-opacity="0.04"/>
+  <path d="M450 600 L830 600" stroke="#d4af6a" stroke-width="1" stroke-opacity="0.03"/>
+  <!-- Atmospheric haze -->
+  <path d="M200 350 C300 330 500 320 640 320 C780 320 980 330 1080 350 C1080 380 980 400 640 400 C300 400 200 380 200 350Z" fill="#d4af6a" fill-opacity="0.015"/>
+</svg>

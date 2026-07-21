@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 320" width="280" height="320">
+  <defs>
+    <linearGradient id="rbp-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a2438"/>
+      <stop offset="60%" stop-color="#0d121c"/>
+      <stop offset="100%" stop-color="#070a10"/>
+    </linearGradient>
+    <radialGradient id="rbp-glow" cx="50%" cy="35%" r="50%">
+      <stop offset="0%" stop-color="#d4af6a" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#d4af6a" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rbp-skin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d4956e"/>
+      <stop offset="50%" stop-color="#c48a6a"/>
+      <stop offset="100%" stop-color="#a06b4a"/>
+    </linearGradient>
+    <linearGradient id="rbp-cloth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a3828"/>
+      <stop offset="100%" stop-color="#2d2118"/>
+    </linearGradient>
+    <linearGradient id="rbp-metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8a8a7a"/>
+      <stop offset="100%" stop-color="#5a5a4a"/>
+    </linearGradient>
+    <filter id="rbp-tex">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="m"/>
+      <feBlend in="SourceGraphic" in2="m" mode="overlay"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+  <!-- Background -->
+  <rect width="280" height="320" fill="url(#rbp-bg)"/>
+  <ellipse cx="140" cy="110" rx="100" ry="85" fill="url(#rbp-glow)"/>
+  <!-- Floor shadow -->
+  <ellipse cx="140" cy="290" rx="80" ry="12" fill="#000" opacity="0.5"/>
+  <ellipse cx="140" cy="287" rx="60" ry="7" fill="#d4af6a" opacity="0.08"/>
+  <!-- === SHOULDER + DELTOID === -->
+  <path d="M80 200 C72 168 76 132 92 108 C106 88 130 78 152 86 C174 94 188 120 186 155 C184 185 174 210 158 225 L105 230 C90 224 82 214 80 200Z" fill="url(#rbp-skin)" filter="url(#rbp-tex)"/>
+  <!-- Deltoid separation -->
+  <path d="M130 82 C126 105 124 135 126 165 C127 190 130 210 134 228" fill="none" stroke="#8a5535" stroke-width="2.5" stroke-opacity="0.35" stroke-linecap="round"/>
+  <!-- Anterior deltoid highlight -->
+  <path d="M95 120 C102 100 118 88 138 84 C152 82 164 88 170 100 C174 110 172 125 168 138 C160 122 146 110 130 108 C114 106 100 112 95 120Z" fill="#daa882" fill-opacity="0.35"/>
+  <!-- Cloth strap -->
+  <path d="M98 92 C110 82 128 76 148 78 C158 79 166 82 172 88 L168 98 C162 92 152 89 142 89 C128 89 112 94 102 102Z" fill="url(#rbp-cloth)"/>
+  <path d="M102 88 L104 95 M112 84 L114 91 M122 81 L124 88 M132 80 L134 87 M142 80 L144 87 M152 82 L154 89 M162 85 L164 92" stroke="#6b5540" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round"/>
+  <!-- === UPPER ARM === -->
+  <path d="M148 165 C156 188 162 212 166 238 C168 252 166 264 158 270 L140 268 C134 260 132 244 134 224 C136 202 140 182 148 165Z" fill="url(#rbp-skin)" filter="url(#rbp-tex)"/>
+  <!-- Bicep highlight -->
+  <path d="M150 175 C154 192 158 215 160 238" fill="none" stroke="#fff" stroke-width="4" stroke-opacity="0.06" stroke-linecap="round"/>
+  <!-- Tricep shadow -->
+  <path d="M162 180 C166 200 168 225 166 248 C168 230 168 205 164 185Z" fill="#6b3f28" fill-opacity="0.3"/>
+  <!-- === ELBOW === -->
+  <path d="M138 262 C134 268 134 278 140 284 C146 290 156 290 162 284 C168 278 168 268 164 262 C158 256 144 256 138 262Z" fill="url(#rbp-skin)"/>
+  <path d="M142 270 C148 268 156 268 160 270" fill="none" stroke="#8a5535" stroke-width="1.5" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- === FOREARM === -->
+  <path d="M140 282 C132 265 126 242 124 218 C122 195 124 175 130 162 C136 152 146 148 155 152 C164 156 170 168 172 185 C174 205 172 230 168 255 C165 272 160 284 152 290 C146 292 142 288 140 282Z" fill="url(#rbp-skin)" filter="url(#rbp-tex)"/>
+  <!-- Flexor mass -->
+  <path d="M132 200 C136 185 144 172 154 168 C160 172 164 182 164 195 C162 185 156 178 148 178 C140 178 134 188 132 200Z" fill="#daa882" fill-opacity="0.3"/>
+  <!-- === WRIST WRAPS === -->
+  <path d="M126 175 C124 182 124 192 126 200 C128 206 132 210 138 212 L162 210 C168 206 172 198 172 190 C172 182 170 176 166 172 L132 172 C129 172 127 173 126 175Z" fill="url(#rbp-cloth)"/>
+  <!-- Bandage strips -->
+  <path d="M128 178 C138 176 155 176 168 178" fill="none" stroke="#d4c8b0" stroke-width="4" stroke-opacity="0.6" stroke-linecap="round"/>
+  <path d="M127 186 C138 184 155 184 169 186" fill="none" stroke="#d4c8b0" stroke-width="3.5" stroke-opacity="0.5" stroke-linecap="round"/>
+  <path d="M127 194 C138 192 155 192 169 194" fill="none" stroke="#d4c8b0" stroke-width="4" stroke-opacity="0.55" stroke-linecap="round"/>
+  <!-- === BRACER PLATE === -->
+  <path d="M132 180 C130 186 130 194 132 200 C134 205 138 208 144 209 L158 208 C164 205 167 199 167 192 C167 185 165 180 162 177 L138 176 C135 176 133 178 132 180Z" fill="url(#rbp-metal)"/>
+  <!-- Bracer rivets -->
+  <path d="M136 182 C137 181 139 181 140 182 C141 183 140 185 138 185 C136 185 135 183 136 182Z" fill="#9a9a8a"/>
+  <path d="M158 181 C159 180 161 180 162 181 C163 182 162 184 160 184 C158 184 157 182 158 181Z" fill="#9a9a8a"/>
+  <path d="M136 200 C137 199 139 199 140 200 C141 201 140 203 138 203 C136 203 135 201 136 200Z" fill="#9a9a8a"/>
+  <path d="M158 199 C159 198 161 198 162 199 C163 200 162 202 160 202 C158 202 157 200 158 199Z" fill="#9a9a8a"/>
+  <!-- Bracer shine -->
+  <path d="M136 183 C140 180 150 179 158 181" fill="none" stroke="#c0c0b0" stroke-width="1.5" stroke-opacity="0.4" stroke-linecap="round"/>
+  <!-- === HAND/FIST === -->
+  <path d="M130 155 C126 148 126 138 130 130 C134 124 142 120 150 120 C158 120 166 124 170 130 C174 138 174 148 170 155 C166 162 158 166 150 166 C142 166 134 162 130 155Z" fill="url(#rbp-skin)"/>
+  <!-- Finger curls -->
+  <path d="M134 132 C132 126 134 120 140 118 C145 116 150 118 152 124 C153 128 152 134 150 138 L138 136 C135 135 134 134 134 132Z" fill="url(#rbp-skin)"/>
+  <path d="M150 128 C149 122 151 116 157 114 C162 112 167 115 168 120 C169 126 167 132 165 136 L153 134 C151 132 150 130 150 128Z" fill="url(#rbp-skin)"/>
+  <!-- Thumb -->
+  <path d="M128 148 C124 144 122 138 124 132 C126 128 130 126 134 128 C136 132 136 138 134 144 C133 148 130 150 128 148Z" fill="url(#rbp-skin)"/>
+  <!-- Knuckle highlights -->
+  <path d="M138 122 C140 120 144 120 146 122 M154 118 C156 116 160 116 162 118" fill="none" stroke="#daa882" stroke-width="1.5" stroke-opacity="0.4" stroke-linecap="round"/>
+  <!-- Rim light -->
+  <path d="M92 108 C106 88 130 78 152 86 C174 94 188 120 186 155" fill="none" stroke="#f0d8b8" stroke-width="1.5" stroke-opacity="0.2" stroke-linecap="round"/>
+  <!-- Common tier badge glow -->
+  <path d="M120 295 C125 290 135 288 145 288 C155 288 165 290 170 295 C165 300 155 302 145 302 C135 302 125 300 120 295Z" fill="#d4af6a" fill-opacity="0.15"/>
+</svg>

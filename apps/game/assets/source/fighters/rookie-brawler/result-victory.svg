@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 350" width="300" height="350">
+  <defs>
+    <linearGradient id="rbvv-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a2838"/>
+      <stop offset="100%" stop-color="#070a10"/>
+    </linearGradient>
+    <radialGradient id="rbvv-glow" cx="50%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#d4af6a" stop-opacity="0.45"/>
+      <stop offset="50%" stop-color="#d4af6a" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rbvv-skin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d4956e"/>
+      <stop offset="50%" stop-color="#c48a6a"/>
+      <stop offset="100%" stop-color="#a06b4a"/>
+    </linearGradient>
+    <linearGradient id="rbvv-cloth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a3828"/>
+      <stop offset="100%" stop-color="#2d2118"/>
+    </linearGradient>
+    <linearGradient id="rbvv-metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8a8a7a"/>
+      <stop offset="100%" stop-color="#5a5a4a"/>
+    </linearGradient>
+    <filter id="rbvv-tex">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="m"/>
+      <feBlend in="SourceGraphic" in2="m" mode="overlay"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+  <rect width="300" height="350" fill="url(#rbvv-bg)"/>
+  <ellipse cx="150" cy="130" rx="130" ry="110" fill="url(#rbvv-glow)"/>
+  <!-- Victory rays -->
+  <path d="M150 0 L160 80 L140 80Z" fill="#d4af6a" fill-opacity="0.08"/>
+  <path d="M80 20 L120 90 L100 95Z" fill="#d4af6a" fill-opacity="0.06"/>
+  <path d="M220 20 L180 90 L200 95Z" fill="#d4af6a" fill-opacity="0.06"/>
+  <path d="M40 80 L100 110 L90 125Z" fill="#d4af6a" fill-opacity="0.04"/>
+  <path d="M260 80 L200 110 L210 125Z" fill="#d4af6a" fill-opacity="0.04"/>
+  <!-- Floor shadow -->
+  <ellipse cx="150" cy="310" rx="90" ry="15" fill="#000" opacity="0.5"/>
+  <!-- === VICTORY POSE: arm raised triumphantly === -->
+  <!-- Shoulder -->
+  <path d="M95 240 C88 215 92 185 105 162 C116 145 135 136 152 142 C170 148 180 165 178 190 C176 212 168 235 155 250 L115 255 C102 250 96 246 95 240Z" fill="url(#rbvv-skin)" filter="url(#rbvv-tex)"/>
+  <path d="M132 140 C128 165 126 195 128 225 C129 242 132 252 135 260" fill="none" stroke="#8a5535" stroke-width="2.5" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Strap -->
+  <path d="M108 155 C120 144 140 138 160 141 C170 143 177 147 182 153 L178 162 C172 156 162 153 152 153 C136 153 118 160 110 170Z" fill="url(#rbvv-cloth)"/>
+  <!-- Upper arm raised -->
+  <path d="M155 185 C162 165 168 140 172 115 C174 100 172 88 165 82 L148 84 C142 92 140 108 142 128 C144 150 148 170 155 185Z" fill="url(#rbvv-skin)" filter="url(#rbvv-tex)"/>
+  <!-- Elbow -->
+  <path d="M145 78 C142 72 142 64 148 58 C154 52 164 52 170 58 C176 64 176 72 172 78 C166 84 152 84 145 78Z" fill="url(#rbvv-skin)"/>
+  <!-- Forearm raised high -->
+  <path d="M148 55 C142 40 138 22 140 8 C142 -2 148 -8 156 -8 C164 -8 170 -2 172 8 C174 22 170 40 164 55 C160 65 155 72 150 74 C147 72 148 65 148 55Z" fill="url(#rbvv-skin)" filter="url(#rbvv-tex)"/>
+  <!-- Wrist wraps -->
+  <path d="M140 25 C138 32 138 42 140 50 C142 56 146 60 152 62 L168 60 C174 56 176 48 176 40 C176 32 174 26 170 22 L146 20 C143 20 141 22 140 25Z" fill="url(#rbvv-cloth)"/>
+  <path d="M142 28 C150 26 164 26 174 28" fill="none" stroke="#d4c8b0" stroke-width="4" stroke-opacity="0.6" stroke-linecap="round"/>
+  <path d="M141 36 C150 34 164 34 175 36" fill="none" stroke="#d4c8b0" stroke-width="3.5" stroke-opacity="0.5" stroke-linecap="round"/>
+  <path d="M141 44 C150 42 164 42 175 44" fill="none" stroke="#d4c8b0" stroke-width="4" stroke-opacity="0.55" stroke-linecap="round"/>
+  <!-- Bracer -->
+  <path d="M146 30 C144 36 144 44 146 50 C148 55 152 58 158 59 L166 58 C172 55 174 49 174 42 C174 35 172 30 168 27 L152 26 C149 26 147 28 146 30Z" fill="url(#rbvv-metal)"/>
+  <!-- Victory fist -->
+  <path d="M142 5 C138 -2 138 -12 142 -18 C146 -24 154 -26 162 -26 C170 -26 178 -24 182 -18 C186 -12 186 -2 182 5 C178 12 170 15 162 15 C154 15 146 12 142 5Z" fill="url(#rbvv-skin)"/>
+  <path d="M148 -14 C146 -20 148 -26 154 -28 C160 -30 165 -28 166 -22 C167 -18 166 -12 164 -8 L152 -10 C149 -11 148 -12 148 -14Z" fill="url(#rbvv-skin)"/>
+  <path d="M165 -18 C164 -24 166 -30 172 -32 C178 -34 183 -31 184 -26 C185 -20 183 -14 181 -10 L168 -12 C166 -14 165 -16 165 -18Z" fill="url(#rbvv-skin)"/>
+  <!-- Thumb -->
+  <path d="M140 0 C136 -4 134 -10 136 -16 C138 -20 142 -22 146 -20 C148 -16 148 -10 146 -4 C145 0 142 2 140 0Z" fill="url(#rbvv-skin)"/>
+  <!-- Knuckle highlights -->
+  <path d="M152 -24 C155 -27 160 -27 163 -24 M170 -28 C173 -31 178 -31 181 -28" fill="none" stroke="#daa882" stroke-width="2" stroke-opacity="0.5" stroke-linecap="round"/>
+  <!-- Rim light -->
+  <path d="M105 162 C116 145 135 136 152 142 C170 148 180 165 178 190" fill="none" stroke="#f0d8b8" stroke-width="2" stroke-opacity="0.25" stroke-linecap="round"/>
+  <!-- Victory sparkles -->
+  <path d="M100 50 L104 40 L108 50 L104 60Z" fill="#d4af6a" fill-opacity="0.5"/>
+  <path d="M200 30 L203 22 L206 30 L203 38Z" fill="#d4af6a" fill-opacity="0.4"/>
+  <path d="M80 120 L83 113 L86 120 L83 127Z" fill="#5ec8ff" fill-opacity="0.3"/>
+  <path d="M230 100 L233 93 L236 100 L233 107Z" fill="#5ec8ff" fill-opacity="0.25"/>
+</svg>

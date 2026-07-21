@@ -1,0 +1,1215 @@
+{
+  "frames": {
+    "arena/background": {
+      "frame": {
+        "x": 0,
+        "y": 1,
+        "w": 1031,
+        "h": 580
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1031,
+        "h": 580
+      },
+      "sourceSize": {
+        "w": 1031,
+        "h": 580
+      }
+    },
+    "arena/banners": {
+      "frame": {
+        "x": 0,
+        "y": 4652,
+        "w": 1031,
+        "h": 322
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1031,
+        "h": 322
+      },
+      "sourceSize": {
+        "w": 1031,
+        "h": 322
+      }
+    },
+    "arena/crowd": {
+      "frame": {
+        "x": 0,
+        "y": 7875,
+        "w": 1031,
+        "h": 242
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1031,
+        "h": 242
+      },
+      "sourceSize": {
+        "w": 1031,
+        "h": 242
+      }
+    },
+    "arena/elbow-pad": {
+      "frame": {
+        "x": 116,
+        "y": 8351,
+        "w": 192,
+        "h": 115
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 192,
+        "h": 115
+      },
+      "sourceSize": {
+        "w": 192,
+        "h": 115
+      }
+    },
+    "arena/lighting": {
+      "frame": {
+        "x": 0,
+        "y": 582,
+        "w": 1031,
+        "h": 580
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1031,
+        "h": 580
+      },
+      "sourceSize": {
+        "w": 1031,
+        "h": 580
+      }
+    },
+    "arena/pin-pad": {
+      "frame": {
+        "x": 0,
+        "y": 8351,
+        "w": 115,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 115,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 115,
+        "h": 192
+      }
+    },
+    "arena/table": {
+      "frame": {
+        "x": 0,
+        "y": 6847,
+        "w": 1022,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1022,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 1022,
+        "h": 256
+      }
+    },
+    "arena/table-frame": {
+      "frame": {
+        "x": 0,
+        "y": 4319,
+        "w": 1022,
+        "h": 332
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1022,
+        "h": 332
+      },
+      "sourceSize": {
+        "w": 1022,
+        "h": 332
+      }
+    },
+    "effects/critical-impact": {
+      "frame": {
+        "x": 0,
+        "y": 7104,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "effects/defeat-accent": {
+      "frame": {
+        "x": 257,
+        "y": 7104,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "effects/grip-flash": {
+      "frame": {
+        "x": 514,
+        "y": 7104,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "effects/momentum-streak": {
+      "frame": {
+        "x": 309,
+        "y": 8351,
+        "w": 256,
+        "h": 102
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 102
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 102
+      }
+    },
+    "effects/pressure-ring": {
+      "frame": {
+        "x": 0,
+        "y": 7361,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "effects/recovery-glow": {
+      "frame": {
+        "x": 257,
+        "y": 7361,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "effects/slam-impact": {
+      "frame": {
+        "x": 514,
+        "y": 7361,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "effects/victory-accent": {
+      "frame": {
+        "x": 0,
+        "y": 7618,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "practice-automaton/elbow-bearing": {
+      "frame": {
+        "x": 555,
+        "y": 4975,
+        "w": 320,
+        "h": 320
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 320
+      },
+      "sourceSize": {
+        "w": 320,
+        "h": 320
+      }
+    },
+    "practice-automaton/fingers": {
+      "frame": {
+        "x": 0,
+        "y": 8118,
+        "w": 319,
+        "h": 232
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 319,
+        "h": 232
+      },
+      "sourceSize": {
+        "w": 319,
+        "h": 232
+      }
+    },
+    "practice-automaton/forearm-casing": {
+      "frame": {
+        "x": 899,
+        "y": 5618,
+        "w": 118,
+        "h": 319
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 118,
+        "h": 319
+      },
+      "sourceSize": {
+        "w": 118,
+        "h": 319
+      }
+    },
+    "practice-automaton/grip-pad": {
+      "frame": {
+        "x": 641,
+        "y": 8118,
+        "w": 320,
+        "h": 200
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 200
+      },
+      "sourceSize": {
+        "w": 320,
+        "h": 200
+      }
+    },
+    "practice-automaton/highlights": {
+      "frame": {
+        "x": 0,
+        "y": 5939,
+        "w": 192,
+        "h": 319
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 192,
+        "h": 319
+      },
+      "sourceSize": {
+        "w": 192,
+        "h": 319
+      }
+    },
+    "practice-automaton/hydraulic-piston": {
+      "frame": {
+        "x": 876,
+        "y": 4975,
+        "w": 80,
+        "h": 320
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 320
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 320
+      }
+    },
+    "practice-automaton/mechanical-hand": {
+      "frame": {
+        "x": 193,
+        "y": 5939,
+        "w": 290,
+        "h": 319
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 290,
+        "h": 319
+      },
+      "sourceSize": {
+        "w": 290,
+        "h": 319
+      }
+    },
+    "practice-automaton/portrait": {
+      "frame": {
+        "x": 412,
+        "y": 1163,
+        "w": 512,
+        "h": 512
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 512,
+        "h": 512
+      },
+      "sourceSize": {
+        "w": 512,
+        "h": 512
+      }
+    },
+    "practice-automaton/result-defeat": {
+      "frame": {
+        "x": 0,
+        "y": 1678,
+        "w": 409,
+        "h": 511
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 409,
+        "h": 511
+      },
+      "sourceSize": {
+        "w": 409,
+        "h": 511
+      }
+    },
+    "practice-automaton/result-victory": {
+      "frame": {
+        "x": 410,
+        "y": 1678,
+        "w": 409,
+        "h": 511
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 409,
+        "h": 511
+      },
+      "sourceSize": {
+        "w": 409,
+        "h": 511
+      }
+    },
+    "practice-automaton/shadows": {
+      "frame": {
+        "x": 484,
+        "y": 5939,
+        "w": 192,
+        "h": 319
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 192,
+        "h": 319
+      },
+      "sourceSize": {
+        "w": 192,
+        "h": 319
+      }
+    },
+    "practice-automaton/shoulder-mount": {
+      "frame": {
+        "x": 0,
+        "y": 4975,
+        "w": 278,
+        "h": 321
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 278,
+        "h": 321
+      },
+      "sourceSize": {
+        "w": 278,
+        "h": 321
+      }
+    },
+    "practice-automaton/upper-housing": {
+      "frame": {
+        "x": 677,
+        "y": 5939,
+        "w": 160,
+        "h": 319
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 319
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 319
+      }
+    },
+    "practice-automaton/versus": {
+      "frame": {
+        "x": 0,
+        "y": 3213,
+        "w": 511,
+        "h": 383
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 511,
+        "h": 383
+      },
+      "sourceSize": {
+        "w": 511,
+        "h": 383
+      }
+    },
+    "practice-automaton/wrist-assembly": {
+      "frame": {
+        "x": 0,
+        "y": 5297,
+        "w": 274,
+        "h": 320
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 274,
+        "h": 320
+      },
+      "sourceSize": {
+        "w": 274,
+        "h": 320
+      }
+    },
+    "rookie-brawler/bracer": {
+      "frame": {
+        "x": 275,
+        "y": 5297,
+        "w": 249,
+        "h": 320
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 249,
+        "h": 320
+      },
+      "sourceSize": {
+        "w": 249,
+        "h": 320
+      }
+    },
+    "rookie-brawler/elbow": {
+      "frame": {
+        "x": 525,
+        "y": 5297,
+        "w": 320,
+        "h": 320
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 320
+      },
+      "sourceSize": {
+        "w": 320,
+        "h": 320
+      }
+    },
+    "rookie-brawler/fingers": {
+      "frame": {
+        "x": 320,
+        "y": 8118,
+        "w": 320,
+        "h": 213
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 213
+      },
+      "sourceSize": {
+        "w": 320,
+        "h": 213
+      }
+    },
+    "rookie-brawler/forearm": {
+      "frame": {
+        "x": 838,
+        "y": 5939,
+        "w": 128,
+        "h": 319
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 319
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 319
+      }
+    },
+    "rookie-brawler/hand": {
+      "frame": {
+        "x": 0,
+        "y": 5618,
+        "w": 267,
+        "h": 320
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 267,
+        "h": 320
+      },
+      "sourceSize": {
+        "w": 267,
+        "h": 320
+      }
+    },
+    "rookie-brawler/highlights": {
+      "frame": {
+        "x": 0,
+        "y": 6259,
+        "w": 192,
+        "h": 319
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 192,
+        "h": 319
+      },
+      "sourceSize": {
+        "w": 192,
+        "h": 319
+      }
+    },
+    "rookie-brawler/portrait": {
+      "frame": {
+        "x": 0,
+        "y": 2190,
+        "w": 447,
+        "h": 511
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 447,
+        "h": 511
+      },
+      "sourceSize": {
+        "w": 447,
+        "h": 511
+      }
+    },
+    "rookie-brawler/result-defeat": {
+      "frame": {
+        "x": 0,
+        "y": 2702,
+        "w": 438,
+        "h": 510
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 438,
+        "h": 510
+      },
+      "sourceSize": {
+        "w": 438,
+        "h": 510
+      }
+    },
+    "rookie-brawler/result-victory": {
+      "frame": {
+        "x": 439,
+        "y": 2702,
+        "w": 438,
+        "h": 510
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 438,
+        "h": 510
+      },
+      "sourceSize": {
+        "w": 438,
+        "h": 510
+      }
+    },
+    "rookie-brawler/reveal": {
+      "frame": {
+        "x": 0,
+        "y": 1163,
+        "w": 411,
+        "h": 514
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 411,
+        "h": 514
+      },
+      "sourceSize": {
+        "w": 411,
+        "h": 514
+      }
+    },
+    "rookie-brawler/shadows": {
+      "frame": {
+        "x": 193,
+        "y": 6259,
+        "w": 192,
+        "h": 319
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 192,
+        "h": 319
+      },
+      "sourceSize": {
+        "w": 192,
+        "h": 319
+      }
+    },
+    "rookie-brawler/shoulder": {
+      "frame": {
+        "x": 279,
+        "y": 4975,
+        "w": 275,
+        "h": 321
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 275,
+        "h": 321
+      },
+      "sourceSize": {
+        "w": 275,
+        "h": 321
+      }
+    },
+    "rookie-brawler/thumb": {
+      "frame": {
+        "x": 268,
+        "y": 5618,
+        "w": 228,
+        "h": 320
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 228,
+        "h": 320
+      },
+      "sourceSize": {
+        "w": 228,
+        "h": 320
+      }
+    },
+    "rookie-brawler/upper-arm": {
+      "frame": {
+        "x": 497,
+        "y": 5618,
+        "w": 160,
+        "h": 320
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 320
+      },
+      "sourceSize": {
+        "w": 160,
+        "h": 320
+      }
+    },
+    "rookie-brawler/versus": {
+      "frame": {
+        "x": 448,
+        "y": 2190,
+        "w": 383,
+        "h": 511
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 383,
+        "h": 511
+      },
+      "sourceSize": {
+        "w": 383,
+        "h": 511
+      }
+    },
+    "rookie-brawler/wraps": {
+      "frame": {
+        "x": 386,
+        "y": 6259,
+        "w": 256,
+        "h": 319
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 319
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 319
+      }
+    },
+    "rookie-brawler/wrist": {
+      "frame": {
+        "x": 658,
+        "y": 5618,
+        "w": 240,
+        "h": 320
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 240,
+        "h": 320
+      },
+      "sourceSize": {
+        "w": 240,
+        "h": 320
+      }
+    },
+    "ui/badges/common": {
+      "frame": {
+        "x": 291,
+        "y": 8544,
+        "w": 256,
+        "h": 77
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 77
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 77
+      }
+    },
+    "ui/badges/easy": {
+      "frame": {
+        "x": 548,
+        "y": 8544,
+        "w": 256,
+        "h": 77
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 77
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 77
+      }
+    },
+    "ui/icons/collection": {
+      "frame": {
+        "x": 566,
+        "y": 8351,
+        "w": 96,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 96
+      }
+    },
+    "ui/icons/home": {
+      "frame": {
+        "x": 663,
+        "y": 8351,
+        "w": 96,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 96
+      }
+    },
+    "ui/icons/music-off": {
+      "frame": {
+        "x": 760,
+        "y": 8351,
+        "w": 96,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 96
+      }
+    },
+    "ui/icons/music-on": {
+      "frame": {
+        "x": 857,
+        "y": 8351,
+        "w": 96,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 96
+      }
+    },
+    "ui/icons/replay": {
+      "frame": {
+        "x": 0,
+        "y": 8544,
+        "w": 96,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 96
+      }
+    },
+    "ui/icons/sfx-off": {
+      "frame": {
+        "x": 97,
+        "y": 8544,
+        "w": 96,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 96
+      }
+    },
+    "ui/icons/sfx-on": {
+      "frame": {
+        "x": 194,
+        "y": 8544,
+        "w": 96,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 96
+      }
+    },
+    "ui/result/defeat-frame": {
+      "frame": {
+        "x": 0,
+        "y": 3597,
+        "w": 640,
+        "h": 360
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 360
+      },
+      "sourceSize": {
+        "w": 640,
+        "h": 360
+      }
+    },
+    "ui/result/reward-card": {
+      "frame": {
+        "x": 0,
+        "y": 6579,
+        "w": 640,
+        "h": 267
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 267
+      },
+      "sourceSize": {
+        "w": 640,
+        "h": 267
+      }
+    },
+    "ui/result/victory-frame": {
+      "frame": {
+        "x": 0,
+        "y": 3958,
+        "w": 640,
+        "h": 360
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 360
+      },
+      "sourceSize": {
+        "w": 640,
+        "h": 360
+      }
+    }
+  },
+  "meta": {
+    "app": "armz-clash/build-game-assets",
+    "version": "phase3-3b-v1",
+    "image": "phase3-3b.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1032,
+      "h": 8640
+    },
+    "scale": "1"
+  }
+}

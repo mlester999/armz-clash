@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 200" width="480" height="200">
+  <defs>
+    <linearGradient id="ui-rc-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1c1710"/>
+      <stop offset="100%" stop-color="#0e0b08"/>
+    </linearGradient>
+    <linearGradient id="ui-rc-border" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0d9a0"/>
+      <stop offset="50%" stop-color="#d4af6a"/>
+      <stop offset="100%" stop-color="#a8843f"/>
+    </linearGradient>
+    <radialGradient id="ui-rc-sheen" cx="0.3" cy="0.2" r="0.9">
+      <stop offset="0%" stop-color="#d4af6a" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ui-rc-coin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0d9a0"/>
+      <stop offset="100%" stop-color="#c89a4a"/>
+    </linearGradient>
+  </defs>
+  <path d="M20 8 L460 8 C468 8 474 14 474 22 L474 178 C474 186 468 192 460 192 L20 192 C12 192 6 186 6 178 L6 22 C6 14 12 8 20 8 Z" fill="url(#ui-rc-bg)"/>
+  <path d="M20 8 L460 8 C468 8 474 14 474 22 L474 178 C474 186 468 192 460 192 L20 192 C12 192 6 186 6 178 L6 22 C6 14 12 8 20 8 Z" fill="url(#ui-rc-sheen)"/>
+  <path d="M20 8 L460 8 C468 8 474 14 474 22 L474 178 C474 186 468 192 460 192 L20 192 C12 192 6 186 6 178 L6 22 C6 14 12 8 20 8 Z" fill="none" stroke="url(#ui-rc-border)" stroke-width="2.5"/>
+  <!-- Coin emblem -->
+  <path d="M70 60 C92 60 110 78 110 100 C110 122 92 140 70 140 C48 140 30 122 30 100 C30 78 48 60 70 60 Z" fill="url(#ui-rc-coin)"/>
+  <path d="M70 70 C86 70 100 84 100 100 C100 116 86 130 70 130 C54 130 40 116 40 100 C40 84 54 70 70 70 Z" fill="none" stroke="#8a6a2a" stroke-width="2" stroke-opacity="0.6"/>
+  <path d="M62 86 L78 86 L78 92 L70 92 L70 108 L78 108 L78 114 L62 114 L62 108 L66 108 L66 92 L62 92 Z" fill="#6a4e1e"/>
+  <!-- Simulated stamp -->
+  <path d="M360 40 L440 40 C446 40 450 44 450 50 L450 70 C450 76 446 80 440 80 L360 80 C354 80 350 76 350 70 L350 50 C350 44 354 40 360 40 Z" fill="none" stroke="#f07178" stroke-width="2" stroke-opacity="0.7"/>
+  <!-- Divider -->
+  <path d="M30 158 L450 158" fill="none" stroke="#d4af6a" stroke-width="1" stroke-opacity="0.3"/>
+</svg>

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 350" width="300" height="350">
+  <defs>
+    <linearGradient id="rbvd-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1820"/>
+      <stop offset="100%" stop-color="#070a10"/>
+    </linearGradient>
+    <radialGradient id="rbvd-glow" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#e07a4a" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#e07a4a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rbvd-skin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#c48a6a"/>
+      <stop offset="50%" stop-color="#b07a5a"/>
+      <stop offset="100%" stop-color="#906040"/>
+    </linearGradient>
+    <linearGradient id="rbvd-cloth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a2a1a"/>
+      <stop offset="100%" stop-color="#241810"/>
+    </linearGradient>
+    <linearGradient id="rbvd-metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7a7a6a"/>
+      <stop offset="100%" stop-color="#4a4a3a"/>
+    </linearGradient>
+    <filter id="rbvd-tex">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="m"/>
+      <feBlend in="SourceGraphic" in2="m" mode="overlay"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+  <rect width="300" height="350" fill="url(#rbvd-bg)"/>
+  <ellipse cx="150" cy="150" rx="120" ry="100" fill="url(#rbvd-glow)"/>
+  <!-- Floor shadow -->
+  <ellipse cx="150" cy="310" rx="90" ry="15" fill="#000" opacity="0.5"/>
+  <!-- === DEFEAT POSE: arm limp, head down === -->
+  <!-- Shoulder (slumped) -->
+  <path d="M100 230 C95 210 98 185 110 165 C120 150 138 142 155 148 C170 154 180 170 178 192 C176 212 168 232 156 245 L118 250 C106 245 101 238 100 230Z" fill="url(#rbvd-skin)" filter="url(#rbvd-tex)"/>
+  <path d="M135 146 C132 170 130 198 132 225 C133 240 135 250 138 258" fill="none" stroke="#7a4a30" stroke-width="2.5" stroke-opacity="0.35" stroke-linecap="round"/>
+  <!-- Strap (slightly askew) -->
+  <path d="M112 160 C124 150 142 144 160 147 C170 149 176 153 180 158 L176 166 C170 161 162 158 152 158 C138 158 122 164 114 172Z" fill="url(#rbvd-cloth)"/>
+  <!-- Upper arm hanging -->
+  <path d="M155 200 C160 225 164 255 166 285 C167 300 165 312 158 318 L142 316 C137 308 136 292 138 270 C140 248 146 222 155 200Z" fill="url(#rbvd-skin)" filter="url(#rbvd-tex)"/>
+  <!-- Elbow -->
+  <path d="M140 312 C137 318 137 328 142 334 C148 340 158 340 164 334 C169 328 169 318 166 312 C158 306 148 306 140 312Z" fill="url(#rbvd-skin)"/>
+  <!-- Forearm limp -->
+  <path d="M142 332 C138 345 136 358 138 368 C140 376 145 380 152 380 C159 380 164 376 166 368 C168 358 166 345 162 332 C158 326 148 326 142 332Z" fill="url(#rbvd-skin)" filter="url(#rbvd-tex)"/>
+  <!-- Wrist wraps (loose) -->
+  <path d="M138 345 C136 352 136 360 138 366 C140 370 144 373 150 374 L162 373 C168 370 170 364 170 358 C170 352 168 347 165 344 L143 343 C140 343 139 344 138 345Z" fill="url(#rbvd-cloth)"/>
+  <path d="M140 348 C148 346 160 346 168 348" fill="none" stroke="#c0b498" stroke-width="3.5" stroke-opacity="0.5" stroke-linecap="round"/>
+  <path d="M139 356 C148 354 160 354 169 356" fill="none" stroke="#c0b498" stroke-width="3" stroke-opacity="0.4" stroke-linecap="round"/>
+  <!-- Bracer -->
+  <path d="M144 350 C142 355 142 362 144 367 C146 371 150 373 155 374 L161 373 C166 371 168 366 168 360 C168 354 166 350 163 348 L149 347 C146 347 145 348 144 350Z" fill="url(#rbvd-metal)"/>
+  <!-- Limp hand -->
+  <path d="M140 375 C137 380 136 388 138 394 C140 400 146 404 153 404 C160 404 166 400 168 394 C170 388 169 380 166 375 C162 370 148 370 140 375Z" fill="url(#rbvd-skin)"/>
+  <!-- Fingers slightly open -->
+  <path d="M142 392 C140 396 140 400 142 403 M150 394 C149 398 149 402 150 405 M158 393 C157 397 157 401 158 404 M164 390 C163 394 163 398 164 401" fill="none" stroke="#906040" stroke-width="1.5" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Shadow/desaturation overlay -->
+  <path d="M100 230 C95 210 98 185 110 165 C120 150 138 142 155 148 C170 154 180 170 178 192 C176 212 168 232 156 245 L118 250 C106 245 101 238 100 230Z" fill="#1a1020" fill-opacity="0.15"/>
+  <!-- Dim rim light -->
+  <path d="M110 165 C120 150 138 142 155 148 C170 154 180 170 178 192" fill="none" stroke="#c0a080" stroke-width="1.5" stroke-opacity="0.15" stroke-linecap="round"/>
+</svg>

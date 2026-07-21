@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" width="120" height="200">
+  <defs>
+    <linearGradient id="rb-hl-edge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f8e8d0" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#f8e8d0" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="rb-hl-spec" cx="0.4" cy="0.3" r="0.4">
+      <stop offset="0%" stop-color="#fff8f0" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#fff8f0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Shoulder specular -->
+  <path d="M30 20 C38 12 52 8 65 10 C72 12 76 18 76 26 C70 18 58 14 48 16 C38 18 32 22 30 28Z" fill="url(#rb-hl-spec)"/>
+  <!-- Upper arm rim -->
+  <path d="M25 50 C22 65 22 85 24 105 C26 120 30 135 36 148" fill="none" stroke="url(#rb-hl-edge)" stroke-width="3" stroke-linecap="round"/>
+  <!-- Forearm specular -->
+  <path d="M35 110 C38 105 44 102 50 104 C54 106 56 112 54 118 C50 112 44 110 40 112Z" fill="url(#rb-hl-spec)"/>
+  <!-- Wrist wrap sheen -->
+  <path d="M30 155 C38 152 50 152 60 155" fill="none" stroke="#f8e8d0" stroke-width="2" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Knuckle highlights -->
+  <path d="M35 175 C37 173 40 173 42 175 M48 173 C50 171 53 171 55 173 M60 175 C62 173 65 173 67 175" fill="none" stroke="#f8e8d0" stroke-width="1.5" stroke-opacity="0.35" stroke-linecap="round"/>
+</svg>

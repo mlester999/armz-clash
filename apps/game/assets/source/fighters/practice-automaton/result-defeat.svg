@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" width="320" height="400">
+  <defs>
+    <linearGradient id="pard-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a1018"/>
+      <stop offset="100%" stop-color="#060a10"/>
+    </linearGradient>
+    <linearGradient id="pard-metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7a8a9a"/>
+      <stop offset="40%" stop-color="#5a6a7a"/>
+      <stop offset="100%" stop-color="#3a4a5a"/>
+    </linearGradient>
+    <linearGradient id="pard-dark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a3a4a"/>
+      <stop offset="100%" stop-color="#1a2a3a"/>
+    </linearGradient>
+    <radialGradient id="pard-eye" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#3a90c0"/>
+      <stop offset="60%" stop-color="#2a7ab0"/>
+      <stop offset="100%" stop-color="#1a5a80"/>
+    </radialGradient>
+    <radialGradient id="pard-glow" cx="0.5" cy="0.7" r="0.6">
+      <stop offset="0%" stop-color="#f07178" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#f07178" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="pard-brush">
+      <feTurbulence type="fractalNoise" baseFrequency="0.05 0.4" numOctaves="2" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="m"/>
+      <feBlend in="SourceGraphic" in2="m" mode="overlay" result="t"/>
+      <feComposite in="t" in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+  <!-- Background with subdued tone -->
+  <path d="M0 0 L320 0 L320 400 L0 400Z" fill="url(#pard-bg)"/>
+  <path d="M0 0 L320 0 L320 400 L0 400Z" fill="url(#pard-glow)"/>
+  <!-- Torso - slumped defeat pose -->
+  <path d="M105 175 C95 185 90 200 90 220 L90 310 C90 325 95 335 105 342 L125 352 L195 352 L215 342 C225 335 230 325 230 310 L230 220 C230 200 225 185 215 175 L190 163 L130 163Z" fill="url(#pard-metal)" filter="url(#pard-brush)"/>
+  <!-- Chest plate -->
+  <path d="M115 180 L205 180 L210 190 L210 270 L205 280 L115 280 L110 270 L110 190Z" fill="url(#pard-dark)"/>
+  <!-- Chest core - dimmed, low power -->
+  <path d="M145 205 L175 205 L182 225 L175 245 L145 245 L138 225Z" fill="#1a2a3a"/>
+  <path d="M150 210 L170 210 L175 225 L170 240 L150 240 L145 225Z" fill="#5ec8ff" fill-opacity="0.08"/>
+  <path d="M155 216 L165 216 L168 225 L165 234 L155 234 L152 225Z" fill="#5ec8ff" fill-opacity="0.15"/>
+  <!-- Shoulder mounts - drooped -->
+  <path d="M85 175 C75 180 70 188 70 198 L70 225 C70 235 75 242 85 245 L105 245 L105 175Z" fill="url(#pard-metal)"/>
+  <path d="M235 175 C245 180 250 188 250 198 L250 225 C250 235 245 242 235 245 L215 245 L215 175Z" fill="url(#pard-metal)"/>
+  <!-- Arms hanging down - defeat -->
+  <path d="M70 200 C62 210 58 225 56 245 L54 290 C53 305 56 315 62 320 L72 324 L86 320 L88 295 L90 255 C90 235 84 218 78 208Z" fill="url(#pard-metal)"/>
+  <path d="M250 200 C258 210 262 225 264 245 L266 290 C267 305 264 315 258 320 L248 324 L234 320 L232 295 L230 255 C230 235 236 218 242 208Z" fill="url(#pard-metal)"/>
+  <!-- Limp fists -->
+  <path d="M50 315 C46 319 44 325 44 332 C44 339 46 345 50 349 L60 354 L76 354 L84 349 C88 345 90 339 90 332 C90 325 88 319 84 315 L76 312 L58 312Z" fill="url(#pard-metal)"/>
+  <path d="M236 315 C232 319 230 325 230 332 C230 339 232 345 236 349 L246 354 L262 354 L270 349 C274 345 276 339 276 332 C276 325 274 319 270 315 L262 312 L244 312Z" fill="url(#pard-metal)"/>
+  <!-- Fist detail -->
+  <path d="M54 326 L80 326 M54 336 L80 336" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.4"/>
+  <path d="M240 326 L266 326 M240 336 L266 336" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.4"/>
+  <!-- Dim power lines -->
+  <path d="M62 220 L62 305" stroke="#5ec8ff" stroke-width="2" stroke-opacity="0.1" stroke-linecap="round"/>
+  <path d="M258 220 L258 305" stroke="#5ec8ff" stroke-width="2" stroke-opacity="0.1" stroke-linecap="round"/>
+  <!-- Head - tilted down slightly -->
+  <path d="M135 100 C129 106 125 116 125 128 L125 155 C125 163 129 169 135 173 L145 178 L175 178 L185 173 C191 169 195 163 195 155 L195 128 C195 116 191 106 185 100 L173 94 L147 94Z" fill="url(#pard-metal)" filter="url(#pard-brush)"/>
+  <!-- Head crest -->
+  <path d="M143 96 C147 90 155 86 160 86 C165 86 173 90 177 96 L179 100 L141 100Z" fill="url(#pard-dark)"/>
+  <path d="M151 92 L169 92" stroke="#5ec8ff" stroke-width="1.5" stroke-opacity="0.2" stroke-linecap="round"/>
+  <!-- Visor -->
+  <path d="M133 112 L187 112 L191 120 L191 142 L187 150 L133 150 L129 142 L129 120Z" fill="#1a2a3a"/>
+  <!-- Eyes - dimmed, half-closed -->
+  <path d="M141 122 C141 119 144 117 149 117 C154 117 157 119 157 122 L157 134 C157 137 154 139 149 139 C144 139 141 137 141 134Z" fill="url(#pard-eye)" fill-opacity="0.6"/>
+  <path d="M163 122 C163 119 166 117 171 117 C176 117 179 119 179 122 L179 134 C179 137 176 139 171 139 C166 139 163 137 163 134Z" fill="url(#pard-eye)" fill-opacity="0.6"/>
+  <!-- Eyelid shadows (half-closed look) -->
+  <path d="M141 118 L157 118 L157 124 L141 124Z" fill="#1a2a3a" fill-opacity="0.7"/>
+  <path d="M163 118 L179 118 L179 124 L163 124Z" fill="#1a2a3a" fill-opacity="0.7"/>
+  <!-- Mouth grille -->
+  <path d="M147 154 L173 154 L175 158 L175 166 L173 168 L147 168 L145 166 L145 158Z" fill="#1a2a3a"/>
+  <path d="M151 158 L169 158 M151 162 L169 162" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.5"/>
+  <!-- Antenna - slightly bent -->
+  <path d="M157 86 L156 78 C155 75 157 73 159 73 C161 73 162 75 162 78 L163 86" fill="none" stroke="#5a6a7a" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M157 75 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#3a90c0" fill-opacity="0.5"/>
+  <!-- Waist -->
+  <path d="M120 340 L200 340 L205 350 L205 400 L115 400 L115 350Z" fill="url(#pard-dark)"/>
+  <!-- Panel seams -->
+  <path d="M115 180 L205 180" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.5"/>
+  <path d="M115 280 L205 280" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.5"/>
+  <!-- Rivets -->
+  <path d="M117 185 a2.5 2.5 0 1 0 5 0 a2.5 2.5 0 1 0 -5 0" fill="#6a7a88"/>
+  <path d="M198 185 a2.5 2.5 0 1 0 5 0 a2.5 2.5 0 1 0 -5 0" fill="#6a7a88"/>
+  <!-- Scuff / damage marks -->
+  <path d="M130 220 L140 218 M180 250 L192 248 M125 260 L132 258" stroke="#1a2a3a" stroke-width="1.5" stroke-opacity="0.4" stroke-linecap="round"/>
+  <!-- Edge rim light - dimmer -->
+  <path d="M105 175 C95 185 90 200 90 220 L90 310" fill="none" stroke="#8aa8c0" stroke-width="1.5" stroke-opacity="0.12" stroke-linecap="round"/>
+  <!-- Small spark / malfunction indicator -->
+  <path d="M200 230 L206 224 L204 232 L210 228" stroke="#f0a040" stroke-width="1.5" stroke-opacity="0.4" fill="none" stroke-linecap="round"/>
+</svg>

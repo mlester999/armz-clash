@@ -1,0 +1,2900 @@
+{
+  "version": "phase3-3b-v1",
+  "generatedBy": "scripts/build-game-assets.ts",
+  "assetCount": 60,
+  "assets": {
+    "arena/background": {
+      "assetId": "arena/background",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/arena/background.svg",
+      "runtimeTexturePath": "arena/background@2x.webp",
+      "width": 1031,
+      "height": 580,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 1031,
+        "h": 580
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "arena/background@2x.webp",
+      "tabletTexture": "arena/background@2x.webp",
+      "mobileTexture": "arena/background@1x.webp",
+      "pngFallback": {
+        "desktop": "arena/background@2x.png",
+        "tablet": "arena/background@2x.png",
+        "mobile": "arena/background@1x.png"
+      },
+      "atlasKey": "arena/background",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "arena/banners": {
+      "assetId": "arena/banners",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/arena/banners.svg",
+      "runtimeTexturePath": "arena/banners@2x.webp",
+      "width": 1031,
+      "height": 322,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 1031,
+        "h": 322
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "arena/banners@2x.webp",
+      "tabletTexture": "arena/banners@2x.webp",
+      "mobileTexture": "arena/banners@1x.webp",
+      "pngFallback": {
+        "desktop": "arena/banners@2x.png",
+        "tablet": "arena/banners@2x.png",
+        "mobile": "arena/banners@1x.png"
+      },
+      "atlasKey": "arena/banners",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "arena/crowd": {
+      "assetId": "arena/crowd",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/arena/crowd.svg",
+      "runtimeTexturePath": "arena/crowd@2x.webp",
+      "width": 1031,
+      "height": 242,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 1031,
+        "h": 242
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "arena/crowd@2x.webp",
+      "tabletTexture": "arena/crowd@2x.webp",
+      "mobileTexture": "arena/crowd@1x.webp",
+      "pngFallback": {
+        "desktop": "arena/crowd@2x.png",
+        "tablet": "arena/crowd@2x.png",
+        "mobile": "arena/crowd@1x.png"
+      },
+      "atlasKey": "arena/crowd",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "arena/elbow-pad": {
+      "assetId": "arena/elbow-pad",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/arena/elbow-pad.svg",
+      "runtimeTexturePath": "arena/elbow-pad@2x.webp",
+      "width": 192,
+      "height": 115,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 192,
+        "h": 115
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "arena/elbow-pad@2x.webp",
+      "tabletTexture": "arena/elbow-pad@2x.webp",
+      "mobileTexture": "arena/elbow-pad@1x.webp",
+      "pngFallback": {
+        "desktop": "arena/elbow-pad@2x.png",
+        "tablet": "arena/elbow-pad@2x.png",
+        "mobile": "arena/elbow-pad@1x.png"
+      },
+      "atlasKey": "arena/elbow-pad",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "arena/lighting": {
+      "assetId": "arena/lighting",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/arena/lighting.svg",
+      "runtimeTexturePath": "arena/lighting@2x.webp",
+      "width": 1031,
+      "height": 580,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 1031,
+        "h": 580
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "arena/lighting@2x.webp",
+      "tabletTexture": "arena/lighting@2x.webp",
+      "mobileTexture": "arena/lighting@1x.webp",
+      "pngFallback": {
+        "desktop": "arena/lighting@2x.png",
+        "tablet": "arena/lighting@2x.png",
+        "mobile": "arena/lighting@1x.png"
+      },
+      "atlasKey": "arena/lighting",
+      "materialCategory": "energy",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "arena/pin-pad": {
+      "assetId": "arena/pin-pad",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/arena/pin-pad.svg",
+      "runtimeTexturePath": "arena/pin-pad@2x.webp",
+      "width": 115,
+      "height": 192,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 115,
+        "h": 192
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "arena/pin-pad@2x.webp",
+      "tabletTexture": "arena/pin-pad@2x.webp",
+      "mobileTexture": "arena/pin-pad@1x.webp",
+      "pngFallback": {
+        "desktop": "arena/pin-pad@2x.png",
+        "tablet": "arena/pin-pad@2x.png",
+        "mobile": "arena/pin-pad@1x.png"
+      },
+      "atlasKey": "arena/pin-pad",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "arena/table": {
+      "assetId": "arena/table",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/arena/table.svg",
+      "runtimeTexturePath": "arena/table@2x.webp",
+      "width": 1022,
+      "height": 256,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 1022,
+        "h": 256
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "arena/table@2x.webp",
+      "tabletTexture": "arena/table@2x.webp",
+      "mobileTexture": "arena/table@1x.webp",
+      "pngFallback": {
+        "desktop": "arena/table@2x.png",
+        "tablet": "arena/table@2x.png",
+        "mobile": "arena/table@1x.png"
+      },
+      "atlasKey": "arena/table",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "arena/table-frame": {
+      "assetId": "arena/table-frame",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/arena/table-frame.svg",
+      "runtimeTexturePath": "arena/table-frame@2x.webp",
+      "width": 1022,
+      "height": 332,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 1022,
+        "h": 332
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "arena/table-frame@2x.webp",
+      "tabletTexture": "arena/table-frame@2x.webp",
+      "mobileTexture": "arena/table-frame@1x.webp",
+      "pngFallback": {
+        "desktop": "arena/table-frame@2x.png",
+        "tablet": "arena/table-frame@2x.png",
+        "mobile": "arena/table-frame@1x.png"
+      },
+      "atlasKey": "arena/table-frame",
+      "materialCategory": "metal",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "effects/critical-impact": {
+      "assetId": "effects/critical-impact",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/effects/critical-impact.svg",
+      "runtimeTexturePath": "effects/critical-impact@2x.webp",
+      "width": 256,
+      "height": 256,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "effects/critical-impact@2x.webp",
+      "tabletTexture": "effects/critical-impact@2x.webp",
+      "mobileTexture": "effects/critical-impact@1x.webp",
+      "pngFallback": {
+        "desktop": "effects/critical-impact@2x.png",
+        "tablet": "effects/critical-impact@2x.png",
+        "mobile": "effects/critical-impact@1x.png"
+      },
+      "atlasKey": "effects/critical-impact",
+      "materialCategory": "energy",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "effects/defeat-accent": {
+      "assetId": "effects/defeat-accent",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/effects/defeat-accent.svg",
+      "runtimeTexturePath": "effects/defeat-accent@2x.webp",
+      "width": 256,
+      "height": 256,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "effects/defeat-accent@2x.webp",
+      "tabletTexture": "effects/defeat-accent@2x.webp",
+      "mobileTexture": "effects/defeat-accent@1x.webp",
+      "pngFallback": {
+        "desktop": "effects/defeat-accent@2x.png",
+        "tablet": "effects/defeat-accent@2x.png",
+        "mobile": "effects/defeat-accent@1x.png"
+      },
+      "atlasKey": "effects/defeat-accent",
+      "materialCategory": "energy",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "effects/grip-flash": {
+      "assetId": "effects/grip-flash",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/effects/grip-flash.svg",
+      "runtimeTexturePath": "effects/grip-flash@2x.webp",
+      "width": 256,
+      "height": 256,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "effects/grip-flash@2x.webp",
+      "tabletTexture": "effects/grip-flash@2x.webp",
+      "mobileTexture": "effects/grip-flash@1x.webp",
+      "pngFallback": {
+        "desktop": "effects/grip-flash@2x.png",
+        "tablet": "effects/grip-flash@2x.png",
+        "mobile": "effects/grip-flash@1x.png"
+      },
+      "atlasKey": "effects/grip-flash",
+      "materialCategory": "energy",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "effects/momentum-streak": {
+      "assetId": "effects/momentum-streak",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/effects/momentum-streak.svg",
+      "runtimeTexturePath": "effects/momentum-streak@2x.webp",
+      "width": 256,
+      "height": 102,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 102
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "effects/momentum-streak@2x.webp",
+      "tabletTexture": "effects/momentum-streak@2x.webp",
+      "mobileTexture": "effects/momentum-streak@1x.webp",
+      "pngFallback": {
+        "desktop": "effects/momentum-streak@2x.png",
+        "tablet": "effects/momentum-streak@2x.png",
+        "mobile": "effects/momentum-streak@1x.png"
+      },
+      "atlasKey": "effects/momentum-streak",
+      "materialCategory": "energy",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "effects/pressure-ring": {
+      "assetId": "effects/pressure-ring",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/effects/pressure-ring.svg",
+      "runtimeTexturePath": "effects/pressure-ring@2x.webp",
+      "width": 256,
+      "height": 256,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "effects/pressure-ring@2x.webp",
+      "tabletTexture": "effects/pressure-ring@2x.webp",
+      "mobileTexture": "effects/pressure-ring@1x.webp",
+      "pngFallback": {
+        "desktop": "effects/pressure-ring@2x.png",
+        "tablet": "effects/pressure-ring@2x.png",
+        "mobile": "effects/pressure-ring@1x.png"
+      },
+      "atlasKey": "effects/pressure-ring",
+      "materialCategory": "energy",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "effects/recovery-glow": {
+      "assetId": "effects/recovery-glow",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/effects/recovery-glow.svg",
+      "runtimeTexturePath": "effects/recovery-glow@2x.webp",
+      "width": 256,
+      "height": 256,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "effects/recovery-glow@2x.webp",
+      "tabletTexture": "effects/recovery-glow@2x.webp",
+      "mobileTexture": "effects/recovery-glow@1x.webp",
+      "pngFallback": {
+        "desktop": "effects/recovery-glow@2x.png",
+        "tablet": "effects/recovery-glow@2x.png",
+        "mobile": "effects/recovery-glow@1x.png"
+      },
+      "atlasKey": "effects/recovery-glow",
+      "materialCategory": "energy",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "effects/slam-impact": {
+      "assetId": "effects/slam-impact",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/effects/slam-impact.svg",
+      "runtimeTexturePath": "effects/slam-impact@2x.webp",
+      "width": 256,
+      "height": 256,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "effects/slam-impact@2x.webp",
+      "tabletTexture": "effects/slam-impact@2x.webp",
+      "mobileTexture": "effects/slam-impact@1x.webp",
+      "pngFallback": {
+        "desktop": "effects/slam-impact@2x.png",
+        "tablet": "effects/slam-impact@2x.png",
+        "mobile": "effects/slam-impact@1x.png"
+      },
+      "atlasKey": "effects/slam-impact",
+      "materialCategory": "energy",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "effects/victory-accent": {
+      "assetId": "effects/victory-accent",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/effects/victory-accent.svg",
+      "runtimeTexturePath": "effects/victory-accent@2x.webp",
+      "width": 256,
+      "height": 256,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "effects/victory-accent@2x.webp",
+      "tabletTexture": "effects/victory-accent@2x.webp",
+      "mobileTexture": "effects/victory-accent@1x.webp",
+      "pngFallback": {
+        "desktop": "effects/victory-accent@2x.png",
+        "tablet": "effects/victory-accent@2x.png",
+        "mobile": "effects/victory-accent@1x.png"
+      },
+      "atlasKey": "effects/victory-accent",
+      "materialCategory": "energy",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "practice-automaton/elbow-bearing": {
+      "assetId": "practice-automaton/elbow-bearing",
+      "fighterId": "practice-automaton",
+      "sourceSvgPath": "apps/game/assets/source/fighters/practice-automaton/rig/elbow-bearing.svg",
+      "runtimeTexturePath": "fighters/practice-automaton/rig/elbow-bearing@2x.webp",
+      "width": 320,
+      "height": 320,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 320
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/practice-automaton/rig/elbow-bearing@2x.webp",
+      "tabletTexture": "fighters/practice-automaton/rig/elbow-bearing@2x.webp",
+      "mobileTexture": "fighters/practice-automaton/rig/elbow-bearing@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/practice-automaton/rig/elbow-bearing@2x.png",
+        "tablet": "fighters/practice-automaton/rig/elbow-bearing@2x.png",
+        "mobile": "fighters/practice-automaton/rig/elbow-bearing@1x.png"
+      },
+      "atlasKey": "practice-automaton/elbow-bearing",
+      "materialCategory": "metal-cyan",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "practice-automaton/fingers": {
+      "assetId": "practice-automaton/fingers",
+      "fighterId": "practice-automaton",
+      "sourceSvgPath": "apps/game/assets/source/fighters/practice-automaton/rig/fingers.svg",
+      "runtimeTexturePath": "fighters/practice-automaton/rig/fingers@2x.webp",
+      "width": 319,
+      "height": 232,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 319,
+        "h": 232
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/practice-automaton/rig/fingers@2x.webp",
+      "tabletTexture": "fighters/practice-automaton/rig/fingers@2x.webp",
+      "mobileTexture": "fighters/practice-automaton/rig/fingers@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/practice-automaton/rig/fingers@2x.png",
+        "tablet": "fighters/practice-automaton/rig/fingers@2x.png",
+        "mobile": "fighters/practice-automaton/rig/fingers@1x.png"
+      },
+      "atlasKey": "practice-automaton/fingers",
+      "materialCategory": "metal",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "practice-automaton/forearm-casing": {
+      "assetId": "practice-automaton/forearm-casing",
+      "fighterId": "practice-automaton",
+      "sourceSvgPath": "apps/game/assets/source/fighters/practice-automaton/rig/forearm-casing.svg",
+      "runtimeTexturePath": "fighters/practice-automaton/rig/forearm-casing@2x.webp",
+      "width": 118,
+      "height": 319,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.05
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.05
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 118,
+        "h": 319
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/practice-automaton/rig/forearm-casing@2x.webp",
+      "tabletTexture": "fighters/practice-automaton/rig/forearm-casing@2x.webp",
+      "mobileTexture": "fighters/practice-automaton/rig/forearm-casing@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/practice-automaton/rig/forearm-casing@2x.png",
+        "tablet": "fighters/practice-automaton/rig/forearm-casing@2x.png",
+        "mobile": "fighters/practice-automaton/rig/forearm-casing@1x.png"
+      },
+      "atlasKey": "practice-automaton/forearm-casing",
+      "materialCategory": "metal",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "practice-automaton/grip-pad": {
+      "assetId": "practice-automaton/grip-pad",
+      "fighterId": "practice-automaton",
+      "sourceSvgPath": "apps/game/assets/source/fighters/practice-automaton/rig/grip-pad.svg",
+      "runtimeTexturePath": "fighters/practice-automaton/rig/grip-pad@2x.webp",
+      "width": 320,
+      "height": 200,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 200
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/practice-automaton/rig/grip-pad@2x.webp",
+      "tabletTexture": "fighters/practice-automaton/rig/grip-pad@2x.webp",
+      "mobileTexture": "fighters/practice-automaton/rig/grip-pad@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/practice-automaton/rig/grip-pad@2x.png",
+        "tablet": "fighters/practice-automaton/rig/grip-pad@2x.png",
+        "mobile": "fighters/practice-automaton/rig/grip-pad@1x.png"
+      },
+      "atlasKey": "practice-automaton/grip-pad",
+      "materialCategory": "metal-cyan",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "practice-automaton/highlights": {
+      "assetId": "practice-automaton/highlights",
+      "fighterId": "practice-automaton",
+      "sourceSvgPath": "apps/game/assets/source/fighters/practice-automaton/rig/highlights.svg",
+      "runtimeTexturePath": "fighters/practice-automaton/rig/highlights@2x.webp",
+      "width": 192,
+      "height": 319,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 192,
+        "h": 319
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/practice-automaton/rig/highlights@2x.webp",
+      "tabletTexture": "fighters/practice-automaton/rig/highlights@2x.webp",
+      "mobileTexture": "fighters/practice-automaton/rig/highlights@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/practice-automaton/rig/highlights@2x.png",
+        "tablet": "fighters/practice-automaton/rig/highlights@2x.png",
+        "mobile": "fighters/practice-automaton/rig/highlights@1x.png"
+      },
+      "atlasKey": "practice-automaton/highlights",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "practice-automaton/hydraulic-piston": {
+      "assetId": "practice-automaton/hydraulic-piston",
+      "fighterId": "practice-automaton",
+      "sourceSvgPath": "apps/game/assets/source/fighters/practice-automaton/rig/hydraulic-piston.svg",
+      "runtimeTexturePath": "fighters/practice-automaton/rig/hydraulic-piston@2x.webp",
+      "width": 80,
+      "height": 320,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.1
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.1
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 320
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/practice-automaton/rig/hydraulic-piston@2x.webp",
+      "tabletTexture": "fighters/practice-automaton/rig/hydraulic-piston@2x.webp",
+      "mobileTexture": "fighters/practice-automaton/rig/hydraulic-piston@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/practice-automaton/rig/hydraulic-piston@2x.png",
+        "tablet": "fighters/practice-automaton/rig/hydraulic-piston@2x.png",
+        "mobile": "fighters/practice-automaton/rig/hydraulic-piston@1x.png"
+      },
+      "atlasKey": "practice-automaton/hydraulic-piston",
+      "materialCategory": "metal-cyan",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "practice-automaton/mechanical-hand": {
+      "assetId": "practice-automaton/mechanical-hand",
+      "fighterId": "practice-automaton",
+      "sourceSvgPath": "apps/game/assets/source/fighters/practice-automaton/rig/mechanical-hand.svg",
+      "runtimeTexturePath": "fighters/practice-automaton/rig/mechanical-hand@2x.webp",
+      "width": 290,
+      "height": 319,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.14
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.14
+      },
+      "gripAnchor": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": {
+        "x": 0.5,
+        "y": 0.14
+      },
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 290,
+        "h": 319
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/practice-automaton/rig/mechanical-hand@2x.webp",
+      "tabletTexture": "fighters/practice-automaton/rig/mechanical-hand@2x.webp",
+      "mobileTexture": "fighters/practice-automaton/rig/mechanical-hand@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/practice-automaton/rig/mechanical-hand@2x.png",
+        "tablet": "fighters/practice-automaton/rig/mechanical-hand@2x.png",
+        "mobile": "fighters/practice-automaton/rig/mechanical-hand@1x.png"
+      },
+      "atlasKey": "practice-automaton/mechanical-hand",
+      "materialCategory": "metal",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "practice-automaton/portrait": {
+      "assetId": "practice-automaton/portrait",
+      "fighterId": "practice-automaton",
+      "sourceSvgPath": "apps/game/assets/source/fighters/practice-automaton/portrait.svg",
+      "runtimeTexturePath": "fighters/practice-automaton/portrait@2x.webp",
+      "width": 512,
+      "height": 512,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 512,
+        "h": 512
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "fighters/practice-automaton/portrait@2x.webp",
+      "tabletTexture": "fighters/practice-automaton/portrait@2x.webp",
+      "mobileTexture": "fighters/practice-automaton/portrait@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/practice-automaton/portrait@2x.png",
+        "tablet": "fighters/practice-automaton/portrait@2x.png",
+        "mobile": "fighters/practice-automaton/portrait@1x.png"
+      },
+      "atlasKey": "practice-automaton/portrait",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "practice-automaton/result-defeat": {
+      "assetId": "practice-automaton/result-defeat",
+      "fighterId": "practice-automaton",
+      "sourceSvgPath": "apps/game/assets/source/fighters/practice-automaton/result-defeat.svg",
+      "runtimeTexturePath": "fighters/practice-automaton/result-defeat@2x.webp",
+      "width": 409,
+      "height": 511,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 409,
+        "h": 511
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "fighters/practice-automaton/result-defeat@2x.webp",
+      "tabletTexture": "fighters/practice-automaton/result-defeat@2x.webp",
+      "mobileTexture": "fighters/practice-automaton/result-defeat@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/practice-automaton/result-defeat@2x.png",
+        "tablet": "fighters/practice-automaton/result-defeat@2x.png",
+        "mobile": "fighters/practice-automaton/result-defeat@1x.png"
+      },
+      "atlasKey": "practice-automaton/result-defeat",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "practice-automaton/result-victory": {
+      "assetId": "practice-automaton/result-victory",
+      "fighterId": "practice-automaton",
+      "sourceSvgPath": "apps/game/assets/source/fighters/practice-automaton/result-victory.svg",
+      "runtimeTexturePath": "fighters/practice-automaton/result-victory@2x.webp",
+      "width": 409,
+      "height": 511,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 409,
+        "h": 511
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "fighters/practice-automaton/result-victory@2x.webp",
+      "tabletTexture": "fighters/practice-automaton/result-victory@2x.webp",
+      "mobileTexture": "fighters/practice-automaton/result-victory@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/practice-automaton/result-victory@2x.png",
+        "tablet": "fighters/practice-automaton/result-victory@2x.png",
+        "mobile": "fighters/practice-automaton/result-victory@1x.png"
+      },
+      "atlasKey": "practice-automaton/result-victory",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "practice-automaton/shadows": {
+      "assetId": "practice-automaton/shadows",
+      "fighterId": "practice-automaton",
+      "sourceSvgPath": "apps/game/assets/source/fighters/practice-automaton/rig/shadows.svg",
+      "runtimeTexturePath": "fighters/practice-automaton/rig/shadows@2x.webp",
+      "width": 192,
+      "height": 319,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 192,
+        "h": 319
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/practice-automaton/rig/shadows@2x.webp",
+      "tabletTexture": "fighters/practice-automaton/rig/shadows@2x.webp",
+      "mobileTexture": "fighters/practice-automaton/rig/shadows@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/practice-automaton/rig/shadows@2x.png",
+        "tablet": "fighters/practice-automaton/rig/shadows@2x.png",
+        "mobile": "fighters/practice-automaton/rig/shadows@1x.png"
+      },
+      "atlasKey": "practice-automaton/shadows",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "practice-automaton/shoulder-mount": {
+      "assetId": "practice-automaton/shoulder-mount",
+      "fighterId": "practice-automaton",
+      "sourceSvgPath": "apps/game/assets/source/fighters/practice-automaton/rig/shoulder-mount.svg",
+      "runtimeTexturePath": "fighters/practice-automaton/rig/shoulder-mount@2x.webp",
+      "width": 278,
+      "height": 321,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.4
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.4
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": {
+        "x": 0.5,
+        "y": 0.4
+      },
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 278,
+        "h": 321
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/practice-automaton/rig/shoulder-mount@2x.webp",
+      "tabletTexture": "fighters/practice-automaton/rig/shoulder-mount@2x.webp",
+      "mobileTexture": "fighters/practice-automaton/rig/shoulder-mount@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/practice-automaton/rig/shoulder-mount@2x.png",
+        "tablet": "fighters/practice-automaton/rig/shoulder-mount@2x.png",
+        "mobile": "fighters/practice-automaton/rig/shoulder-mount@1x.png"
+      },
+      "atlasKey": "practice-automaton/shoulder-mount",
+      "materialCategory": "metal-cyan",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "practice-automaton/upper-housing": {
+      "assetId": "practice-automaton/upper-housing",
+      "fighterId": "practice-automaton",
+      "sourceSvgPath": "apps/game/assets/source/fighters/practice-automaton/rig/upper-housing.svg",
+      "runtimeTexturePath": "fighters/practice-automaton/rig/upper-housing@2x.webp",
+      "width": 160,
+      "height": 319,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.06
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.06
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 319
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/practice-automaton/rig/upper-housing@2x.webp",
+      "tabletTexture": "fighters/practice-automaton/rig/upper-housing@2x.webp",
+      "mobileTexture": "fighters/practice-automaton/rig/upper-housing@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/practice-automaton/rig/upper-housing@2x.png",
+        "tablet": "fighters/practice-automaton/rig/upper-housing@2x.png",
+        "mobile": "fighters/practice-automaton/rig/upper-housing@1x.png"
+      },
+      "atlasKey": "practice-automaton/upper-housing",
+      "materialCategory": "metal",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "practice-automaton/versus": {
+      "assetId": "practice-automaton/versus",
+      "fighterId": "practice-automaton",
+      "sourceSvgPath": "apps/game/assets/source/fighters/practice-automaton/versus.svg",
+      "runtimeTexturePath": "fighters/practice-automaton/versus@2x.webp",
+      "width": 511,
+      "height": 383,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 511,
+        "h": 383
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "fighters/practice-automaton/versus@2x.webp",
+      "tabletTexture": "fighters/practice-automaton/versus@2x.webp",
+      "mobileTexture": "fighters/practice-automaton/versus@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/practice-automaton/versus@2x.png",
+        "tablet": "fighters/practice-automaton/versus@2x.png",
+        "mobile": "fighters/practice-automaton/versus@1x.png"
+      },
+      "atlasKey": "practice-automaton/versus",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "practice-automaton/wrist-assembly": {
+      "assetId": "practice-automaton/wrist-assembly",
+      "fighterId": "practice-automaton",
+      "sourceSvgPath": "apps/game/assets/source/fighters/practice-automaton/rig/wrist-assembly.svg",
+      "runtimeTexturePath": "fighters/practice-automaton/rig/wrist-assembly@2x.webp",
+      "width": 274,
+      "height": 320,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.14
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.14
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 274,
+        "h": 320
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/practice-automaton/rig/wrist-assembly@2x.webp",
+      "tabletTexture": "fighters/practice-automaton/rig/wrist-assembly@2x.webp",
+      "mobileTexture": "fighters/practice-automaton/rig/wrist-assembly@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/practice-automaton/rig/wrist-assembly@2x.png",
+        "tablet": "fighters/practice-automaton/rig/wrist-assembly@2x.png",
+        "mobile": "fighters/practice-automaton/rig/wrist-assembly@1x.png"
+      },
+      "atlasKey": "practice-automaton/wrist-assembly",
+      "materialCategory": "metal-cyan",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/bracer": {
+      "assetId": "rookie-brawler/bracer",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/rig/bracer.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/rig/bracer@2x.webp",
+      "width": 249,
+      "height": 320,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 249,
+        "h": 320
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/rookie-brawler/rig/bracer@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/rig/bracer@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/rig/bracer@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/rig/bracer@2x.png",
+        "tablet": "fighters/rookie-brawler/rig/bracer@2x.png",
+        "mobile": "fighters/rookie-brawler/rig/bracer@1x.png"
+      },
+      "atlasKey": "rookie-brawler/bracer",
+      "materialCategory": "metal",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/elbow": {
+      "assetId": "rookie-brawler/elbow",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/rig/elbow.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/rig/elbow@2x.webp",
+      "width": 320,
+      "height": 320,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 320
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/rookie-brawler/rig/elbow@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/rig/elbow@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/rig/elbow@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/rig/elbow@2x.png",
+        "tablet": "fighters/rookie-brawler/rig/elbow@2x.png",
+        "mobile": "fighters/rookie-brawler/rig/elbow@1x.png"
+      },
+      "atlasKey": "rookie-brawler/elbow",
+      "materialCategory": "skin",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/fingers": {
+      "assetId": "rookie-brawler/fingers",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/rig/fingers.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/rig/fingers@2x.webp",
+      "width": 320,
+      "height": 213,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 213
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/rookie-brawler/rig/fingers@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/rig/fingers@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/rig/fingers@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/rig/fingers@2x.png",
+        "tablet": "fighters/rookie-brawler/rig/fingers@2x.png",
+        "mobile": "fighters/rookie-brawler/rig/fingers@1x.png"
+      },
+      "atlasKey": "rookie-brawler/fingers",
+      "materialCategory": "skin",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/forearm": {
+      "assetId": "rookie-brawler/forearm",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/rig/forearm.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/rig/forearm@2x.webp",
+      "width": 128,
+      "height": 319,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.04
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.04
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 319
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/rookie-brawler/rig/forearm@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/rig/forearm@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/rig/forearm@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/rig/forearm@2x.png",
+        "tablet": "fighters/rookie-brawler/rig/forearm@2x.png",
+        "mobile": "fighters/rookie-brawler/rig/forearm@1x.png"
+      },
+      "atlasKey": "rookie-brawler/forearm",
+      "materialCategory": "skin",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/hand": {
+      "assetId": "rookie-brawler/hand",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/rig/hand.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/rig/hand@2x.webp",
+      "width": 267,
+      "height": 320,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.14
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.14
+      },
+      "gripAnchor": {
+        "x": 0.5,
+        "y": 0.9
+      },
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": {
+        "x": 0.5,
+        "y": 0.14
+      },
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 267,
+        "h": 320
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/rookie-brawler/rig/hand@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/rig/hand@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/rig/hand@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/rig/hand@2x.png",
+        "tablet": "fighters/rookie-brawler/rig/hand@2x.png",
+        "mobile": "fighters/rookie-brawler/rig/hand@1x.png"
+      },
+      "atlasKey": "rookie-brawler/hand",
+      "materialCategory": "skin",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/highlights": {
+      "assetId": "rookie-brawler/highlights",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/rig/highlights.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/rig/highlights@2x.webp",
+      "width": 192,
+      "height": 319,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 192,
+        "h": 319
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/rookie-brawler/rig/highlights@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/rig/highlights@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/rig/highlights@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/rig/highlights@2x.png",
+        "tablet": "fighters/rookie-brawler/rig/highlights@2x.png",
+        "mobile": "fighters/rookie-brawler/rig/highlights@1x.png"
+      },
+      "atlasKey": "rookie-brawler/highlights",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/portrait": {
+      "assetId": "rookie-brawler/portrait",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/portrait.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/portrait@2x.webp",
+      "width": 447,
+      "height": 511,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 447,
+        "h": 511
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "fighters/rookie-brawler/portrait@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/portrait@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/portrait@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/portrait@2x.png",
+        "tablet": "fighters/rookie-brawler/portrait@2x.png",
+        "mobile": "fighters/rookie-brawler/portrait@1x.png"
+      },
+      "atlasKey": "rookie-brawler/portrait",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/result-defeat": {
+      "assetId": "rookie-brawler/result-defeat",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/result-defeat.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/result-defeat@2x.webp",
+      "width": 438,
+      "height": 510,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 438,
+        "h": 510
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "fighters/rookie-brawler/result-defeat@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/result-defeat@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/result-defeat@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/result-defeat@2x.png",
+        "tablet": "fighters/rookie-brawler/result-defeat@2x.png",
+        "mobile": "fighters/rookie-brawler/result-defeat@1x.png"
+      },
+      "atlasKey": "rookie-brawler/result-defeat",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/result-victory": {
+      "assetId": "rookie-brawler/result-victory",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/result-victory.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/result-victory@2x.webp",
+      "width": 438,
+      "height": 510,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 438,
+        "h": 510
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "fighters/rookie-brawler/result-victory@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/result-victory@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/result-victory@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/result-victory@2x.png",
+        "tablet": "fighters/rookie-brawler/result-victory@2x.png",
+        "mobile": "fighters/rookie-brawler/result-victory@1x.png"
+      },
+      "atlasKey": "rookie-brawler/result-victory",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/reveal": {
+      "assetId": "rookie-brawler/reveal",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/reveal.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/reveal@2x.webp",
+      "width": 411,
+      "height": 514,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 411,
+        "h": 514
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "fighters/rookie-brawler/reveal@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/reveal@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/reveal@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/reveal@2x.png",
+        "tablet": "fighters/rookie-brawler/reveal@2x.png",
+        "mobile": "fighters/rookie-brawler/reveal@1x.png"
+      },
+      "atlasKey": "rookie-brawler/reveal",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/shadows": {
+      "assetId": "rookie-brawler/shadows",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/rig/shadows.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/rig/shadows@2x.webp",
+      "width": 192,
+      "height": 319,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 192,
+        "h": 319
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/rookie-brawler/rig/shadows@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/rig/shadows@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/rig/shadows@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/rig/shadows@2x.png",
+        "tablet": "fighters/rookie-brawler/rig/shadows@2x.png",
+        "mobile": "fighters/rookie-brawler/rig/shadows@1x.png"
+      },
+      "atlasKey": "rookie-brawler/shadows",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/shoulder": {
+      "assetId": "rookie-brawler/shoulder",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/rig/shoulder.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/rig/shoulder@2x.webp",
+      "width": 275,
+      "height": 321,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.42
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.42
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": {
+        "x": 0.5,
+        "y": 0.42
+      },
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 275,
+        "h": 321
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/rookie-brawler/rig/shoulder@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/rig/shoulder@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/rig/shoulder@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/rig/shoulder@2x.png",
+        "tablet": "fighters/rookie-brawler/rig/shoulder@2x.png",
+        "mobile": "fighters/rookie-brawler/rig/shoulder@1x.png"
+      },
+      "atlasKey": "rookie-brawler/shoulder",
+      "materialCategory": "skin",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/thumb": {
+      "assetId": "rookie-brawler/thumb",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/rig/thumb.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/rig/thumb@2x.webp",
+      "width": 228,
+      "height": 320,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 228,
+        "h": 320
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/rookie-brawler/rig/thumb@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/rig/thumb@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/rig/thumb@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/rig/thumb@2x.png",
+        "tablet": "fighters/rookie-brawler/rig/thumb@2x.png",
+        "mobile": "fighters/rookie-brawler/rig/thumb@1x.png"
+      },
+      "atlasKey": "rookie-brawler/thumb",
+      "materialCategory": "skin",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/upper-arm": {
+      "assetId": "rookie-brawler/upper-arm",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/rig/upper-arm.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/rig/upper-arm@2x.webp",
+      "width": 160,
+      "height": 320,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.07
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.07
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 160,
+        "h": 320
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/rookie-brawler/rig/upper-arm@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/rig/upper-arm@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/rig/upper-arm@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/rig/upper-arm@2x.png",
+        "tablet": "fighters/rookie-brawler/rig/upper-arm@2x.png",
+        "mobile": "fighters/rookie-brawler/rig/upper-arm@1x.png"
+      },
+      "atlasKey": "rookie-brawler/upper-arm",
+      "materialCategory": "skin",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/versus": {
+      "assetId": "rookie-brawler/versus",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/versus.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/versus@2x.webp",
+      "width": 383,
+      "height": 511,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 383,
+        "h": 511
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "fighters/rookie-brawler/versus@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/versus@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/versus@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/versus@2x.png",
+        "tablet": "fighters/rookie-brawler/versus@2x.png",
+        "mobile": "fighters/rookie-brawler/versus@1x.png"
+      },
+      "atlasKey": "rookie-brawler/versus",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/wraps": {
+      "assetId": "rookie-brawler/wraps",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/rig/wraps.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/rig/wraps@2x.webp",
+      "width": 256,
+      "height": 319,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 319
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/rookie-brawler/rig/wraps@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/rig/wraps@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/rig/wraps@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/rig/wraps@2x.png",
+        "tablet": "fighters/rookie-brawler/rig/wraps@2x.png",
+        "mobile": "fighters/rookie-brawler/rig/wraps@1x.png"
+      },
+      "atlasKey": "rookie-brawler/wraps",
+      "materialCategory": "leather",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "rookie-brawler/wrist": {
+      "assetId": "rookie-brawler/wrist",
+      "fighterId": "rookie-brawler",
+      "sourceSvgPath": "apps/game/assets/source/fighters/rookie-brawler/rig/wrist.svg",
+      "runtimeTexturePath": "fighters/rookie-brawler/rig/wrist@2x.webp",
+      "width": 240,
+      "height": 320,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.12
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.12
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 240,
+        "h": 320
+      },
+      "poseCompatibility": [
+        "ready",
+        "approach",
+        "grip",
+        "neutral",
+        "lightAdvantagePlayer",
+        "strongAdvantagePlayer",
+        "lightAdvantageOpponent",
+        "strongAdvantageOpponent",
+        "counterPlayer",
+        "counterOpponent",
+        "criticalPlayer",
+        "criticalOpponent",
+        "recoveryPlayer",
+        "recoveryOpponent",
+        "fatiguePlayer",
+        "fatigueOpponent",
+        "finalSlamPlayer",
+        "finalSlamOpponent",
+        "victoryPlayer",
+        "victoryOpponent",
+        "defeatPlayer",
+        "defeatOpponent"
+      ],
+      "desktopTexture": "fighters/rookie-brawler/rig/wrist@2x.webp",
+      "tabletTexture": "fighters/rookie-brawler/rig/wrist@2x.webp",
+      "mobileTexture": "fighters/rookie-brawler/rig/wrist@1x.webp",
+      "pngFallback": {
+        "desktop": "fighters/rookie-brawler/rig/wrist@2x.png",
+        "tablet": "fighters/rookie-brawler/rig/wrist@2x.png",
+        "mobile": "fighters/rookie-brawler/rig/wrist@1x.png"
+      },
+      "atlasKey": "rookie-brawler/wrist",
+      "materialCategory": "skin",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "ui/badges/common": {
+      "assetId": "ui/badges/common",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/ui/badges/common.svg",
+      "runtimeTexturePath": "ui/badges/common@2x.webp",
+      "width": 256,
+      "height": 77,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 77
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "ui/badges/common@2x.webp",
+      "tabletTexture": "ui/badges/common@2x.webp",
+      "mobileTexture": "ui/badges/common@1x.webp",
+      "pngFallback": {
+        "desktop": "ui/badges/common@2x.png",
+        "tablet": "ui/badges/common@2x.png",
+        "mobile": "ui/badges/common@1x.png"
+      },
+      "atlasKey": "ui/badges/common",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "ui/badges/easy": {
+      "assetId": "ui/badges/easy",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/ui/badges/easy.svg",
+      "runtimeTexturePath": "ui/badges/easy@2x.webp",
+      "width": 256,
+      "height": 77,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 77
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "ui/badges/easy@2x.webp",
+      "tabletTexture": "ui/badges/easy@2x.webp",
+      "mobileTexture": "ui/badges/easy@1x.webp",
+      "pngFallback": {
+        "desktop": "ui/badges/easy@2x.png",
+        "tablet": "ui/badges/easy@2x.png",
+        "mobile": "ui/badges/easy@1x.png"
+      },
+      "atlasKey": "ui/badges/easy",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "ui/icons/collection": {
+      "assetId": "ui/icons/collection",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/ui/icons/collection.svg",
+      "runtimeTexturePath": "ui/icons/collection@2x.webp",
+      "width": 96,
+      "height": 96,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "ui/icons/collection@2x.webp",
+      "tabletTexture": "ui/icons/collection@2x.webp",
+      "mobileTexture": "ui/icons/collection@1x.webp",
+      "pngFallback": {
+        "desktop": "ui/icons/collection@2x.png",
+        "tablet": "ui/icons/collection@2x.png",
+        "mobile": "ui/icons/collection@1x.png"
+      },
+      "atlasKey": "ui/icons/collection",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "ui/icons/home": {
+      "assetId": "ui/icons/home",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/ui/icons/home.svg",
+      "runtimeTexturePath": "ui/icons/home@2x.webp",
+      "width": 96,
+      "height": 96,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "ui/icons/home@2x.webp",
+      "tabletTexture": "ui/icons/home@2x.webp",
+      "mobileTexture": "ui/icons/home@1x.webp",
+      "pngFallback": {
+        "desktop": "ui/icons/home@2x.png",
+        "tablet": "ui/icons/home@2x.png",
+        "mobile": "ui/icons/home@1x.png"
+      },
+      "atlasKey": "ui/icons/home",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "ui/icons/music-off": {
+      "assetId": "ui/icons/music-off",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/ui/icons/music-off.svg",
+      "runtimeTexturePath": "ui/icons/music-off@2x.webp",
+      "width": 96,
+      "height": 96,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "ui/icons/music-off@2x.webp",
+      "tabletTexture": "ui/icons/music-off@2x.webp",
+      "mobileTexture": "ui/icons/music-off@1x.webp",
+      "pngFallback": {
+        "desktop": "ui/icons/music-off@2x.png",
+        "tablet": "ui/icons/music-off@2x.png",
+        "mobile": "ui/icons/music-off@1x.png"
+      },
+      "atlasKey": "ui/icons/music-off",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "ui/icons/music-on": {
+      "assetId": "ui/icons/music-on",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/ui/icons/music-on.svg",
+      "runtimeTexturePath": "ui/icons/music-on@2x.webp",
+      "width": 96,
+      "height": 96,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "ui/icons/music-on@2x.webp",
+      "tabletTexture": "ui/icons/music-on@2x.webp",
+      "mobileTexture": "ui/icons/music-on@1x.webp",
+      "pngFallback": {
+        "desktop": "ui/icons/music-on@2x.png",
+        "tablet": "ui/icons/music-on@2x.png",
+        "mobile": "ui/icons/music-on@1x.png"
+      },
+      "atlasKey": "ui/icons/music-on",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "ui/icons/replay": {
+      "assetId": "ui/icons/replay",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/ui/icons/replay.svg",
+      "runtimeTexturePath": "ui/icons/replay@2x.webp",
+      "width": 96,
+      "height": 96,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "ui/icons/replay@2x.webp",
+      "tabletTexture": "ui/icons/replay@2x.webp",
+      "mobileTexture": "ui/icons/replay@1x.webp",
+      "pngFallback": {
+        "desktop": "ui/icons/replay@2x.png",
+        "tablet": "ui/icons/replay@2x.png",
+        "mobile": "ui/icons/replay@1x.png"
+      },
+      "atlasKey": "ui/icons/replay",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "ui/icons/sfx-off": {
+      "assetId": "ui/icons/sfx-off",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/ui/icons/sfx-off.svg",
+      "runtimeTexturePath": "ui/icons/sfx-off@2x.webp",
+      "width": 96,
+      "height": 96,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "ui/icons/sfx-off@2x.webp",
+      "tabletTexture": "ui/icons/sfx-off@2x.webp",
+      "mobileTexture": "ui/icons/sfx-off@1x.webp",
+      "pngFallback": {
+        "desktop": "ui/icons/sfx-off@2x.png",
+        "tablet": "ui/icons/sfx-off@2x.png",
+        "mobile": "ui/icons/sfx-off@1x.png"
+      },
+      "atlasKey": "ui/icons/sfx-off",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "ui/icons/sfx-on": {
+      "assetId": "ui/icons/sfx-on",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/ui/icons/sfx-on.svg",
+      "runtimeTexturePath": "ui/icons/sfx-on@2x.webp",
+      "width": 96,
+      "height": 96,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "ui/icons/sfx-on@2x.webp",
+      "tabletTexture": "ui/icons/sfx-on@2x.webp",
+      "mobileTexture": "ui/icons/sfx-on@1x.webp",
+      "pngFallback": {
+        "desktop": "ui/icons/sfx-on@2x.png",
+        "tablet": "ui/icons/sfx-on@2x.png",
+        "mobile": "ui/icons/sfx-on@1x.png"
+      },
+      "atlasKey": "ui/icons/sfx-on",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "ui/result/defeat-frame": {
+      "assetId": "ui/result/defeat-frame",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/ui/result/defeat-frame.svg",
+      "runtimeTexturePath": "ui/result/defeat-frame@2x.webp",
+      "width": 640,
+      "height": 360,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 360
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "ui/result/defeat-frame@2x.webp",
+      "tabletTexture": "ui/result/defeat-frame@2x.webp",
+      "mobileTexture": "ui/result/defeat-frame@1x.webp",
+      "pngFallback": {
+        "desktop": "ui/result/defeat-frame@2x.png",
+        "tablet": "ui/result/defeat-frame@2x.png",
+        "mobile": "ui/result/defeat-frame@1x.png"
+      },
+      "atlasKey": "ui/result/defeat-frame",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "ui/result/reward-card": {
+      "assetId": "ui/result/reward-card",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/ui/result/reward-card.svg",
+      "runtimeTexturePath": "ui/result/reward-card@2x.webp",
+      "width": 640,
+      "height": 267,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 267
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "ui/result/reward-card@2x.webp",
+      "tabletTexture": "ui/result/reward-card@2x.webp",
+      "mobileTexture": "ui/result/reward-card@1x.webp",
+      "pngFallback": {
+        "desktop": "ui/result/reward-card@2x.png",
+        "tablet": "ui/result/reward-card@2x.png",
+        "mobile": "ui/result/reward-card@1x.png"
+      },
+      "atlasKey": "ui/result/reward-card",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    },
+    "ui/result/victory-frame": {
+      "assetId": "ui/result/victory-frame",
+      "fighterId": null,
+      "sourceSvgPath": "apps/game/assets/source/ui/result/victory-frame.svg",
+      "runtimeTexturePath": "ui/result/victory-frame@2x.webp",
+      "width": 640,
+      "height": 360,
+      "pixelDensity": 2,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "gripAnchor": null,
+      "elbowAnchor": null,
+      "shoulderAnchor": null,
+      "handAnchor": null,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 360
+      },
+      "poseCompatibility": [],
+      "desktopTexture": "ui/result/victory-frame@2x.webp",
+      "tabletTexture": "ui/result/victory-frame@2x.webp",
+      "mobileTexture": "ui/result/victory-frame@1x.webp",
+      "pngFallback": {
+        "desktop": "ui/result/victory-frame@2x.png",
+        "tablet": "ui/result/victory-frame@2x.png",
+        "mobile": "ui/result/victory-frame@1x.png"
+      },
+      "atlasKey": "ui/result/victory-frame",
+      "materialCategory": "composite",
+      "assetVersion": "phase3-3b-v1"
+    }
+  }
+}

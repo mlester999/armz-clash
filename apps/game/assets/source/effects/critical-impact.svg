@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <radialGradient id="fx-ci-core" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="20%" stop-color="#5ec8ff" stop-opacity="0.7"/>
+      <stop offset="45%" stop-color="#5ec8ff" stop-opacity="0.35"/>
+      <stop offset="70%" stop-color="#3aa0dd" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#3aa0dd" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="fx-ci-ring" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0"/>
+      <stop offset="60%" stop-color="#5ec8ff" stop-opacity="0"/>
+      <stop offset="75%" stop-color="#5ec8ff" stop-opacity="0.4"/>
+      <stop offset="85%" stop-color="#a0e8ff" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Shockwave ring -->
+  <path d="M80 4 C122 4 156 38 156 80 C156 122 122 156 80 156 C38 156 4 122 4 80 C4 38 38 4 80 4Z" fill="url(#fx-ci-ring)"/>
+  <!-- Core burst -->
+  <path d="M80 30 C108 30 130 52 130 80 C130 108 108 130 80 130 C52 130 30 108 30 80 C30 52 52 30 80 30Z" fill="url(#fx-ci-core)"/>
+  <!-- Impact spikes -->
+  <path d="M80 2 L86 50 L80 38 L74 50Z" fill="#5ec8ff" fill-opacity="0.6"/>
+  <path d="M80 158 L86 110 L80 122 L74 110Z" fill="#5ec8ff" fill-opacity="0.6"/>
+  <path d="M2 80 L50 74 L38 80 L50 86Z" fill="#5ec8ff" fill-opacity="0.6"/>
+  <path d="M158 80 L110 74 L122 80 L110 86Z" fill="#5ec8ff" fill-opacity="0.6"/>
+  <!-- Diagonal spikes -->
+  <path d="M22 22 L56 52 L46 46 L52 56Z" fill="#a0e8ff" fill-opacity="0.4"/>
+  <path d="M138 22 L104 52 L114 46 L108 56Z" fill="#a0e8ff" fill-opacity="0.4"/>
+  <path d="M22 138 L56 108 L46 114 L52 104Z" fill="#a0e8ff" fill-opacity="0.4"/>
+  <path d="M138 138 L104 108 L114 114 L108 104Z" fill="#a0e8ff" fill-opacity="0.4"/>
+  <!-- Debris particles -->
+  <path d="M45 40 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0" fill="#a0e8ff" fill-opacity="0.5"/>
+  <path d="M110 35 a2.5 2.5 0 1 0 5 0 a2.5 2.5 0 1 0 -5 0" fill="#5ec8ff" fill-opacity="0.5"/>
+  <path d="M35 110 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#5ec8ff" fill-opacity="0.4"/>
+  <path d="M120 115 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0" fill="#a0e8ff" fill-opacity="0.4"/>
+  <path d="M60 20 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#ffffff" fill-opacity="0.5"/>
+  <path d="M100 140 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#ffffff" fill-opacity="0.4"/>
+</svg>

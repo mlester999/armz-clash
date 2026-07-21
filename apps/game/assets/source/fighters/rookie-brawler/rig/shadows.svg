@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" width="120" height="200">
+  <defs>
+    <linearGradient id="rb-sh-ao" x1="0.8" y1="0" x2="0.2" y2="1">
+      <stop offset="0%" stop-color="#2a1508" stop-opacity="0"/>
+      <stop offset="60%" stop-color="#2a1508" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#1a0a04" stop-opacity="0.5"/>
+    </linearGradient>
+    <radialGradient id="rb-sh-contact" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#1a0a04" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#1a0a04" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Under-shoulder AO -->
+  <path d="M25 40 C35 45 55 48 75 45 C85 42 90 38 92 32 C90 42 82 50 70 52 C55 55 38 52 28 46Z" fill="url(#rb-sh-ao)"/>
+  <!-- Inner elbow shadow -->
+  <path d="M40 95 C45 92 55 92 60 95 C62 100 60 108 55 110 C48 112 42 108 40 102Z" fill="url(#rb-sh-contact)"/>
+  <!-- Under-bracer shadow -->
+  <path d="M30 148 C40 145 55 145 65 148 C68 152 66 158 60 160 C50 162 38 160 32 155Z" fill="url(#rb-sh-contact)"/>
+  <!-- Grip contact shadow -->
+  <path d="M35 178 C42 175 55 175 65 178 C68 182 66 188 58 190 C48 192 38 190 35 185Z" fill="url(#rb-sh-contact)"/>
+  <!-- Right-side ambient occlusion -->
+  <path d="M80 30 C88 50 92 80 90 110 C88 140 82 165 74 185" fill="none" stroke="#1a0a04" stroke-width="4" stroke-opacity="0.2" stroke-linecap="round"/>
+</svg>

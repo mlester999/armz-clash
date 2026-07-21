@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400">
+  <defs>
+    <linearGradient id="ar-bn-cloth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a2438"/>
+      <stop offset="100%" stop-color="#121a2a"/>
+    </linearGradient>
+    <linearGradient id="ar-bn-accent" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="ar-bn-gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d4af6a" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+  <!-- Left banner -->
+  <path d="M60 20 L140 20 L140 320 L100 350 L60 320Z" fill="url(#ar-bn-cloth)" fill-opacity="0.85"/>
+  <path d="M70 30 L130 30 L130 310 L100 335 L70 310Z" fill="url(#ar-bn-accent)"/>
+  <path d="M85 50 L115 50 L115 280 L100 295 L85 280Z" fill="#5ec8ff" fill-opacity="0.08"/>
+  <!-- Banner emblem (arm wrestling icon) -->
+  <path d="M90 120 C85 130 85 145 90 155 L100 165 L110 155 C115 145 115 130 110 120 L100 112Z" fill="#5ec8ff" fill-opacity="0.15"/>
+  <path d="M95 130 L105 130 L105 150 L95 150Z" fill="#5ec8ff" fill-opacity="0.1"/>
+  <!-- Banner rod -->
+  <path d="M55 18 L145 18 L145 24 L55 24Z" fill="#3a4a5a"/>
+  <path d="M55 18 L145 18" stroke="#6a7a8a" stroke-width="1" stroke-opacity="0.4"/>
+  <!-- Right banner -->
+  <path d="M1140 20 L1220 20 L1220 320 L1180 350 L1140 320Z" fill="url(#ar-bn-cloth)" fill-opacity="0.85"/>
+  <path d="M1150 30 L1210 30 L1210 310 L1180 335 L1150 310Z" fill="url(#ar-bn-gold)"/>
+  <path d="M1165 50 L1195 50 L1195 280 L1180 295 L1165 280Z" fill="#d4af6a" fill-opacity="0.08"/>
+  <!-- Banner emblem -->
+  <path d="M1170 120 C1165 130 1165 145 1170 155 L1180 165 L1190 155 C1195 145 1195 130 1190 120 L1180 112Z" fill="#d4af6a" fill-opacity="0.15"/>
+  <path d="M1175 130 L1185 130 L1185 150 L1175 150Z" fill="#d4af6a" fill-opacity="0.1"/>
+  <!-- Banner rod -->
+  <path d="M1135 18 L1225 18 L1225 24 L1135 24Z" fill="#3a4a5a"/>
+  <path d="M1135 18 L1225 18" stroke="#6a7a8a" stroke-width="1" stroke-opacity="0.4"/>
+  <!-- Center hanging banner -->
+  <path d="M560 10 L720 10 L720 100 L640 120 L560 100Z" fill="url(#ar-bn-cloth)" fill-opacity="0.7"/>
+  <path d="M575 18 L705 18 L705 92 L640 108 L575 92Z" fill="url(#ar-bn-gold)"/>
+  <!-- Tournament text area -->
+  <path d="M595 35 L685 35 L685 75 L595 75Z" fill="#d4af6a" fill-opacity="0.06"/>
+  <path d="M610 45 L670 45 M610 55 L670 55 M620 65 L660 65" stroke="#d4af6a" stroke-width="2" stroke-opacity="0.15" stroke-linecap="round"/>
+  <!-- Center banner rod -->
+  <path d="M555 8 L725 8 L725 14 L555 14Z" fill="#3a4a5a"/>
+  <!-- Small side pennants -->
+  <path d="M250 15 L310 15 L310 80 L280 95 L250 80Z" fill="url(#ar-bn-cloth)" fill-opacity="0.5"/>
+  <path d="M970 15 L1030 15 L1030 80 L1000 95 L970 80Z" fill="url(#ar-bn-cloth)" fill-opacity="0.5"/>
+  <!-- Pennant rods -->
+  <path d="M245 13 L315 13 L315 18 L245 18Z" fill="#2a3a4a"/>
+  <path d="M965 13 L1035 13 L1035 18 L965 18Z" fill="#2a3a4a"/>
+</svg>

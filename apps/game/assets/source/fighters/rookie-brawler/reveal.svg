@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500">
+  <defs>
+    <linearGradient id="rbr-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a2438"/>
+      <stop offset="50%" stop-color="#0d121c"/>
+      <stop offset="100%" stop-color="#070a10"/>
+    </linearGradient>
+    <radialGradient id="rbr-glow" cx="50%" cy="30%" r="55%">
+      <stop offset="0%" stop-color="#d4af6a" stop-opacity="0.4"/>
+      <stop offset="50%" stop-color="#d4af6a" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rbr-skin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d4956e"/>
+      <stop offset="50%" stop-color="#c48a6a"/>
+      <stop offset="100%" stop-color="#a06b4a"/>
+    </linearGradient>
+    <linearGradient id="rbr-cloth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a3828"/>
+      <stop offset="100%" stop-color="#2d2118"/>
+    </linearGradient>
+    <linearGradient id="rbr-metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8a8a7a"/>
+      <stop offset="100%" stop-color="#5a5a4a"/>
+    </linearGradient>
+    <filter id="rbr-tex">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="m"/>
+      <feBlend in="SourceGraphic" in2="m" mode="overlay"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+  <rect width="400" height="500" fill="url(#rbr-bg)"/>
+  <ellipse cx="200" cy="160" rx="160" ry="130" fill="url(#rbr-glow)"/>
+  <!-- Arena floor -->
+  <ellipse cx="200" cy="440" rx="130" ry="20" fill="#000" opacity="0.5"/>
+  <ellipse cx="200" cy="436" rx="100" ry="12" fill="#d4af6a" opacity="0.06"/>
+  <!-- === FULL ARM COMPOSITION (hero pose, flexed) === -->
+  <!-- Shoulder mass -->
+  <path d="M110 310 C100 270 105 220 125 185 C142 158 172 142 200 150 C228 158 248 185 246 225 C244 260 232 295 212 318 L145 325 C125 318 112 315 110 310Z" fill="url(#rbr-skin)" filter="url(#rbr-tex)"/>
+  <!-- Deltoid separation -->
+  <path d="M175 148 C170 180 168 220 170 260 C172 290 176 310 180 325" fill="none" stroke="#8a5535" stroke-width="3" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Anterior highlight -->
+  <path d="M125 200 C135 172 158 155 185 150 C205 148 222 155 230 170 C235 182 232 200 226 215 C215 195 198 180 178 178 C158 176 138 185 125 200Z" fill="#daa882" fill-opacity="0.3"/>
+  <!-- Cloth strap -->
+  <path d="M130 165 C148 150 175 142 205 145 C218 147 228 152 235 160 L230 172 C222 164 210 160 198 160 C178 160 155 168 140 180Z" fill="url(#rbr-cloth)"/>
+  <path d="M135 160 L138 170 M150 153 L153 163 M165 148 L168 158 M180 146 L183 156 M195 146 L198 156 M210 149 L213 159 M225 154 L228 164" stroke="#6b5540" stroke-width="1.2" stroke-opacity="0.5" stroke-linecap="round"/>
+  <!-- Upper arm -->
+  <path d="M205 240 C215 270 222 305 226 340 C228 358 226 372 218 380 L195 378 C188 368 186 348 188 322 C190 295 196 265 205 240Z" fill="url(#rbr-skin)" filter="url(#rbr-tex)"/>
+  <!-- Bicep bulge -->
+  <path d="M208 252 C212 272 216 300 218 330" fill="none" stroke="#fff" stroke-width="5" stroke-opacity="0.05" stroke-linecap="round"/>
+  <!-- Elbow -->
+  <path d="M192 372 C188 380 188 392 195 400 C202 408 215 408 222 400 C228 392 228 380 224 372 C216 365 200 365 192 372Z" fill="url(#rbr-skin)"/>
+  <path d="M198 382 C205 380 215 380 220 382" fill="none" stroke="#8a5535" stroke-width="2" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Forearm (flexed upward) -->
+  <path d="M195 398 C185 375 178 345 176 312 C174 282 178 258 186 242 C194 230 206 225 216 230 C226 236 232 252 234 275 C236 302 232 335 226 365 C222 385 215 400 206 408 C200 412 196 406 195 398Z" fill="url(#rbr-skin)" filter="url(#rbr-tex)"/>
+  <!-- Flexor mass -->
+  <path d="M182 310 C188 288 198 270 210 264 C218 270 222 284 222 300 C218 286 210 276 200 278 C190 280 184 294 182 310Z" fill="#daa882" fill-opacity="0.3"/>
+  <!-- Wrist wraps -->
+  <path d="M178 285 C176 295 176 308 178 318 C180 326 186 332 194 334 L224 332 C232 326 236 316 236 305 C236 294 234 286 230 280 L186 278 C182 278 179 281 178 285Z" fill="url(#rbr-cloth)"/>
+  <path d="M180 290 C195 287 218 287 232 290" fill="none" stroke="#d4c8b0" stroke-width="5" stroke-opacity="0.6" stroke-linecap="round"/>
+  <path d="M179 300 C195 297 218 297 233 300" fill="none" stroke="#d4c8b0" stroke-width="4.5" stroke-opacity="0.5" stroke-linecap="round"/>
+  <path d="M179 310 C195 307 218 307 233 310" fill="none" stroke="#d4c8b0" stroke-width="5" stroke-opacity="0.55" stroke-linecap="round"/>
+  <!-- Bracer plate -->
+  <path d="M186 292 C184 300 184 310 186 318 C188 324 194 328 202 329 L220 328 C228 324 232 316 232 307 C232 298 230 292 226 288 L194 286 C190 286 187 289 186 292Z" fill="url(#rbr-metal)"/>
+  <path d="M192 295 C198 292 212 291 222 294" fill="none" stroke="#c0c0b0" stroke-width="2" stroke-opacity="0.4" stroke-linecap="round"/>
+  <!-- Rivets -->
+  <path d="M192 296 C193 295 195 295 196 296 C197 297 196 299 194 299 C192 299 191 297 192 296Z" fill="#9a9a8a"/>
+  <path d="M220 295 C221 294 223 294 224 295 C225 296 224 298 222 298 C220 298 219 296 220 295Z" fill="#9a9a8a"/>
+  <path d="M192 318 C193 317 195 317 196 318 C197 319 196 321 194 321 C192 321 191 319 192 318Z" fill="#9a9a8a"/>
+  <path d="M220 317 C221 316 223 316 224 317 C225 318 224 320 222 320 C220 320 219 318 220 317Z" fill="#9a9a8a"/>
+  <!-- Fist (clenched, hero pose) -->
+  <path d="M182 240 C176 230 176 216 182 206 C188 198 198 194 210 194 C222 194 232 198 238 206 C244 216 244 230 238 240 C232 250 222 254 210 254 C198 254 188 250 182 240Z" fill="url(#rbr-skin)"/>
+  <!-- Finger curls -->
+  <path d="M188 210 C186 202 188 194 196 191 C203 189 209 192 211 198 C212 204 210 212 207 218 L192 215 C189 214 188 212 188 210Z" fill="url(#rbr-skin)"/>
+  <path d="M210 205 C209 197 211 189 219 186 C226 184 232 188 233 194 C234 202 232 210 229 216 L213 213 C211 211 210 208 210 205Z" fill="url(#rbr-skin)"/>
+  <!-- Thumb -->
+  <path d="M180 232 C174 228 172 220 174 212 C176 206 182 204 186 206 C188 212 188 220 186 228 C185 232 182 234 180 232Z" fill="url(#rbr-skin)"/>
+  <!-- Knuckle highlights -->
+  <path d="M194 196 C197 193 202 193 205 196 M216 192 C219 189 224 189 227 192" fill="none" stroke="#daa882" stroke-width="2" stroke-opacity="0.4" stroke-linecap="round"/>
+  <!-- Rim light -->
+  <path d="M125 185 C142 158 172 142 200 150 C228 158 248 185 246 225" fill="none" stroke="#f0d8b8" stroke-width="2" stroke-opacity="0.2" stroke-linecap="round"/>
+  <!-- Reveal sparkle accents -->
+  <path d="M300 100 L305 90 L310 100 L305 110Z" fill="#d4af6a" fill-opacity="0.4"/>
+  <path d="M90 150 L93 143 L96 150 L93 157Z" fill="#d4af6a" fill-opacity="0.3"/>
+  <path d="M320 250 L323 244 L326 250 L323 256Z" fill="#5ec8ff" fill-opacity="0.25"/>
+</svg>

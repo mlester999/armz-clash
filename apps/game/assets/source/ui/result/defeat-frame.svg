@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+  <defs>
+    <linearGradient id="ui-df-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1216"/>
+      <stop offset="55%" stop-color="#120d12"/>
+      <stop offset="100%" stop-color="#0a080c"/>
+    </linearGradient>
+    <radialGradient id="ui-df-glow" cx="0.5" cy="0.2" r="0.7">
+      <stop offset="0%" stop-color="#f07178" stop-opacity="0.2"/>
+      <stop offset="45%" stop-color="#f07178" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#f07178" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ui-df-border" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8a94a2"/>
+      <stop offset="50%" stop-color="#5a6472"/>
+      <stop offset="100%" stop-color="#3a424e"/>
+    </linearGradient>
+    <linearGradient id="ui-df-ray" x1="0.5" y1="1" x2="0.5" y2="0">
+      <stop offset="0%" stop-color="#f07178" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#f07178" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <path d="M24 4 L616 4 C627 4 636 13 636 24 L636 336 C636 347 627 356 616 356 L24 356 C13 356 4 347 4 336 L4 24 C4 13 13 4 24 4 Z" fill="url(#ui-df-bg)"/>
+  <path d="M24 4 L616 4 C627 4 636 13 636 24 L636 336 C636 347 627 356 616 356 L24 356 C13 356 4 347 4 336 L4 24 C4 13 13 4 24 4 Z" fill="url(#ui-df-glow)"/>
+  <!-- Falling ash rays -->
+  <path d="M320 240 L290 352 L306 352 Z" fill="url(#ui-df-ray)"/>
+  <path d="M320 240 L350 352 L334 352 Z" fill="url(#ui-df-ray)"/>
+  <path d="M320 240 L210 340 L228 346 Z" fill="url(#ui-df-ray)" fill-opacity="0.7"/>
+  <path d="M320 240 L430 340 L412 346 Z" fill="url(#ui-df-ray)" fill-opacity="0.7"/>
+  <!-- Border -->
+  <path d="M24 4 L616 4 C627 4 636 13 636 24 L636 336 C636 347 627 356 616 356 L24 356 C13 356 4 347 4 336 L4 24 C4 13 13 4 24 4 Z" fill="none" stroke="url(#ui-df-border)" stroke-width="3"/>
+  <path d="M34 14 L606 14 C613 14 620 20 620 28 L620 332 C620 339 613 346 606 346 L34 346 C27 346 20 339 20 332 L20 28 C20 20 27 14 34 14 Z" fill="none" stroke="#f07178" stroke-width="1" stroke-opacity="0.18"/>
+  <!-- Title banner plate -->
+  <path d="M180 60 L460 60 L480 96 L460 132 L180 132 L160 96 Z" fill="#160f14" stroke="url(#ui-df-border)" stroke-width="2"/>
+  <!-- Falling embers -->
+  <path d="M120 200 L124 192 L128 200 L124 208 Z" fill="#f07178" fill-opacity="0.36"/>
+  <path d="M520 210 L524 202 L528 210 L524 218 Z" fill="#c85058" fill-opacity="0.32"/>
+  <path d="M90 270 L93 264 L96 270 L93 276 Z" fill="#8a94a2" fill-opacity="0.28"/>
+  <path d="M550 275 L553 269 L556 275 L553 281 Z" fill="#8a94a2" fill-opacity="0.28"/>
+</svg>

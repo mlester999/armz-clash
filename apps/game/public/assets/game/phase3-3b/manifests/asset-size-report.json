@@ -1,0 +1,307 @@
+{
+  "version": "phase3-3b-v1",
+  "totalBytes": 7805747,
+  "atlasBytes": 1855558,
+  "assets": [
+    {
+      "assetId": "arena/background",
+      "bytes": 74177,
+      "files": 4
+    },
+    {
+      "assetId": "arena/banners",
+      "bytes": 35312,
+      "files": 4
+    },
+    {
+      "assetId": "arena/crowd",
+      "bytes": 83852,
+      "files": 4
+    },
+    {
+      "assetId": "arena/elbow-pad",
+      "bytes": 30171,
+      "files": 4
+    },
+    {
+      "assetId": "arena/lighting",
+      "bytes": 356044,
+      "files": 4
+    },
+    {
+      "assetId": "arena/pin-pad",
+      "bytes": 18809,
+      "files": 4
+    },
+    {
+      "assetId": "arena/table",
+      "bytes": 289327,
+      "files": 4
+    },
+    {
+      "assetId": "arena/table-frame",
+      "bytes": 52767,
+      "files": 4
+    },
+    {
+      "assetId": "effects/critical-impact",
+      "bytes": 138508,
+      "files": 4
+    },
+    {
+      "assetId": "effects/defeat-accent",
+      "bytes": 103400,
+      "files": 4
+    },
+    {
+      "assetId": "effects/grip-flash",
+      "bytes": 121894,
+      "files": 4
+    },
+    {
+      "assetId": "effects/momentum-streak",
+      "bytes": 18660,
+      "files": 4
+    },
+    {
+      "assetId": "effects/pressure-ring",
+      "bytes": 122919,
+      "files": 4
+    },
+    {
+      "assetId": "effects/recovery-glow",
+      "bytes": 100552,
+      "files": 4
+    },
+    {
+      "assetId": "effects/slam-impact",
+      "bytes": 161835,
+      "files": 4
+    },
+    {
+      "assetId": "effects/victory-accent",
+      "bytes": 115196,
+      "files": 4
+    },
+    {
+      "assetId": "practice-automaton/elbow-bearing",
+      "bytes": 170375,
+      "files": 4
+    },
+    {
+      "assetId": "practice-automaton/fingers",
+      "bytes": 35677,
+      "files": 4
+    },
+    {
+      "assetId": "practice-automaton/forearm-casing",
+      "bytes": 94440,
+      "files": 4
+    },
+    {
+      "assetId": "practice-automaton/grip-pad",
+      "bytes": 29480,
+      "files": 4
+    },
+    {
+      "assetId": "practice-automaton/highlights",
+      "bytes": 25804,
+      "files": 4
+    },
+    {
+      "assetId": "practice-automaton/hydraulic-piston",
+      "bytes": 9919,
+      "files": 4
+    },
+    {
+      "assetId": "practice-automaton/mechanical-hand",
+      "bytes": 170188,
+      "files": 4
+    },
+    {
+      "assetId": "practice-automaton/portrait",
+      "bytes": 165285,
+      "files": 4
+    },
+    {
+      "assetId": "practice-automaton/result-defeat",
+      "bytes": 142089,
+      "files": 4
+    },
+    {
+      "assetId": "practice-automaton/result-victory",
+      "bytes": 160082,
+      "files": 4
+    },
+    {
+      "assetId": "practice-automaton/shadows",
+      "bytes": 27833,
+      "files": 4
+    },
+    {
+      "assetId": "practice-automaton/shoulder-mount",
+      "bytes": 270645,
+      "files": 4
+    },
+    {
+      "assetId": "practice-automaton/upper-housing",
+      "bytes": 194986,
+      "files": 4
+    },
+    {
+      "assetId": "practice-automaton/versus",
+      "bytes": 143364,
+      "files": 4
+    },
+    {
+      "assetId": "practice-automaton/wrist-assembly",
+      "bytes": 43655,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/bracer",
+      "bytes": 45477,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/elbow",
+      "bytes": 279797,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/fingers",
+      "bytes": 44498,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/forearm",
+      "bytes": 176821,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/hand",
+      "bytes": 44531,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/highlights",
+      "bytes": 18632,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/portrait",
+      "bytes": 207601,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/result-defeat",
+      "bytes": 133303,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/result-victory",
+      "bytes": 182911,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/reveal",
+      "bytes": 155953,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/shadows",
+      "bytes": 30467,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/shoulder",
+      "bytes": 300274,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/thumb",
+      "bytes": 41331,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/upper-arm",
+      "bytes": 202291,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/versus",
+      "bytes": 159691,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/wraps",
+      "bytes": 59104,
+      "files": 4
+    },
+    {
+      "assetId": "rookie-brawler/wrist",
+      "bytes": 44493,
+      "files": 4
+    },
+    {
+      "assetId": "ui/badges/common",
+      "bytes": 10223,
+      "files": 4
+    },
+    {
+      "assetId": "ui/badges/easy",
+      "bytes": 9325,
+      "files": 4
+    },
+    {
+      "assetId": "ui/icons/collection",
+      "bytes": 5291,
+      "files": 4
+    },
+    {
+      "assetId": "ui/icons/home",
+      "bytes": 10662,
+      "files": 4
+    },
+    {
+      "assetId": "ui/icons/music-off",
+      "bytes": 9378,
+      "files": 4
+    },
+    {
+      "assetId": "ui/icons/music-on",
+      "bytes": 8241,
+      "files": 4
+    },
+    {
+      "assetId": "ui/icons/replay",
+      "bytes": 9671,
+      "files": 4
+    },
+    {
+      "assetId": "ui/icons/sfx-off",
+      "bytes": 6176,
+      "files": 4
+    },
+    {
+      "assetId": "ui/icons/sfx-on",
+      "bytes": 8712,
+      "files": 4
+    },
+    {
+      "assetId": "ui/result/defeat-frame",
+      "bytes": 71383,
+      "files": 4
+    },
+    {
+      "assetId": "ui/result/reward-card",
+      "bytes": 77992,
+      "files": 4
+    },
+    {
+      "assetId": "ui/result/victory-frame",
+      "bytes": 88715,
+      "files": 4
+    }
+  ]
+}

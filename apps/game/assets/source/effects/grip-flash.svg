@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <radialGradient id="fx-gf-core" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="30%" stop-color="#f0d9a0" stop-opacity="0.6"/>
+      <stop offset="60%" stop-color="#d4af6a" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="fx-gf-ring" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#5ec8ff" stop-opacity="0.3"/>
+      <stop offset="85%" stop-color="#5ec8ff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Outer ring -->
+  <path d="M64 4 C97 4 124 31 124 64 C124 97 97 124 64 124 C31 124 4 97 4 64 C4 31 31 4 64 4Z" fill="url(#fx-gf-ring)"/>
+  <!-- Core flash -->
+  <path d="M64 20 C88 20 108 40 108 64 C108 88 88 108 64 108 C40 108 20 88 20 64 C20 40 40 20 64 20Z" fill="url(#fx-gf-core)"/>
+  <!-- Star burst rays -->
+  <path d="M64 8 L68 40 L64 32 L60 40Z" fill="#f0d9a0" fill-opacity="0.5"/>
+  <path d="M64 120 L68 88 L64 96 L60 88Z" fill="#f0d9a0" fill-opacity="0.5"/>
+  <path d="M8 64 L40 60 L32 64 L40 68Z" fill="#f0d9a0" fill-opacity="0.5"/>
+  <path d="M120 64 L88 60 L96 64 L88 68Z" fill="#f0d9a0" fill-opacity="0.5"/>
+  <!-- Diagonal rays -->
+  <path d="M24 24 L48 44 L40 40 L44 48Z" fill="#d4af6a" fill-opacity="0.3"/>
+  <path d="M104 24 L80 44 L88 40 L84 48Z" fill="#d4af6a" fill-opacity="0.3"/>
+  <path d="M24 104 L48 84 L40 88 L44 80Z" fill="#d4af6a" fill-opacity="0.3"/>
+  <path d="M104 104 L80 84 L88 88 L84 80Z" fill="#d4af6a" fill-opacity="0.3"/>
+</svg>

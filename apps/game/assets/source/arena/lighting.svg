@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  <defs>
+    <radialGradient id="ar-lt-main" cx="0.5" cy="0.6" r="0.55">
+      <stop offset="0%" stop-color="#fff8e0" stop-opacity="0.06"/>
+      <stop offset="50%" stop-color="#d4af6a" stop-opacity="0.03"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ar-lt-cone1" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="ar-lt-cone2" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="ar-lt-pool" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#d4af6a" stop-opacity="0.1"/>
+      <stop offset="70%" stop-color="#d4af6a" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Main spotlight cone from above -->
+  <path d="M540 0 L740 0 L920 520 L360 520Z" fill="url(#ar-lt-cone1)"/>
+  <!-- Secondary cyan accent cone -->
+  <path d="M580 0 L700 0 L800 520 L480 520Z" fill="url(#ar-lt-cone2)"/>
+  <!-- Main ambient glow -->
+  <path d="M0 0 L1280 0 L1280 720 L0 720Z" fill="url(#ar-lt-main)"/>
+  <!-- Table spotlight pool -->
+  <path d="M340 440 C340 400 480 370 640 370 C800 370 940 400 940 440 C940 480 800 510 640 510 C480 510 340 480 340 440Z" fill="url(#ar-lt-pool)"/>
+  <!-- Side accent lights -->
+  <path d="M0 200 L60 180 L60 420 L0 400Z" fill="#5ec8ff" fill-opacity="0.02"/>
+  <path d="M1280 200 L1220 180 L1220 420 L1280 400Z" fill="#e07a4a" fill-opacity="0.02"/>
+  <!-- Overhead rig lights -->
+  <path d="M300 10 L310 10 L310 18 L300 18Z" fill="#d4af6a" fill-opacity="0.15"/>
+  <path d="M500 10 L510 10 L510 18 L500 18Z" fill="#d4af6a" fill-opacity="0.15"/>
+  <path d="M640 8 L650 8 L650 16 L640 16Z" fill="#ffffff" fill-opacity="0.2"/>
+  <path d="M770 10 L780 10 L780 18 L770 18Z" fill="#d4af6a" fill-opacity="0.15"/>
+  <path d="M970 10 L980 10 L980 18 L970 18Z" fill="#d4af6a" fill-opacity="0.15"/>
+  <!-- Light beam dots -->
+  <path d="M305 18 L305 60" stroke="#d4af6a" stroke-width="1" stroke-opacity="0.06"/>
+  <path d="M505 18 L505 60" stroke="#d4af6a" stroke-width="1" stroke-opacity="0.06"/>
+  <path d="M645 16 L645 60" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.08"/>
+  <path d="M775 18 L775 60" stroke="#d4af6a" stroke-width="1" stroke-opacity="0.06"/>
+  <path d="M975 18 L975 60" stroke="#d4af6a" stroke-width="1" stroke-opacity="0.06"/>
+</svg>

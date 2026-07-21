@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 60" width="90" height="60">
+  <defs>
+    <linearGradient id="rb-fing-skin" x1="0" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#d4956e"/>
+      <stop offset="50%" stop-color="#c48a6a"/>
+      <stop offset="100%" stop-color="#a87050"/>
+    </linearGradient>
+  </defs>
+  <!-- Index finger curl -->
+  <path d="M5 30 C3 22 5 12 12 8 C18 5 24 8 26 14 C28 20 26 30 22 38 C18 44 12 46 8 42 C5 38 4 34 5 30Z" fill="url(#rb-fing-skin)"/>
+  <!-- Middle finger curl -->
+  <path d="M26 26 C24 18 26 8 33 4 C40 1 46 4 48 10 C50 16 48 26 44 34 C40 40 34 42 30 38 C27 34 26 30 26 26Z" fill="url(#rb-fing-skin)"/>
+  <!-- Ring finger curl -->
+  <path d="M48 28 C46 20 48 10 55 6 C62 3 68 6 70 12 C72 18 70 28 66 36 C62 42 56 44 52 40 C49 36 48 32 48 28Z" fill="url(#rb-fing-skin)"/>
+  <!-- Pinky curl -->
+  <path d="M68 32 C67 26 69 18 74 15 C79 12 84 15 85 20 C86 26 84 34 80 40 C77 44 72 45 70 42 C68 39 67 36 68 32Z" fill="url(#rb-fing-skin)"/>
+  <!-- Knuckle highlights -->
+  <path d="M10 12 C13 9 17 9 20 12 M32 8 C35 5 39 5 42 8 M54 10 C57 7 61 7 64 10 M73 18 C75 16 79 16 81 18" fill="none" stroke="#daa882" stroke-width="1.5" stroke-opacity="0.4" stroke-linecap="round"/>
+  <!-- Finger joint creases -->
+  <path d="M8 28 C12 26 18 26 22 28 M28 24 C32 22 38 22 44 24 M50 26 C54 24 60 24 66 26 M70 30 C73 28 78 28 82 30" fill="none" stroke="#8a5535" stroke-width="1" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Fingertip pads -->
+  <path d="M6 38 C8 42 12 44 16 42 M28 36 C30 40 34 42 38 40 M50 38 C52 42 56 44 60 42 M70 40 C72 43 75 44 78 42" fill="none" stroke="#a06b4a" stroke-width="1.2" stroke-opacity="0.25" stroke-linecap="round"/>
+  <!-- Nail hints -->
+  <path d="M10 10 C12 8 16 8 18 10 M34 6 C36 4 40 4 42 6 M56 8 C58 6 62 6 64 8 M75 16 C77 14 80 14 82 16" fill="none" stroke="#e8c0a0" stroke-width="1" stroke-opacity="0.3" stroke-linecap="round"/>
+</svg>

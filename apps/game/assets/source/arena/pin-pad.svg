@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100" width="60" height="100">
+  <defs>
+    <linearGradient id="ar-pp-pad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a4a5a"/>
+      <stop offset="50%" stop-color="#2a3a4a"/>
+      <stop offset="100%" stop-color="#1a2a3a"/>
+    </linearGradient>
+    <radialGradient id="ar-pp-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Pad base -->
+  <path d="M6 4 C3 6 2 10 2 16 L2 84 C2 90 3 94 6 96 L12 98 L48 98 L54 96 C57 94 58 90 58 84 L58 16 C58 10 57 6 54 4 L48 2 L12 2Z" fill="url(#ar-pp-pad)"/>
+  <!-- Inner surface -->
+  <path d="M10 8 C8 10 7 13 7 18 L7 82 C7 87 8 90 10 92 L14 94 L46 94 L50 92 C52 90 53 87 53 82 L53 18 C53 13 52 10 50 8 L46 6 L14 6Z" fill="#2a3a4a" fill-opacity="0.7"/>
+  <!-- Glow center -->
+  <path d="M15 20 L45 20 L45 80 L15 80Z" fill="url(#ar-pp-glow)"/>
+  <!-- Grip ridges -->
+  <path d="M12 20 L48 20 M12 32 L48 32 M12 44 L48 44 M12 56 L48 56 M12 68 L48 68 M12 80 L48 80" stroke="#4a5a6a" stroke-width="1.5" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Edge highlight -->
+  <path d="M6 4 C3 6 2 10 2 16 L2 84" fill="none" stroke="#5a6a7a" stroke-width="1" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Corner bolts -->
+  <path d="M8 8 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#5a6a7a"/>
+  <path d="M48 8 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#5a6a7a"/>
+  <path d="M8 92 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#5a6a7a"/>
+  <path d="M48 92 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0" fill="#5a6a7a"/>
+</svg>

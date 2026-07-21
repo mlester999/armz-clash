@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <radialGradient id="fx-pr-ring" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#d4af6a" stop-opacity="0"/>
+      <stop offset="55%" stop-color="#d4af6a" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#d4af6a" stop-opacity="0.4"/>
+      <stop offset="80%" stop-color="#f0d9a0" stop-opacity="0.25"/>
+      <stop offset="90%" stop-color="#d4af6a" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="fx-pr-inner" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0"/>
+      <stop offset="60%" stop-color="#5ec8ff" stop-opacity="0"/>
+      <stop offset="75%" stop-color="#5ec8ff" stop-opacity="0.2"/>
+      <stop offset="85%" stop-color="#5ec8ff" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Outer pressure ring -->
+  <path d="M64 2 C98 2 126 30 126 64 C126 98 98 126 64 126 C30 126 2 98 2 64 C2 30 30 2 64 2Z" fill="url(#fx-pr-ring)"/>
+  <!-- Inner cyan ring -->
+  <path d="M64 14 C92 14 114 36 114 64 C114 92 92 114 64 114 C36 114 14 92 14 64 C14 36 36 14 64 14Z" fill="url(#fx-pr-inner)"/>
+  <!-- Tick marks around ring -->
+  <path d="M64 6 L64 14 M64 114 L64 122 M6 64 L14 64 M114 64 L122 64" stroke="#d4af6a" stroke-width="2" stroke-opacity="0.3" stroke-linecap="round"/>
+  <path d="M22 22 L28 28 M100 22 L94 28 M22 106 L28 100 M100 106 L94 100" stroke="#d4af6a" stroke-width="1.5" stroke-opacity="0.2" stroke-linecap="round"/>
+</svg>

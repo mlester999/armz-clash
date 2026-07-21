@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 190" width="70" height="190">
+  <defs>
+    <linearGradient id="pa-fc-body" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8a9aaa"/>
+      <stop offset="35%" stop-color="#6a7a8a"/>
+      <stop offset="70%" stop-color="#5a6a7a"/>
+      <stop offset="100%" stop-color="#3a4a5a"/>
+    </linearGradient>
+    <linearGradient id="pa-fc-plate" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7a8a9a"/>
+      <stop offset="100%" stop-color="#4a5a6a"/>
+    </linearGradient>
+    <linearGradient id="pa-fc-cyan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#5ec8ff" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="pa-fc-brush">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04 0.6" numOctaves="2" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="m"/>
+      <feBlend in="SourceGraphic" in2="m" mode="overlay" result="t"/>
+      <feComposite in="t" in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+  <!-- Main casing body -->
+  <path d="M14 8 C8 12 5 20 5 30 L5 150 C5 162 9 172 16 178 L22 184 L48 184 L54 178 C61 172 65 162 65 150 L65 30 C65 20 62 12 56 8 L40 4 L30 4Z" fill="url(#pa-fc-body)" filter="url(#pa-fc-brush)"/>
+  <!-- Top mounting flange -->
+  <path d="M16 6 C16 2 22 0 35 0 C48 0 54 2 54 6 L56 8 L14 8Z" fill="#8a9aaa"/>
+  <path d="M20 4 L50 4" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.5"/>
+  <!-- Central armor plate -->
+  <path d="M12 35 L58 35 L60 40 L60 120 L58 125 L12 125 L10 120 L10 40Z" fill="url(#pa-fc-plate)" fill-opacity="0.7"/>
+  <!-- Panel seam lines -->
+  <path d="M10 60 L60 60" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.5"/>
+  <path d="M10 90 L60 90" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.5"/>
+  <path d="M10 110 L60 110" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.4"/>
+  <!-- Vertical seam -->
+  <path d="M35 35 L35 125" stroke="#2a3a4a" stroke-width="1" stroke-opacity="0.3"/>
+  <!-- Cyan power conduit -->
+  <path d="M18 40 L18 118" stroke="url(#pa-fc-cyan)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M18 42 L18 116" stroke="#5ec8ff" stroke-width="1.5" stroke-opacity="0.6" stroke-linecap="round"/>
+  <!-- Hydraulic line right -->
+  <path d="M52 40 C54 60 54 90 52 118" stroke="#6a7a8a" stroke-width="4" stroke-opacity="0.7" fill="none" stroke-linecap="round"/>
+  <path d="M52 42 C54 60 54 90 52 116" stroke="#8a9aaa" stroke-width="1.5" stroke-opacity="0.4" fill="none" stroke-linecap="round"/>
+  <!-- Rivets -->
+  <path d="M14 42 a2.5 2.5 0 1 0 5 0 a2.5 2.5 0 1 0 -5 0" fill="#7a8a98"/>
+  <path d="M51 42 a2.5 2.5 0 1 0 5 0 a2.5 2.5 0 1 0 -5 0" fill="#7a8a98"/>
+  <path d="M14 118 a2.5 2.5 0 1 0 5 0 a2.5 2.5 0 1 0 -5 0" fill="#7a8a98"/>
+  <path d="M51 118 a2.5 2.5 0 1 0 5 0 a2.5 2.5 0 1 0 -5 0" fill="#7a8a98"/>
+  <!-- Wear marks -->
+  <path d="M25 70 L32 68 M40 95 L48 93 M22 105 L28 104" stroke="#2a3a4a" stroke-width="1" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Bottom taper to wrist -->
+  <path d="M16 178 L22 184 L48 184 L54 178 L50 170 L20 170Z" fill="#5a6a7a"/>
+  <path d="M22 172 L48 172" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.4"/>
+  <!-- Edge highlight -->
+  <path d="M14 8 C8 12 5 20 5 30 L5 150" fill="none" stroke="#b0c8e0" stroke-width="1.5" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Specular stripe -->
+  <path d="M28 10 L28 175" stroke="#c0d8f0" stroke-width="3" stroke-opacity="0.12" stroke-linecap="round"/>
+</svg>

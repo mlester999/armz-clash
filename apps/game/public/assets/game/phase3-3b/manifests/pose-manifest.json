@@ -1,0 +1,784 @@
+{
+  "version": "phase3-3b-v1",
+  "poses": [
+    {
+      "layers": {
+        "wraps": true,
+        "bracer": true,
+        "fingers": true,
+        "thumb": true,
+        "highlights": true,
+        "shadows": true,
+        "strain": false
+      },
+      "material": {
+        "deformation": 0,
+        "glow": 0
+      },
+      "vfx": [],
+      "camera": {
+        "zoom": 1,
+        "shake": 0
+      },
+      "poseId": "ready",
+      "fighter": "shared",
+      "lean": 0,
+      "shoulderSettle": 4,
+      "elbowFlare": 0,
+      "bones": {
+        "hand": {
+          "rot": -0.05
+        }
+      }
+    },
+    {
+      "layers": {
+        "wraps": true,
+        "bracer": true,
+        "fingers": true,
+        "thumb": true,
+        "highlights": true,
+        "shadows": true,
+        "strain": false
+      },
+      "material": {
+        "deformation": 0,
+        "glow": 0
+      },
+      "vfx": ["dust_light"],
+      "camera": {
+        "zoom": 1,
+        "shake": 0
+      },
+      "poseId": "approach",
+      "fighter": "shared",
+      "lean": 0,
+      "shoulderSettle": 2,
+      "elbowFlare": 2,
+      "bones": {
+        "forearm": {
+          "rot": 0.04
+        },
+        "hand": {
+          "rot": -0.12
+        }
+      }
+    },
+    {
+      "layers": {
+        "wraps": true,
+        "bracer": true,
+        "fingers": true,
+        "thumb": true,
+        "highlights": true,
+        "shadows": true,
+        "strain": false
+      },
+      "material": {
+        "deformation": 0,
+        "glow": 0
+      },
+      "vfx": ["grip_spark"],
+      "camera": {
+        "zoom": 1.04,
+        "shake": 0
+      },
+      "poseId": "grip",
+      "fighter": "shared",
+      "lean": 0,
+      "shoulderSettle": 0,
+      "elbowFlare": 0,
+      "bones": {
+        "hand": {
+          "rot": 0.08,
+          "scale": 1.03
+        }
+      }
+    },
+    {
+      "layers": {
+        "strain": false
+      },
+      "material": {
+        "deformation": 0,
+        "glow": 0
+      },
+      "vfx": [],
+      "camera": {
+        "zoom": 1,
+        "shake": 0
+      },
+      "poseId": "neutral",
+      "fighter": "shared",
+      "lean": 0,
+      "shoulderSettle": 0,
+      "elbowFlare": 1,
+      "bones": {
+        "forearm": {
+          "rot": 0.02
+        }
+      }
+    },
+    {
+      "layers": {
+        "wraps": true,
+        "bracer": true,
+        "fingers": true,
+        "thumb": true,
+        "highlights": true,
+        "shadows": true,
+        "strain": false
+      },
+      "material": {
+        "deformation": 0.2,
+        "glow": 0.1
+      },
+      "vfx": ["dust_light"],
+      "camera": {
+        "zoom": 1,
+        "shake": 0
+      },
+      "poseId": "lightAdvantagePlayer",
+      "fighter": "shared",
+      "lean": 0.12,
+      "shoulderSettle": -1,
+      "elbowFlare": 2,
+      "bones": {
+        "forearm": {
+          "rot": 0.05
+        },
+        "wrist": {
+          "rot": 0.06
+        },
+        "hand": {
+          "rot": 0.05
+        }
+      }
+    },
+    {
+      "layers": {
+        "strain": true
+      },
+      "material": {
+        "deformation": 0.45,
+        "glow": 0.25
+      },
+      "vfx": ["dust_heavy"],
+      "camera": {
+        "zoom": 1.03,
+        "shake": 0.4
+      },
+      "poseId": "strongAdvantagePlayer",
+      "fighter": "shared",
+      "lean": 0.28,
+      "shoulderSettle": -3,
+      "elbowFlare": 4,
+      "bones": {
+        "upperArm": {
+          "rot": 0.05
+        },
+        "forearm": {
+          "rot": 0.09
+        },
+        "wrist": {
+          "rot": 0.1
+        },
+        "hand": {
+          "rot": 0.08,
+          "scale": 1.05
+        }
+      }
+    },
+    {
+      "layers": {
+        "wraps": true,
+        "bracer": true,
+        "fingers": true,
+        "thumb": true,
+        "highlights": true,
+        "shadows": true,
+        "strain": false
+      },
+      "material": {
+        "deformation": 0.2,
+        "glow": 0.1
+      },
+      "vfx": ["dust_light"],
+      "camera": {
+        "zoom": 1,
+        "shake": 0
+      },
+      "poseId": "lightAdvantageOpponent",
+      "fighter": "shared",
+      "lean": -0.12,
+      "shoulderSettle": -1,
+      "elbowFlare": 2,
+      "bones": {
+        "forearm": {
+          "rot": -0.05
+        },
+        "wrist": {
+          "rot": -0.06
+        },
+        "hand": {
+          "rot": -0.05
+        }
+      }
+    },
+    {
+      "layers": {
+        "strain": true
+      },
+      "material": {
+        "deformation": 0.45,
+        "glow": 0.25
+      },
+      "vfx": ["dust_heavy"],
+      "camera": {
+        "zoom": 1.03,
+        "shake": 0.4
+      },
+      "poseId": "strongAdvantageOpponent",
+      "fighter": "shared",
+      "lean": -0.28,
+      "shoulderSettle": -3,
+      "elbowFlare": 4,
+      "bones": {
+        "upperArm": {
+          "rot": -0.05
+        },
+        "forearm": {
+          "rot": -0.09
+        },
+        "wrist": {
+          "rot": -0.1
+        },
+        "hand": {
+          "rot": -0.08,
+          "scale": 1.05
+        }
+      }
+    },
+    {
+      "layers": {
+        "wraps": true,
+        "bracer": true,
+        "fingers": true,
+        "thumb": true,
+        "highlights": true,
+        "shadows": true,
+        "strain": false
+      },
+      "material": {
+        "deformation": 0.35,
+        "glow": 0.3
+      },
+      "vfx": ["energy_trail"],
+      "camera": {
+        "zoom": 1.05,
+        "shake": 0.5
+      },
+      "poseId": "counterPlayer",
+      "fighter": "shared",
+      "lean": 0.18,
+      "shoulderSettle": -2,
+      "elbowFlare": 3,
+      "bones": {
+        "forearm": {
+          "rot": 0.12
+        },
+        "wrist": {
+          "rot": 0.14
+        },
+        "hand": {
+          "rot": 0.1
+        }
+      }
+    },
+    {
+      "layers": {
+        "wraps": true,
+        "bracer": true,
+        "fingers": true,
+        "thumb": true,
+        "highlights": true,
+        "shadows": true,
+        "strain": false
+      },
+      "material": {
+        "deformation": 0.35,
+        "glow": 0.3
+      },
+      "vfx": ["energy_trail"],
+      "camera": {
+        "zoom": 1.05,
+        "shake": 0.5
+      },
+      "poseId": "counterOpponent",
+      "fighter": "shared",
+      "lean": -0.18,
+      "shoulderSettle": -2,
+      "elbowFlare": 3,
+      "bones": {
+        "forearm": {
+          "rot": -0.12
+        },
+        "wrist": {
+          "rot": -0.14
+        },
+        "hand": {
+          "rot": -0.1
+        }
+      }
+    },
+    {
+      "layers": {
+        "strain": true
+      },
+      "material": {
+        "deformation": 0.6,
+        "glow": 0.5
+      },
+      "vfx": ["critical_flash"],
+      "camera": {
+        "zoom": 1.08,
+        "shake": 0.8
+      },
+      "poseId": "criticalPlayer",
+      "fighter": "shared",
+      "lean": 0.34,
+      "shoulderSettle": -4,
+      "elbowFlare": 5,
+      "bones": {
+        "upperArm": {
+          "rot": 0.07
+        },
+        "forearm": {
+          "rot": 0.13
+        },
+        "wrist": {
+          "rot": 0.16
+        },
+        "hand": {
+          "rot": 0.12,
+          "scale": 1.07
+        }
+      }
+    },
+    {
+      "layers": {
+        "strain": true
+      },
+      "material": {
+        "deformation": 0.6,
+        "glow": 0.5
+      },
+      "vfx": ["critical_flash"],
+      "camera": {
+        "zoom": 1.08,
+        "shake": 0.8
+      },
+      "poseId": "criticalOpponent",
+      "fighter": "shared",
+      "lean": -0.34,
+      "shoulderSettle": -4,
+      "elbowFlare": 5,
+      "bones": {
+        "upperArm": {
+          "rot": -0.07
+        },
+        "forearm": {
+          "rot": -0.13
+        },
+        "wrist": {
+          "rot": -0.16
+        },
+        "hand": {
+          "rot": -0.12,
+          "scale": 1.07
+        }
+      }
+    },
+    {
+      "layers": {
+        "wraps": true,
+        "bracer": true,
+        "fingers": true,
+        "thumb": true,
+        "highlights": true,
+        "shadows": true,
+        "strain": false
+      },
+      "material": {
+        "deformation": 0.1,
+        "glow": 0.4
+      },
+      "vfx": ["recovery"],
+      "camera": {
+        "zoom": 1.02,
+        "shake": 0
+      },
+      "poseId": "recoveryPlayer",
+      "fighter": "shared",
+      "lean": 0.06,
+      "shoulderSettle": 1,
+      "elbowFlare": 1,
+      "bones": {
+        "forearm": {
+          "rot": 0.03
+        },
+        "hand": {
+          "rot": 0.02
+        }
+      }
+    },
+    {
+      "layers": {
+        "wraps": true,
+        "bracer": true,
+        "fingers": true,
+        "thumb": true,
+        "highlights": true,
+        "shadows": true,
+        "strain": false
+      },
+      "material": {
+        "deformation": 0.1,
+        "glow": 0.4
+      },
+      "vfx": ["recovery"],
+      "camera": {
+        "zoom": 1.02,
+        "shake": 0
+      },
+      "poseId": "recoveryOpponent",
+      "fighter": "shared",
+      "lean": -0.06,
+      "shoulderSettle": 1,
+      "elbowFlare": 1,
+      "bones": {
+        "forearm": {
+          "rot": -0.03
+        },
+        "hand": {
+          "rot": -0.02
+        }
+      }
+    },
+    {
+      "layers": {
+        "strain": true
+      },
+      "material": {
+        "deformation": 0.3,
+        "glow": 0.05
+      },
+      "vfx": [],
+      "camera": {
+        "zoom": 1,
+        "shake": 0
+      },
+      "poseId": "fatiguePlayer",
+      "fighter": "rookie-brawler",
+      "lean": -0.04,
+      "shoulderSettle": 6,
+      "elbowFlare": -1,
+      "bones": {
+        "shoulder": {
+          "dy": 3
+        },
+        "upperArm": {
+          "rot": -0.04
+        },
+        "forearm": {
+          "rot": -0.05
+        },
+        "hand": {
+          "rot": -0.06,
+          "scale": 0.98
+        }
+      }
+    },
+    {
+      "layers": {
+        "strain": true
+      },
+      "material": {
+        "deformation": 0.3,
+        "glow": 0.5
+      },
+      "vfx": ["recovery"],
+      "camera": {
+        "zoom": 1,
+        "shake": 0
+      },
+      "poseId": "fatigueOpponent",
+      "fighter": "practice-automaton",
+      "lean": 0.04,
+      "shoulderSettle": 6,
+      "elbowFlare": -1,
+      "bones": {
+        "shoulder": {
+          "dy": 3
+        },
+        "upperArm": {
+          "rot": 0.04
+        },
+        "forearm": {
+          "rot": 0.05
+        },
+        "hand": {
+          "rot": 0.06,
+          "scale": 0.98
+        }
+      }
+    },
+    {
+      "layers": {
+        "strain": true
+      },
+      "material": {
+        "deformation": 0.8,
+        "glow": 0.7
+      },
+      "vfx": ["final_impact"],
+      "camera": {
+        "zoom": 1.1,
+        "shake": 1.4
+      },
+      "poseId": "finalSlamPlayer",
+      "fighter": "shared",
+      "lean": 0.55,
+      "shoulderSettle": -5,
+      "elbowFlare": 6,
+      "bones": {
+        "upperArm": {
+          "rot": 0.1
+        },
+        "forearm": {
+          "rot": 0.16
+        },
+        "wrist": {
+          "rot": 0.2
+        },
+        "hand": {
+          "rot": 0.16,
+          "scale": 1.08
+        }
+      }
+    },
+    {
+      "layers": {
+        "strain": true
+      },
+      "material": {
+        "deformation": 0.8,
+        "glow": 0.7
+      },
+      "vfx": ["final_impact"],
+      "camera": {
+        "zoom": 1.1,
+        "shake": 1.4
+      },
+      "poseId": "finalSlamOpponent",
+      "fighter": "shared",
+      "lean": -0.55,
+      "shoulderSettle": -5,
+      "elbowFlare": 6,
+      "bones": {
+        "upperArm": {
+          "rot": -0.1
+        },
+        "forearm": {
+          "rot": -0.16
+        },
+        "wrist": {
+          "rot": -0.2
+        },
+        "hand": {
+          "rot": -0.16,
+          "scale": 1.08
+        }
+      }
+    },
+    {
+      "layers": {
+        "wraps": true,
+        "bracer": true,
+        "fingers": true,
+        "thumb": true,
+        "highlights": true,
+        "shadows": true,
+        "strain": false
+      },
+      "material": {
+        "deformation": 0.4,
+        "glow": 0.6
+      },
+      "vfx": ["victory_particles"],
+      "camera": {
+        "zoom": 1.06,
+        "shake": 0
+      },
+      "poseId": "victoryPlayer",
+      "fighter": "rookie-brawler",
+      "lean": 0.4,
+      "shoulderSettle": -6,
+      "elbowFlare": 5,
+      "bones": {
+        "upperArm": {
+          "rot": 0.08
+        },
+        "forearm": {
+          "rot": 0.1
+        },
+        "hand": {
+          "rot": 0.1,
+          "scale": 1.05
+        }
+      }
+    },
+    {
+      "layers": {
+        "wraps": true,
+        "bracer": true,
+        "fingers": true,
+        "thumb": true,
+        "highlights": true,
+        "shadows": true,
+        "strain": false
+      },
+      "material": {
+        "deformation": 0.4,
+        "glow": 0.6
+      },
+      "vfx": ["victory_particles"],
+      "camera": {
+        "zoom": 1.06,
+        "shake": 0
+      },
+      "poseId": "victoryOpponent",
+      "fighter": "practice-automaton",
+      "lean": -0.4,
+      "shoulderSettle": -6,
+      "elbowFlare": 5,
+      "bones": {
+        "upperArm": {
+          "rot": -0.08
+        },
+        "forearm": {
+          "rot": -0.1
+        },
+        "hand": {
+          "rot": -0.1,
+          "scale": 1.05
+        }
+      }
+    },
+    {
+      "layers": {
+        "strain": true
+      },
+      "material": {
+        "deformation": 0.5,
+        "glow": 0.05
+      },
+      "vfx": ["defeat_particles"],
+      "camera": {
+        "zoom": 1,
+        "shake": 0
+      },
+      "poseId": "defeatPlayer",
+      "fighter": "rookie-brawler",
+      "lean": -0.4,
+      "shoulderSettle": 8,
+      "elbowFlare": -2,
+      "bones": {
+        "shoulder": {
+          "dy": 4
+        },
+        "upperArm": {
+          "rot": -0.08
+        },
+        "forearm": {
+          "rot": -0.12
+        },
+        "hand": {
+          "rot": -0.14,
+          "scale": 0.96
+        }
+      }
+    },
+    {
+      "layers": {
+        "strain": true
+      },
+      "material": {
+        "deformation": 0.5,
+        "glow": 0.3
+      },
+      "vfx": ["defeat_particles"],
+      "camera": {
+        "zoom": 1,
+        "shake": 0
+      },
+      "poseId": "defeatOpponent",
+      "fighter": "practice-automaton",
+      "lean": 0.4,
+      "shoulderSettle": 8,
+      "elbowFlare": -2,
+      "bones": {
+        "shoulder": {
+          "dy": 4
+        },
+        "upperArm": {
+          "rot": 0.08
+        },
+        "forearm": {
+          "rot": 0.12
+        },
+        "hand": {
+          "rot": 0.14,
+          "scale": 0.96
+        }
+      }
+    }
+  ],
+  "cueToPose": {
+    "idle": "ready",
+    "entrance": "approach",
+    "approach": "approach",
+    "grip": "grip",
+    "strain_light": "neutral",
+    "strain_heavy": "neutral",
+    "table_idle": "neutral",
+    "table_shake_light": "neutral",
+    "table_shake_heavy": "neutral",
+    "table_final_impact": "neutral",
+    "push_light": "neutral",
+    "push_heavy": "neutral",
+    "counter": "neutral",
+    "critical": "neutral",
+    "recovery": "recoveryPlayer",
+    "fatigue": "fatiguePlayer",
+    "winning_slam": "finalSlamPlayer",
+    "defeated": "finalSlamOpponent"
+  },
+  "cameraPresets": {
+    "desktop": {
+      "baseZoom": 1,
+      "gripFocusY": 0.42,
+      "minFighterScale": 1
+    },
+    "tablet": {
+      "baseZoom": 1.06,
+      "gripFocusY": 0.4,
+      "minFighterScale": 1.05
+    },
+    "mobile": {
+      "baseZoom": 1.16,
+      "gripFocusY": 0.38,
+      "minFighterScale": 1.12
+    }
+  }
+}

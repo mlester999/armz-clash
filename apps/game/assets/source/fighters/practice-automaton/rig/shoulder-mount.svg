@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 150" width="130" height="150">
+  <defs>
+    <linearGradient id="pa-sm-metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7a8a9a"/>
+      <stop offset="40%" stop-color="#5a6a7a"/>
+      <stop offset="100%" stop-color="#3a4a5a"/>
+    </linearGradient>
+    <linearGradient id="pa-sm-dark" x1="0.8" y1="0" x2="0.2" y2="1">
+      <stop offset="0%" stop-color="#2a3a4a" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#1a2a3a" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#0a1a2a" stop-opacity="0.7"/>
+    </linearGradient>
+    <radialGradient id="pa-sm-cyan" cx="0.4" cy="0.35" r="0.4">
+      <stop offset="0%" stop-color="#5ec8ff" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#5ec8ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="pa-sm-plate" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8a9aaa"/>
+      <stop offset="50%" stop-color="#6a7a8a"/>
+      <stop offset="100%" stop-color="#4a5a6a"/>
+    </linearGradient>
+    <filter id="pa-sm-brush">
+      <feTurbulence type="fractalNoise" baseFrequency="0.4 1.2" numOctaves="2" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="m"/>
+      <feBlend in="SourceGraphic" in2="m" mode="overlay"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+  <!-- Main shoulder mount housing -->
+  <path d="M20 140 C12 115 10 80 18 50 C24 30 38 14 58 8 C78 2 98 8 110 24 C122 40 126 68 122 100 C118 125 110 142 96 148 L38 150 C28 148 22 145 20 140Z" fill="url(#pa-sm-metal)" filter="url(#pa-sm-brush)"/>
+  <!-- Top plate -->
+  <path d="M30 45 C38 25 55 12 75 10 C92 8 106 16 114 30 C118 38 118 50 114 60 C106 48 92 38 75 36 C58 34 42 38 30 45Z" fill="url(#pa-sm-plate)"/>
+  <!-- Panel seam lines -->
+  <path d="M25 70 C40 65 65 62 90 65 C105 67 115 72 120 78" fill="none" stroke="#2a3a4a" stroke-width="2" stroke-opacity="0.5" stroke-linecap="round"/>
+  <path d="M22 100 C38 95 65 92 92 95 C108 97 118 102 122 108" fill="none" stroke="#2a3a4a" stroke-width="2" stroke-opacity="0.4" stroke-linecap="round"/>
+  <!-- Cyan energy core -->
+  <path d="M55 55 C55 45 62 38 72 38 C82 38 89 45 89 55 C89 65 82 72 72 72 C62 72 55 65 55 55Z" fill="url(#pa-sm-cyan)"/>
+  <path d="M62 55 C62 49 66 45 72 45 C78 45 82 49 82 55 C82 61 78 65 72 65 C66 65 62 61 62 55Z" fill="#5ec8ff" fill-opacity="0.4"/>
+  <!-- Rivets -->
+  <path d="M30 50 C31 48 34 48 35 50 C36 52 34 54 32 54 C30 54 29 52 30 50Z" fill="#9aaaba"/>
+  <path d="M105 45 C106 43 109 43 110 45 C111 47 109 49 107 49 C105 49 104 47 105 45Z" fill="#9aaaba"/>
+  <path d="M28 110 C29 108 32 108 33 110 C34 112 32 114 30 114 C28 114 27 112 28 110Z" fill="#9aaaba"/>
+  <path d="M108 105 C109 103 112 103 113 105 C114 107 112 109 110 109 C108 109 107 107 108 105Z" fill="#9aaaba"/>
+  <path d="M55 130 C56 128 59 128 60 130 C61 132 59 134 57 134 C55 134 54 132 55 130Z" fill="#9aaaba"/>
+  <path d="M85 128 C86 126 89 126 90 128 C91 130 89 132 87 132 C85 132 84 130 85 128Z" fill="#9aaaba"/>
+  <!-- Shadow side -->
+  <path d="M96 30 C110 45 118 70 120 100 C122 125 115 142 100 148 L96 148 C108 138 114 120 114 95 C114 70 108 45 96 30Z" fill="url(#pa-sm-dark)"/>
+  <!-- Edge highlight -->
+  <path d="M18 50 C24 30 38 14 58 8 C78 2 98 8 110 24" fill="none" stroke="#b0c8e0" stroke-width="2" stroke-opacity="0.3" stroke-linecap="round"/>
+  <!-- Wear marks -->
+  <path d="M40 80 C42 78 45 79 44 82 M90 90 C92 88 95 89 94 92" stroke="#2a3a4a" stroke-width="1.5" stroke-opacity="0.3" stroke-linecap="round"/>
+</svg>
