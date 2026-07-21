@@ -26,8 +26,9 @@ function hashHex(hex: string): string {
 }
 
 /**
- * Original hybrid SVG collectible portrait for Common demo ARMZ presets.
- * Distinct silhouettes, wraps, and materials — stylized premium web-game art.
+ * Phase 3.3 collectible portrait — anatomically connected arm-wrestling fighter.
+ * Shoulder → upper arm → elbow → forearm → wrist → fist, all visually linked.
+ * Each preset has distinct wraps, materials, and silhouette personality.
  */
 export function ArmzPortrait({
   presetKey,
@@ -68,243 +69,172 @@ export function ArmzPortrait({
     >
       <svg viewBox="0 0 280 320" className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id={`${uid}-arena`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#1c2740" />
-            <stop offset="55%" stopColor="#0d121c" />
+          <linearGradient id={`${uid}-bg`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#1a2438" />
+            <stop offset="60%" stopColor="#0d121c" />
             <stop offset="100%" stopColor="#070a10" />
           </linearGradient>
-          <radialGradient id={`${uid}-glow`} cx="50%" cy="38%" r="45%">
-            <stop offset="0%" stopColor={accent} stopOpacity="0.55" />
-            <stop offset="70%" stopColor={accent} stopOpacity="0.08" />
+          <radialGradient id={`${uid}-glow`} cx="50%" cy="35%" r="50%">
+            <stop offset="0%" stopColor={accent} stopOpacity="0.4" />
+            <stop offset="60%" stopColor={accent} stopOpacity="0.06" />
             <stop offset="100%" stopColor={accent} stopOpacity="0" />
           </radialGradient>
           <linearGradient id={`${uid}-skin`} x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor={skin} />
-            <stop offset="100%" stopColor={skin} stopOpacity="0.75" />
+            <stop offset="100%" stopColor={skin} stopOpacity="0.8" />
           </linearGradient>
-          <linearGradient id={`${uid}-glove`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor={glove} stopOpacity="0.95" />
-            <stop offset="100%" stopColor={glove} />
+          <linearGradient id={`${uid}-cloth`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={cloth} />
+            <stop offset="100%" stopColor={cloth} stopOpacity="0.85" />
           </linearGradient>
-          <filter id={`${uid}-soft`} x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="1.2" />
-          </filter>
         </defs>
 
-        <rect width="280" height="320" fill={`url(#${uid}-arena)`} />
-        <ellipse cx="140" cy="120" rx="110" ry="90" fill={`url(#${uid}-glow)`} />
+        {/* Background */}
+        <rect width="280" height="320" fill={`url(#${uid}-bg)`} />
+        <ellipse cx="140" cy="110" rx="100" ry="85" fill={`url(#${uid}-glow)`} />
 
-        {/* Soft stage platform */}
-        <ellipse cx="140" cy="278" rx="92" ry="14" fill="#000" opacity="0.45" />
-        <ellipse cx="140" cy="274" rx="78" ry="8" fill={accent} opacity="0.12" />
+        {/* Arena floor shadow */}
+        <ellipse cx="140" cy="285" rx="80" ry="12" fill="#000" opacity="0.5" />
+        <ellipse cx="140" cy="282" rx="65" ry="7" fill={accent} opacity="0.1" />
 
-        {/* Shoulder mass */}
+        {/* === CONNECTED ARM ANATOMY === */}
+        {/* Shoulder mass — large, grounded */}
         <path
-          d="M78 210 C70 170 78 140 100 118 C120 100 150 92 168 104 C190 118 202 148 198 188 C196 210 188 230 170 242 L112 248 C92 242 82 228 78 210Z"
+          d="M95 195 C88 165 92 135 108 115 C122 98 145 90 162 100 C180 112 190 140 188 175 C186 200 178 220 162 232 L118 238 C102 232 96 215 95 195Z"
+          fill={`url(#${uid}-skin)`}
+        />
+        {/* Shoulder cap / deltoid highlight */}
+        <path
+          d="M105 155 C108 135 120 118 140 112 C155 108 168 115 175 130 C178 140 176 155 170 165"
+          fill="none"
+          stroke="#fff"
+          strokeWidth="3"
+          opacity="0.08"
+          strokeLinecap="round"
+        />
+
+        {/* Upper arm — thick, connected shoulder to elbow */}
+        <path
+          d="M155 175 C162 195 168 215 172 235 C174 248 172 258 165 262 L148 260 C142 252 140 238 142 220 C144 200 148 185 155 175Z"
+          fill={`url(#${uid}-skin)`}
+        />
+        {/* Bicep highlight */}
+        <path
+          d="M158 185 C162 200 165 218 166 235"
+          fill="none"
+          stroke="#fff"
+          strokeWidth="4"
+          opacity="0.07"
+          strokeLinecap="round"
+        />
+
+        {/* Elbow joint — visible, planted */}
+        <ellipse cx="158" cy="258" rx="14" ry="11" fill={skin} />
+        <ellipse cx="158" cy="258" rx="9" ry="7" fill={cloth} opacity="0.6" />
+
+        {/* Forearm — rising from elbow toward fist */}
+        <path
+          d="M150 252 C142 235 136 215 134 195 C133 182 135 172 140 168 L155 170 C158 178 158 192 156 210 C154 230 152 245 150 252Z"
           fill={`url(#${uid}-skin)`}
         />
 
-        {/* Cloth / sleeve base — varies by wrap */}
-        {detail.wrapStyle === 'work' && (
-          <>
-            <path
-              d="M88 150 C100 130 140 122 175 138 L172 210 C150 220 110 224 92 210Z"
-              fill={cloth}
-            />
-            <path d="M95 168 H175" stroke={accent} strokeWidth="3" opacity="0.7" />
-            <path d="M98 182 H170" stroke={accent} strokeWidth="2" opacity="0.4" />
-          </>
-        )}
+        {/* Wrist wraps / bracer — varies by preset */}
         {detail.wrapStyle === 'leather' && (
           <>
-            <path
-              d="M90 155 C108 128 150 120 178 142 L170 218 C140 230 108 228 94 208Z"
-              fill={cloth}
-            />
-            <path
-              d="M100 165 C120 155 150 155 168 168"
-              fill="none"
-              stroke={accent}
-              strokeWidth="4"
-              strokeLinecap="round"
-            />
-            <path
-              d="M102 182 C124 172 150 174 166 188"
-              fill="none"
-              stroke={accent}
-              strokeWidth="3"
-              strokeLinecap="round"
-              opacity="0.7"
-            />
+            <rect x="132" y="172" width="26" height="18" rx="5" fill={`url(#${uid}-cloth)`} />
+            <path d="M135 178 H155" stroke={accent} strokeWidth="3" strokeLinecap="round" opacity="0.8" />
+            <path d="M136 184 H153" stroke={accent} strokeWidth="2" strokeLinecap="round" opacity="0.5" />
+          </>
+        )}
+        {detail.wrapStyle === 'work' && (
+          <>
+            <rect x="131" y="170" width="28" height="20" rx="4" fill={`url(#${uid}-cloth)`} />
+            <path d="M134 176 H156" stroke={accent} strokeWidth="4" strokeLinecap="round" opacity="0.7" />
+            <path d="M135 183 H154" stroke={accent} strokeWidth="2.5" strokeLinecap="round" opacity="0.4" />
+            <rect x="138" y="173" width="14" height="4" rx="2" fill={accent} opacity="0.3" />
           </>
         )}
         {detail.wrapStyle === 'athletic' && (
           <>
-            <path
-              d="M92 148 C112 124 155 118 180 140 L174 212 C145 226 110 224 94 204Z"
-              fill={cloth}
-            />
-            <path d="M108 155 L118 205" stroke={accent} strokeWidth="5" strokeLinecap="round" />
-            <path
-              d="M128 148 L138 210"
-              stroke={accent}
-              strokeWidth="4"
-              strokeLinecap="round"
-              opacity="0.8"
-            />
-            <path
-              d="M148 150 L156 208"
-              stroke={accent}
-              strokeWidth="3"
-              strokeLinecap="round"
-              opacity="0.55"
-            />
+            <rect x="132" y="171" width="26" height="18" rx="6" fill={`url(#${uid}-cloth)`} />
+            <path d="M136 175 L152 185" stroke={accent} strokeWidth="3" strokeLinecap="round" opacity="0.7" />
+            <path d="M138 172 L154 182" stroke={accent} strokeWidth="2" strokeLinecap="round" opacity="0.5" />
           </>
         )}
         {detail.wrapStyle === 'metal' && (
           <>
-            <path
-              d="M90 152 C110 126 152 120 178 144 L172 216 C142 230 108 226 94 206Z"
-              fill={cloth}
-            />
-            <rect x="104" y="168" width="64" height="28" rx="4" fill={glove} opacity="0.85" />
-            <rect x="108" y="172" width="56" height="6" rx="2" fill={accent} opacity="0.7" />
-            <rect x="108" y="184" width="56" height="4" rx="1" fill={accent} opacity="0.35" />
+            <rect x="131" y="170" width="28" height="20" rx="3" fill={`url(#${uid}-cloth)`} />
+            <rect x="134" y="174" width="22" height="5" rx="2" fill={accent} opacity="0.8" />
+            <rect x="136" y="182" width="18" height="3" rx="1.5" fill={accent} opacity="0.5" />
+            <circle cx="145" cy="180" r="3" fill={accent} opacity="0.6" />
           </>
         )}
         {detail.wrapStyle === 'cloth' && (
           <>
-            <path
-              d="M88 150 C110 124 158 118 182 142 L176 214 C144 228 106 226 92 204Z"
-              fill={cloth}
-            />
-            <path
-              d="M100 160 C130 148 160 152 172 168 C150 175 124 174 106 180Z"
-              fill={accent}
-              opacity="0.55"
-            />
-            <path
-              d="M102 190 C132 178 160 182 170 196"
-              fill="none"
-              stroke={accent}
-              strokeWidth="5"
-              strokeLinecap="round"
-              opacity="0.8"
-            />
+            <rect x="132" y="171" width="26" height="18" rx="7" fill={`url(#${uid}-cloth)`} />
+            <path d="M135 177 C140 175 150 175 155 178" fill="none" stroke={accent} strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
+            <path d="M136 183 C142 181 148 181 153 184" fill="none" stroke={accent} strokeWidth="2" strokeLinecap="round" opacity="0.4" />
           </>
         )}
         {detail.wrapStyle === 'tournament' && (
           <>
-            <path
-              d="M90 148 C112 122 156 116 182 140 L176 212 C146 226 108 224 94 202Z"
-              fill={cloth}
-            />
-            <path d="M110 160 H170 V200 H110Z" fill={glove} opacity="0.25" />
-            <path
-              d="M118 170 H162"
-              stroke={accent}
-              strokeWidth="3"
-              strokeLinecap="round"
-              opacity="0.9"
-            />
-            <circle cx="140" cy="186" r="8" fill={accent} opacity="0.85" />
+            <rect x="131" y="170" width="28" height="20" rx="4" fill={`url(#${uid}-cloth)`} />
+            <path d="M134 175 H156" stroke={accent} strokeWidth="3" strokeLinecap="round" opacity="0.7" />
+            <path d="M134 181 H156" stroke={accent} strokeWidth="2" strokeLinecap="round" opacity="0.5" />
+            <path d="M134 186 H156" stroke={accent} strokeWidth="1.5" strokeLinecap="round" opacity="0.3" />
+            <circle cx="145" cy="175" r="2.5" fill={accent} opacity="0.8" />
           </>
         )}
 
-        {/* Bicep highlight */}
-        <ellipse cx="128" cy="150" rx="22" ry="30" fill="#fff" opacity="0.06" />
+        {/* Fist — clenched, connected to wrist */}
+        <ellipse cx="145" cy="160" rx="16" ry="14" fill={glove} />
+        <ellipse cx="145" cy="157" rx="11" ry="9" fill={skin} opacity="0.35" />
+        {/* Knuckles */}
+        <circle cx="138" cy="152" r="3.5" fill={skin} opacity="0.4" />
+        <circle cx="145" cy="150" r="3.5" fill={skin} opacity="0.4" />
+        <circle cx="152" cy="152" r="3.5" fill={skin} opacity="0.4" />
+        {/* Thumb */}
+        <ellipse cx="134" cy="162" rx="5" ry="7" fill={glove} />
 
-        {/* Forearm to fist */}
+        {/* Cloth / sleeve over shoulder */}
         <path
-          d="M150 200 C168 210 188 218 198 236 C204 248 200 262 186 268 C172 274 156 266 148 252 C140 238 140 218 150 200Z"
-          fill={`url(#${uid}-skin)`}
+          d="M98 180 C105 155 125 140 150 138 C168 137 180 145 185 160 L182 195 C170 205 140 210 115 205 C102 200 97 192 98 180Z"
+          fill={`url(#${uid}-cloth)`}
+          opacity="0.85"
+        />
+        {/* Sleeve accent stripe */}
+        <path
+          d="M105 168 C120 155 145 150 170 158"
+          fill="none"
+          stroke={accent}
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          opacity="0.6"
         />
 
-        {/* Wrist strap / cuff */}
-        <path
-          d="M158 236 C170 240 182 246 188 254 C184 258 174 256 164 250 C156 246 154 240 158 236Z"
+        {/* Emblem badge */}
+        <circle cx="140" cy="290" r="12" fill="#0d121c" stroke={accent} strokeWidth="1.5" opacity="0.9" />
+        <text
+          x="140"
+          y="295"
+          textAnchor="middle"
+          fontSize="11"
+          fontWeight="700"
           fill={accent}
-        />
-
-        {/* Glove / fist mass */}
-        <ellipse cx="188" cy="252" rx="34" ry="28" fill={`url(#${uid}-glove)`} />
-        <ellipse cx="198" cy="246" rx="14" ry="12" fill={skin} opacity="0.35" />
-        {/* Knuckle ridges */}
-        <circle cx="176" cy="244" r="5" fill={skin} opacity="0.35" />
-        <circle cx="188" cy="240" r="5.5" fill={skin} opacity="0.4" />
-        <circle cx="200" cy="242" r="5" fill={skin} opacity="0.35" />
-        <circle cx="210" cy="248" r="4.5" fill={skin} opacity="0.3" />
-
-        {/* Accent rings / personality cue */}
-        {detail.wrapStyle === 'athletic' && (
-          <path
-            d="M168 228 C178 230 190 236 196 244"
-            fill="none"
-            stroke={accent}
-            strokeWidth="3.5"
-            strokeLinecap="round"
-          />
-        )}
-        {detail.wrapStyle === 'metal' && (
-          <path d="M162 232 H198" stroke={accent} strokeWidth="2" opacity="0.8" />
-        )}
-
-        {/* Emblem plate */}
-        <g transform="translate(28 36)">
-          <rect
-            width="40"
-            height="40"
-            rx="10"
-            fill="#0b1018"
-            stroke={accent}
-            strokeWidth="1.5"
-            opacity="0.9"
-          />
-          <text
-            x="20"
-            y="26"
-            textAnchor="middle"
-            fill={accent}
-            fontFamily="system-ui,sans-serif"
-            fontSize="16"
-            fontWeight="700"
-          >
-            {detail.emblem}
-          </text>
-        </g>
-
-        {/* Common rarity ribbon */}
-        <g transform="translate(168 28)">
-          <rect
-            width="84"
-            height="22"
-            rx="11"
-            fill="#0b1018"
-            stroke="#9aa4b2"
-            strokeWidth="1"
-            opacity="0.9"
-          />
-          <text
-            x="42"
-            y="15"
-            textAnchor="middle"
-            fill="#c5ced9"
-            fontFamily="system-ui,sans-serif"
-            fontSize="9"
-            fontWeight="700"
-            letterSpacing="1.2"
-          >
-            COMMON
-          </text>
-        </g>
-
-        {/* Soft vignette */}
-        <rect width="280" height="320" fill="url(#gradVignette)" opacity="0" />
+          fontFamily="system-ui, sans-serif"
+        >
+          {detail.emblem}
+        </text>
       </svg>
     </div>
   );
 }
 
+/**
+ * Practice Automaton — mechanical arm-wrestling training opponent.
+ * Connected mechanical anatomy: shoulder mount → hydraulic upper arm →
+ * reinforced elbow → piston forearm → mechanical grip.
+ */
 export function AutomatonPortrait({
   className,
   size = 'md',
@@ -331,104 +261,99 @@ export function AutomatonPortrait({
       <svg viewBox="0 0 280 320" className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="auto-bg" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#221c30" />
-            <stop offset="100%" stopColor="#080a10" />
+            <stop offset="0%" stopColor="#1c1a28" />
+            <stop offset="60%" stopColor="#0d0c14" />
+            <stop offset="100%" stopColor="#07060a" />
           </linearGradient>
-          <linearGradient id="auto-metal" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#8a93a0" />
-            <stop offset="50%" stopColor="#5a6470" />
-            <stop offset="100%" stopColor="#3a4250" />
-          </linearGradient>
-          <linearGradient id="auto-glow" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#5b8def" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#4ecdc4" stopOpacity="0.7" />
-          </linearGradient>
-          <radialGradient id="auto-rim" cx="50%" cy="40%" r="50%">
-            <stop offset="0%" stopColor="#e07a4a" stopOpacity="0.28" />
+          <radialGradient id="auto-glow" cx="50%" cy="35%" r="50%">
+            <stop offset="0%" stopColor="#e07a4a" stopOpacity="0.35" />
+            <stop offset="60%" stopColor="#e07a4a" stopOpacity="0.05" />
             <stop offset="100%" stopColor="#e07a4a" stopOpacity="0" />
           </radialGradient>
+          <linearGradient id="auto-metal" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#4a5568" />
+            <stop offset="50%" stopColor="#2d3748" />
+            <stop offset="100%" stopColor="#1a202c" />
+          </linearGradient>
+          <linearGradient id="auto-piston" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#718096" />
+            <stop offset="100%" stopColor="#4a5568" />
+          </linearGradient>
         </defs>
 
         <rect width="280" height="320" fill="url(#auto-bg)" />
-        <ellipse cx="140" cy="130" rx="100" ry="80" fill="url(#auto-rim)" />
-        <ellipse cx="140" cy="278" rx="90" ry="12" fill="#000" opacity="0.5" />
+        <ellipse cx="140" cy="110" rx="100" ry="85" fill="url(#auto-glow)" />
 
-        {/* Mechanical torso block */}
+        {/* Floor shadow */}
+        <ellipse cx="140" cy="285" rx="75" ry="12" fill="#000" opacity="0.5" />
+        <ellipse cx="140" cy="282" rx="60" ry="7" fill="#e07a4a" opacity="0.08" />
+
+        {/* === MECHANICAL ARM ANATOMY === */}
+        {/* Shoulder mount — heavy industrial bracket */}
+        <rect x="95" y="120" width="55" height="40" rx="8" fill="url(#auto-metal)" />
+        <rect x="100" y="125" width="45" height="30" rx="5" fill="#2d3748" />
+        {/* Bolts */}
+        <circle cx="105" cy="130" r="3" fill="#718096" />
+        <circle cx="140" cy="130" r="3" fill="#718096" />
+        <circle cx="105" cy="150" r="3" fill="#718096" />
+        <circle cx="140" cy="150" r="3" fill="#718096" />
+        {/* Status light */}
+        <circle cx="122" cy="140" r="5" fill="#e07a4a" opacity="0.8" />
+        <circle cx="122" cy="140" r="3" fill="#f0a070" />
+
+        {/* Hydraulic upper arm */}
+        <rect x="130" y="155" width="22" height="55" rx="8" fill="url(#auto-metal)" />
+        {/* Piston rods */}
+        <rect x="134" y="160" width="5" height="45" rx="2.5" fill="url(#auto-piston)" />
+        <rect x="143" y="160" width="5" height="45" rx="2.5" fill="url(#auto-piston)" />
+        {/* Hydraulic fluid line */}
+        <rect x="139" y="162" width="3" height="42" rx="1.5" fill="#e07a4a" opacity="0.4" />
+
+        {/* Reinforced elbow joint */}
+        <circle cx="141" cy="215" r="16" fill="url(#auto-metal)" />
+        <circle cx="141" cy="215" r="10" fill="#2d3748" />
+        <circle cx="141" cy="215" r="5" fill="#e07a4a" opacity="0.6" />
+        {/* Joint ring */}
+        <circle cx="141" cy="215" r="13" fill="none" stroke="#718096" strokeWidth="2" opacity="0.6" />
+
+        {/* Piston forearm */}
+        <rect x="132" y="175" width="18" height="42" rx="6" fill="url(#auto-metal)" transform="rotate(-8 141 196)" />
+        {/* Forearm pistons */}
+        <rect x="135" y="178" width="4" height="36" rx="2" fill="url(#auto-piston)" transform="rotate(-8 141 196)" />
+        <rect x="143" y="178" width="4" height="36" rx="2" fill="url(#auto-piston)" transform="rotate(-8 141 196)" />
+
+        {/* Mechanical wrist */}
+        <rect x="130" y="168" width="22" height="12" rx="4" fill="#4a5568" />
+        <rect x="133" y="171" width="16" height="6" rx="3" fill="#e07a4a" opacity="0.3" />
+
+        {/* Mechanical grip hand */}
         <path
-          d="M86 200 C80 150 96 118 128 108 C160 98 198 112 208 156 C214 188 204 230 176 248 L104 248 C90 234 88 216 86 200Z"
+          d="M132 155 C130 148 132 140 138 136 C144 132 152 134 155 140 C158 146 157 155 153 160 L138 162 C134 160 132 158 132 155Z"
           fill="url(#auto-metal)"
         />
-        {/* Panel seams */}
-        <path d="M110 130 L170 130 L168 210 L112 210Z" fill="#2a3140" opacity="0.55" />
-        <path d="M118 148 H162" stroke="#5b8def" strokeWidth="2" opacity="0.7" />
-        <path d="M118 168 H162" stroke="#4ecdc4" strokeWidth="2" opacity="0.45" />
-        <circle cx="140" cy="188" r="10" fill="#0b1018" stroke="#5b8def" strokeWidth="2" />
-        <circle cx="140" cy="188" r="4" fill="#5b8def" />
+        {/* Finger segments */}
+        <rect x="134" y="138" width="6" height="14" rx="3" fill="#4a5568" />
+        <rect x="141" y="136" width="6" height="15" rx="3" fill="#4a5568" />
+        <rect x="148" y="138" width="6" height="13" rx="3" fill="#4a5568" />
+        {/* Grip pads */}
+        <circle cx="137" cy="140" r="2.5" fill="#e07a4a" opacity="0.5" />
+        <circle cx="144" cy="138" r="2.5" fill="#e07a4a" opacity="0.5" />
+        <circle cx="151" cy="140" r="2.5" fill="#e07a4a" opacity="0.5" />
 
-        {/* Articulated arm */}
-        <path
-          d="M176 170 C200 176 220 188 228 210 C234 226 228 244 210 250 C192 256 176 246 170 230 C164 214 166 188 176 170Z"
-          fill="url(#auto-metal)"
-        />
-        <rect
-          x="188"
-          y="198"
-          width="40"
-          height="14"
-          rx="3"
-          fill="#1a2030"
-          stroke="#5b8def"
-          strokeWidth="1.5"
-        />
-        <ellipse
-          cx="222"
-          cy="236"
-          rx="28"
-          ry="24"
-          fill="#2c3344"
-          stroke="#8a93a0"
-          strokeWidth="2"
-        />
-        {/* Mechanical knuckles */}
-        <circle cx="210" cy="228" r="5" fill="#5b8def" opacity="0.85" />
-        <circle cx="222" cy="224" r="5.5" fill="#4ecdc4" opacity="0.75" />
-        <circle cx="234" cy="230" r="5" fill="#5b8def" opacity="0.7" />
-
-        {/* Visor stripe */}
-        <rect x="112" y="120" width="56" height="10" rx="3" fill="url(#auto-glow)" />
-
-        {/* Easy badge */}
-        <g transform="translate(24 30)">
-          <rect width="72" height="24" rx="12" fill="#0b1018" stroke="#e07a4a" strokeWidth="1.2" />
-          <text
-            x="36"
-            y="16"
-            textAnchor="middle"
-            fill="#f0a878"
-            fontFamily="system-ui,sans-serif"
-            fontSize="10"
-            fontWeight="700"
-            letterSpacing="1"
-          >
-            EASY
-          </text>
-        </g>
-
-        <g transform="translate(168 30)">
-          <rect width="88" height="24" rx="12" fill="#0b1018" stroke="#5b8def" strokeWidth="1.2" />
-          <text
-            x="44"
-            y="16"
-            textAnchor="middle"
-            fill="#8ec0ff"
-            fontFamily="system-ui,sans-serif"
-            fontSize="9"
-            fontWeight="700"
-            letterSpacing="0.8"
-          >
-            AUTOMATON
-          </text>
-        </g>
+        {/* Training label */}
+        <rect x="100" y="270" width="80" height="22" rx="6" fill="#1a202c" stroke="#e07a4a" strokeWidth="1" opacity="0.8" />
+        <text
+          x="140"
+          y="285"
+          textAnchor="middle"
+          fontSize="10"
+          fontWeight="700"
+          fill="#e07a4a"
+          fontFamily="system-ui, sans-serif"
+          letterSpacing="1"
+        >
+          TRAINING
+        </text>
       </svg>
     </div>
   );
