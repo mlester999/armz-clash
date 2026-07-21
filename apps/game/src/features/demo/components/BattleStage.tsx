@@ -49,9 +49,10 @@ export function BattleStage({
   const [playerStr, setPlayerStr] = useState(100);
   const [opponentStr, setOpponentStr] = useState(100);
   const [done, setDone] = useState(false);
+  const [finalSynced, setFinalSynced] = useState(false);
   const [muted, setMuted] = useState(true);
   const [musicOn, setMusicOn] = useState(false);
-  const [eventLabel, setEventLabel] = useState('Preparing arena…');
+  const [eventLabel, setEventLabel] = useState('Preparing arenaâ€¦');
   const [cooldown, setCooldown] = useState(battle.session.replayAvailableInSeconds);
 
   useEffect(() => {
@@ -72,7 +73,13 @@ export function BattleStage({
       playerPresetKey: battle.armz.presetKey,
       reducedMotion,
       muted,
-      onComplete: () => setDone(true),
+      onComplete: () => {
+        // Phase 3.3: final_sync gate — snap to authoritative final values before revealing result
+        setPlayerStr(battle.playerFinalStrength);
+        setOpponentStr(battle.opponentFinalStrength);
+        setFinalSynced(true);
+        setDone(true);
+      },
       onStrength: (p, o) => {
         setPlayerStr(p);
         setOpponentStr(o);
@@ -102,10 +109,13 @@ export function BattleStage({
   }, [cooldown]);
 
   const skipToResult = () => {
-    setDone(true);
+    // Phase 3.3 Task 21: Skip must go through final_sync
+    rendererRef.current?.pause();
+    // Snap to authoritative final snapshot
     setPlayerStr(battle.playerFinalStrength);
     setOpponentStr(battle.opponentFinalStrength);
-    rendererRef.current?.pause();
+    setFinalSynced(true);
+    setDone(true);
   };
 
   return (
@@ -160,7 +170,7 @@ export function BattleStage({
         data-testid="demo-battle-canvas-host"
       />
 
-      {done && (
+      {done && finalSynced && (
         <Card
           className={
             battle.outcome === 'victory'
@@ -205,14 +215,14 @@ export function BattleStage({
                   Defeat
                 </h2>
                 <p className="text-sm text-[var(--armz-text-secondary)]">
-                  The Practice Automaton held the line. No simulated reward this round — train again
+                  The Practice Automaton held the line. No simulated reward this round â€” train again
                   after the cooldown.
                 </p>
               </div>
             </>
           )}
           <p className="text-xs text-[var(--armz-text-muted)]">
-            Battle ID {battle.battleId.slice(0, 8)}… · duration{' '}
+            Battle ID {battle.battleId.slice(0, 8)}â€¦ Â· duration{' '}
             {(battle.durationMs / 1000).toFixed(1)}s
           </p>
           <Cluster>
