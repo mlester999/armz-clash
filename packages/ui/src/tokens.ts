@@ -61,9 +61,9 @@ export const radii = {
 
 export const colors = {
   bg: {
-    base: '#0b0e14',
-    elevated: '#121826',
-    panel: '#161d2d',
+    base: '#03060b',
+    elevated: '#080d15',
+    panel: '#0d1521',
     overlay: 'rgba(5, 8, 14, 0.72)',
   },
   surface: {
@@ -83,10 +83,10 @@ export const colors = {
     inverse: '#0b0e14',
   },
   accent: {
-    gold: '#d4af6a',
-    goldSoft: 'rgba(212, 175, 106, 0.16)',
-    cyan: '#5ec8ff',
-    cyanSoft: 'rgba(94, 200, 255, 0.14)',
+    gold: '#c7a056',
+    goldSoft: 'rgba(199, 160, 86, 0.16)',
+    cyan: '#54cbff',
+    cyanSoft: 'rgba(84, 203, 255, 0.14)',
   },
   status: {
     success: '#3ecf8e',

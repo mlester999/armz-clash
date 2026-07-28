@@ -3,16 +3,17 @@ import { cn } from '../cn';
 
 const variants = {
   primary: cn(
-    'border-transparent text-[var(--armz-text-inverse)]',
-    'bg-[linear-gradient(145deg,#f0d9a0_0%,#d4af6a_42%,#a8843d_100%)]',
-    'shadow-[0_4px_16px_rgba(212,175,106,0.28),inset_0_1px_0_rgba(255,255,255,0.35)]',
-    'hover:brightness-110 hover:shadow-[0_8px_24px_rgba(212,175,106,0.38)]',
+    'border-[rgba(242,213,143,0.45)] text-[var(--armz-text-inverse)]',
+    'bg-[linear-gradient(145deg,#f2d58f_0%,#c7a056_48%,#76531e_100%)]',
+    'shadow-[0_8px_28px_rgba(199,160,86,0.25),inset_0_1px_0_rgba(255,255,255,0.42)]',
+    'hover:brightness-110 hover:shadow-[0_12px_34px_rgba(199,160,86,0.38)] hover:-translate-y-0.5',
     'active:brightness-95 active:translate-y-px active:shadow-[0_2px_8px_rgba(212,175,106,0.2)]',
   ),
   secondary: cn(
-    'border-[var(--armz-border)] text-[var(--armz-text)]',
-    'bg-[linear-gradient(180deg,rgba(42,54,78,0.95),rgba(28,38,58,0.95))]',
-    'hover:border-[var(--armz-border-strong)] hover:bg-[rgba(48,62,90,0.95)]',
+    'border-[rgba(116,151,185,0.28)] text-[var(--armz-text)]',
+    'bg-[linear-gradient(180deg,rgba(25,42,61,0.97),rgba(10,18,29,0.97))]',
+    'shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_8px_26px_rgba(0,0,0,0.32)]',
+    'hover:border-[var(--armz-border-cyan)] hover:bg-[rgba(24,46,67,0.98)] hover:-translate-y-0.5',
     'active:translate-y-px active:brightness-95',
   ),
   ghost: cn(
@@ -66,7 +67,7 @@ export function Button({
       type={type}
       onClick={onClick}
       className={cn(
-        'inline-flex select-none items-center justify-center rounded-[var(--armz-radius-md)] border font-semibold tracking-wide',
+        'inline-flex select-none items-center justify-center rounded-[var(--armz-radius-md)] border font-bold tracking-[0.035em]',
         'transition-[transform,box-shadow,filter,background-color,border-color,color] duration-150 ease-out',
         'cursor-pointer',
         'disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none disabled:hover:brightness-100 disabled:active:translate-y-0',

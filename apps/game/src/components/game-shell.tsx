@@ -2,97 +2,122 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Badge, BrandLockup, NetworkBadge } from '@armz-clash/ui';
+import { BrandLockup } from '@armz-clash/ui';
 import type { PublicConfig } from '@armz-clash/config';
 import { GameWalletChrome } from './game-wallet-chrome';
+import { GameIcon, type GameIconName } from './game-icons';
 
-const liveNav = [
-  { href: '/demo', label: 'Arena', testId: 'nav-demo' },
-  { href: '/demo/collection', label: 'Collection', testId: 'nav-demo-collection' },
-  { href: '/demo/fight', label: 'Battle', testId: 'nav-demo-fight' },
-] as const;
+const liveNav: ReadonlyArray<{
+  href: string;
+  label: string;
+  testId: string;
+  icon: GameIconName;
+  match: (pathname: string) => boolean;
+}> = [
+  {
+    href: '/demo',
+    label: 'Arena',
+    testId: 'nav-demo',
+    icon: 'arena',
+    match: (pathname) => pathname === '/demo' || pathname === '/demo/',
+  },
+  {
+    href: '/demo/collection',
+    label: 'Collection',
+    testId: 'nav-demo-collection',
+    icon: 'collection',
+    match: (pathname) => pathname.startsWith('/demo/collection'),
+  },
+  {
+    href: '/demo/fight',
+    label: 'Battle',
+    testId: 'nav-demo-fight',
+    icon: 'battle',
+    match: (pathname) => pathname.startsWith('/demo/fight'),
+  },
+  {
+    href: '/demo/collection#history',
+    label: 'History',
+    testId: 'nav-demo-history',
+    icon: 'history',
+    match: () => false,
+  },
+];
 
 const futureNav = [
-  { label: 'Fight', hint: 'Phase 5+', testId: 'nav-future-fight' },
-  { label: 'Marketplace', hint: 'Phase 9', testId: 'nav-future-marketplace' },
-  { label: 'Claim Rewards', hint: 'Phase 8', testId: 'nav-future-claim-rewards' },
+  { label: 'Marketplace', hint: 'Future', testId: 'nav-future-marketplace' },
+  { label: 'Claims', hint: 'Future', testId: 'nav-future-claim-rewards' },
 ] as const;
+
+function MainNav({ pathname }: { pathname: string }) {
+  return (
+    <nav aria-label="Game navigation" className="phase34-desktop-nav">
+      {liveNav.map((item) => {
+        const active = item.match(pathname);
+        return (
+          <Link
+            key={item.testId}
+            href={item.href}
+            className="phase34-nav-link"
+            data-active={active ? 'true' : 'false'}
+            aria-current={active ? 'page' : undefined}
+            data-testid={item.testId}
+          >
+            <GameIcon name={item.icon} />
+            <span>{item.label}</span>
+          </Link>
+        );
+      })}
+      <div className="phase34-future-nav" aria-label="Future features">
+        {futureNav.map((item) => (
+          <span
+            key={item.testId}
+            className="phase34-nav-link phase34-nav-link--locked"
+            data-testid={item.testId}
+            aria-disabled="true"
+            title={`${item.label} intentionally unavailable`}
+          >
+            <GameIcon name="lock" />
+            <span>{item.label}</span>
+            <small>{item.hint}</small>
+          </span>
+        ))}
+      </div>
+    </nav>
+  );
+}
 
 export function GameHeader({ config }: { config: PublicConfig }) {
   const pathname = usePathname() || '/';
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--armz-border)] bg-[rgba(5,8,16,0.92)] backdrop-blur-xl">
-      {/* Top row: logo + status + wallet */}
-      <div className="mx-auto flex w-full max-w-[90rem] items-center justify-between gap-2 px-[var(--armz-page-x)] pt-[calc(0.5rem+var(--armz-safe-top))] pb-1.5">
-        <div className="flex min-w-0 items-center gap-2.5">
-          <Link
-            href="/"
-            className="cursor-pointer rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--armz-cyan)]"
-          >
-            <BrandLockup subtitle="Demo Arena" />
-          </Link>
-          <Badge variant="warning" className="hidden sm:inline-flex">
-            Phase 3 demo
-          </Badge>
-        </div>
-        <div className="flex items-center gap-2">
-          <NetworkBadge network={config.networkLabel} />
-          <Badge variant="success" className="hidden lg:inline-flex">
-            Real-value off
-          </Badge>
-          <GameWalletChrome />
-        </div>
-      </div>
-
-      {/* Nav row — always visible, horizontal scroll on small screens */}
-      <nav
-        aria-label="Game navigation"
-        className="mx-auto flex w-full max-w-[90rem] items-center gap-0.5 overflow-x-auto px-[var(--armz-page-x)] pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        {liveNav.map((item) => {
-          const active =
-            item.href === '/demo'
-              ? pathname === '/demo' || pathname === '/demo/'
-              : pathname.startsWith(item.href);
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="armz-nav-tab shrink-0"
-              data-active={active ? 'true' : 'false'}
-              aria-current={active ? 'page' : undefined}
-              data-testid={item.testId}
-            >
-              {item.label}
+    <>
+      <header className="phase34-header">
+        <div className="phase34-header__inner">
+          <div className="phase34-header__brand">
+            <Link href="/" className="phase34-brand-link" aria-label="Armz Clash home">
+              <BrandLockup subtitle="Demo Championship" />
             </Link>
-          );
-        })}
-        <span className="mx-1 h-5 w-px shrink-0 bg-[var(--armz-border)]" aria-hidden />
-        {futureNav.map((item) => (
-          <span
-            key={item.label}
-            className="armz-nav-tab shrink-0"
-            data-disabled="true"
-            data-active="false"
-            aria-disabled="true"
-            title={`${item.label} unavailable — ${item.hint}`}
-            data-testid={item.testId}
-          >
-            {item.label}
-            <span className="ml-1 text-[9px] font-bold uppercase tracking-wider opacity-60">
-              {item.hint}
+            <span className="phase34-mode-chip">
+              <i aria-hidden /> Demo Mode
             </span>
-          </span>
-        ))}
-      </nav>
+          </div>
 
-      {/* Safety line */}
-      <div className="mx-auto max-w-[90rem] px-[var(--armz-page-x)] pb-1">
-        <p className="text-[10px] leading-tight text-[var(--armz-text-muted)]">
-          Demo Mode active · no staking · real-value systems disabled · Phase 9 marketplace locked
+          <div className="phase34-header__nav-slot" aria-hidden="true" />
+
+          <div className="phase34-header__utility">
+            <span className="phase34-network-chip">{config.networkLabel}</span>
+            <span className="phase34-safe-chip">Real value off</span>
+            <div id="wallet-access" className="phase34-wallet">
+              <GameWalletChrome />
+            </div>
+          </div>
+        </div>
+        <p className="phase34-safety-line">
+          Simulated practice only · no monetary value · not claimable · no staking
         </p>
-      </div>
-    </header>
+      </header>
+      <MainNav pathname={pathname} />
+    </>
   );
 }
