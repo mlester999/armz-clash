@@ -2,9 +2,11 @@
 
 **ARMZ CLASH** — premium browser-based Solana arm-wrestling game.
 
-**Current phase: Phase 3.3B — Qwen-only premium vector asset pipeline**
+**Current phase: Phase 3.4 — premium asset-driven flagship vertical slice**
 
-This repository contains infrastructure, design system, configuration, database foundations, hosted Supabase validation tooling, developer tooling, and a fully functional Demo Mode battle experience. Wallet authentication, minting, rewards, claims, and marketplace settlement are **not** active yet.
+This repository contains the Armz Clash monorepo and a complete simulated Demo Mode loop built around Rookie Brawler versus Practice Automaton. Phase 3.4 includes the premium shell, reveal, collection, versus screen, battle HUD, responsive camera, and truthful result flow. Wallet authentication is Devnet-only when configured; minting, real rewards, claims, marketplace settlement, mainnet, and staking are **not active**.
+
+> **Asset gate:** the Phase 3.4 contract contains 27 owner-art slots. No owner-approved final PNG/WebP files were supplied with this phase, so the current manifest reports **0/27 final** and the running game labels every legacy fallback as temporary. The integration and drop-in build pipeline are ready; final visual acceptance remains **PENDING OWNER TEST** after the owner asset pack is supplied.
 
 ## Safety posture
 
@@ -69,11 +71,14 @@ pnpm dev:game
 open http://127.0.0.1:3001/demo
 ```
 
-Build game assets (SVG → texture pipeline):
+Build legacy fallbacks plus the Phase 3.4 owner-asset pack:
 
 ```bash
 pnpm build:assets
+pnpm assets:validate
 ```
+
+Owner files belong under `apps/game/assets/phase3-4/final/` using the exact stems in [docs/PHASE3_4_ASSET_PIPELINE.md](docs/PHASE3_4_ASSET_PIPELINE.md). The builder emits responsive WebP/PNG variants, hashes, and honest runtime/version manifests; missing files never become `final` silently.
 
 See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) and [docs/REOWN_SETUP.md](docs/REOWN_SETUP.md).
 
@@ -84,6 +89,8 @@ pnpm check          # format, lint, typecheck, unit tests, env, secrets, db vali
 pnpm quality:ci     # deterministic CI suite including build (do not use bare `pnpm ci`)
 pnpm test:unit
 pnpm test:e2e       # requires Playwright browsers
+pnpm assets:validate
+pnpm test:simulation # one million deterministic battle integrity checks
 pnpm db:validate    # static migration checks (no hosted writes)
 pnpm env:check
 pnpm secrets:scan
@@ -152,18 +159,23 @@ The temporary game token ticker is centralized as **ARMZ** (`$ARMZ` display) in 
 - [docs/ECONOMY_SAFETY.md](docs/ECONOMY_SAFETY.md)
 - [docs/PHASE1_REPORT_TEMPLATE.md](docs/PHASE1_REPORT_TEMPLATE.md)
 - [docs/DEMO_MODE.md](docs/DEMO_MODE.md)
+- [docs/PHASE3_4_PREMIUM_REBUILD.md](docs/PHASE3_4_PREMIUM_REBUILD.md)
+- [docs/PHASE3_4_ASSET_PIPELINE.md](docs/PHASE3_4_ASSET_PIPELINE.md)
+- [docs/PHASE3_4_BATTLE_PRESENTATION.md](docs/PHASE3_4_BATTLE_PRESENTATION.md)
+- [docs/PHASE3_4_RESULT_UX.md](docs/PHASE3_4_RESULT_UX.md)
+- [docs/PHASE3_4_OWNER_ACCEPTANCE.md](docs/PHASE3_4_OWNER_ACCEPTANCE.md)
+- [docs/PHASE3_4_FINAL_REPORT_TEMPLATE.md](docs/PHASE3_4_FINAL_REPORT_TEMPLATE.md)
 - [docs/PHASE3_3B_QWEN_ONLY_ASSET_PIPELINE.md](docs/PHASE3_3B_QWEN_ONLY_ASSET_PIPELINE.md)
 - [docs/PHASE3_3B_OWNER_ACCEPTANCE.md](docs/PHASE3_3B_OWNER_ACCEPTANCE.md)
 
 ## Current limitations
 
-- No wallet connection
-- No authentication sessions
-- No minting, rewards, claims, marketplace settlement
+- Owner-approved final visual assets are not present: 0/27 final, 27/27 temporary/missing-final
+- No real minting, real rewards, claims, marketplace settlement, mainnet, or staking
 - Hosted Supabase validation pending owner credentials
-- Phase 3.3B owner visual acceptance: PENDING OWNER TEST
+- Phase 3.4 owner visual acceptance: **PENDING OWNER TEST**
 - Phase 4 not started
 
 ## Next phase
 
-**Phase 4** — pending owner acceptance of Phase 3.3B visual quality.
+Supply and integrate the owner-approved Phase 3.4 PNG/WebP pack, rerun the complete acceptance matrix, and obtain owner approval. **Phase 4 must not start before that approval.**
