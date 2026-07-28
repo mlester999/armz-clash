@@ -1,6 +1,6 @@
 ﻿/**
- * Demo Mode persistence â€” explicit modes only.
- * No silent database â†’ memory fallback.
+ * Demo Mode persistence — explicit modes only.
+ * No silent database → memory fallback.
  *
  * Modes:
  * - database: hosted/dev with Supabase (fail closed on errors)
@@ -110,7 +110,7 @@ export function getDemoPersistenceMode(): DemoPersistenceMode {
   return cachedMode;
 }
 
-/** Test helper â€” reset mode cache between unit tests. */
+/** Test helper — reset mode cache between unit tests. */
 export function resetDemoPersistenceCacheForTests(): void {
   cachedMode = null;
   lastHealth = null;

@@ -1,7 +1,7 @@
 import {
   DEMO_ARMZ_PRESETS,
   formatDemoArmzAmount,
-  generateDemoArmzIdentity,
+  generateCommonDemoStats,
   getDemoPreset,
   getEasyDemoOpponent,
   simulateDemoBattle,
@@ -26,6 +26,8 @@ import {
   type DemoBattleRow,
   type DemoSessionRow,
 } from './store';
+
+const PHASE3_4_FLAGSHIP_PRESET = 'rookie_brawler' as const;
 
 function demoSecret(): string {
   return (
@@ -157,13 +159,14 @@ export async function resolveDemoSession(
 
 export async function ensureDemoArmz(session: DemoSessionRow): Promise<DemoArmzRow> {
   const existing = await findActiveDemoArmz(session.id);
-  if (existing) return existing;
+  if (existing?.preset_key === PHASE3_4_FLAGSHIP_PRESET) return existing;
+  if (existing) await deactivateDemoArmz(session.id);
   const seed = `${session.id}:${session.created_at}`;
-  const { presetKey, stats } = generateDemoArmzIdentity(seed);
-  const preset = getDemoPreset(presetKey)!;
+  const stats = generateCommonDemoStats(`${seed}:${PHASE3_4_FLAGSHIP_PRESET}`);
+  const preset = getDemoPreset(PHASE3_4_FLAGSHIP_PRESET)!;
   return insertDemoArmz({
     demo_session_id: session.id,
-    preset_key: presetKey,
+    preset_key: PHASE3_4_FLAGSHIP_PRESET,
     display_name: preset.displayName,
     rarity: 'common',
     level: 1,
@@ -205,11 +208,11 @@ export async function resetDemoArmz(
   }
   await deactivateDemoArmz(session.id);
   const seed = `${session.id}:reset:${now.toISOString()}`;
-  const { presetKey, stats } = generateDemoArmzIdentity(seed);
-  const preset = getDemoPreset(presetKey)!;
+  const stats = generateCommonDemoStats(`${seed}:${PHASE3_4_FLAGSHIP_PRESET}`);
+  const preset = getDemoPreset(PHASE3_4_FLAGSHIP_PRESET)!;
   const armz = await insertDemoArmz({
     demo_session_id: session.id,
-    preset_key: presetKey,
+    preset_key: PHASE3_4_FLAGSHIP_PRESET,
     display_name: preset.displayName,
     rarity: 'common',
     level: 1,
@@ -415,8 +418,8 @@ export function buildDemoPublicPayload(session: DemoSessionRow, armz: DemoArmzRo
       difficulty: opponent.difficulty,
       tagline: opponent.tagline,
       animationSetKey: opponent.animationSetKey,
-      // Stats visible as estimated matchup labels only â€” not editable
-      estimatedMatchupLabel: 'Estimated demo matchup â€” not a guaranteed win',
+      // Stats visible as estimated matchup labels only — not editable
+      estimatedMatchupLabel: 'Estimated demo matchup — not a guaranteed win',
       palette: {
         skinTone: opponent.skinTone,
         primaryCloth: opponent.primaryCloth,

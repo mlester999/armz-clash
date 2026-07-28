@@ -419,7 +419,7 @@ app.get('/api/v1/wallet/balances', async (request, reply) => {
 });
 
 // ---------------------------------------------------------------------------
-// Phase 3 â€” Demo Mode (temporary, simulated, no real value)
+// Phase 3 — Demo Mode (temporary, simulated, no real value)
 // ---------------------------------------------------------------------------
 const demoConfig = loadDemoConfig();
 
@@ -630,7 +630,7 @@ app.get('/api/v1/demo/config', async (_request, reply) => {
     maxBattlesPerSession: demoConfig.maxBattlesPerSession,
     sessionTtlSeconds: demoConfig.sessionTtlSeconds,
     difficulty: 'easy',
-    // Public-safe status only â€” never secrets or connection strings.
+    // Public-safe status only — never secrets or connection strings.
     demoPersistence: probed.publicLabel,
     demoPersistenceHealthy: probed.healthy,
     demoApi: probed.healthy || !isDemoModeEnabled() ? 'Operational' : 'Degraded',
