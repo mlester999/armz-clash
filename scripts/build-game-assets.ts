@@ -1,5 +1,5 @@
 /**
- * Phase 3.3B â€” Qwen-only premium vector asset pipeline.
+ * Phase 3.3B — Qwen-only premium vector asset pipeline.
  *
  * Deterministic build script that:
  *  1. Reads hand-authored SVG sources from apps/game/assets/source.
@@ -313,7 +313,6 @@ async function buildAtlas(
     .map((r) => ({ assetId: r.assetId, w: r.frame.w, h: r.frame.h, buf: r.png1xBuffer }));
 
   const { frames, width, height } = packShelves(items, 1024);
-  const { frames, width, height } = packShelves(items, 2048);
   const atlas = sharp({
     create: { width, height, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
   });

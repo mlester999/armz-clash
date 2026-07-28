@@ -1,5 +1,5 @@
 /**
- * Phase 3.3B â€” runtime manifest loader.
+ * Phase 3.3B — runtime manifest loader.
  *
  * Fetches the generated JSON manifests from the static asset root and returns
  * typed bundles. Pure and injectable (custom fetch + base) for testability.

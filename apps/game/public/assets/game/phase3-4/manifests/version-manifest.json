@@ -1,0 +1,8 @@
+{
+  "manifestVersion": "phase3-4-owner-drop-v1",
+  "fallbackVersion": "phase3-3b-v1",
+  "ownerAssetStatus": "awaiting-owner-assets",
+  "requiredFinalAssetCount": 27,
+  "integratedFinalAssetCount": 0,
+  "files": {}
+}

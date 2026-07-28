@@ -1,5 +1,5 @@
 /**
- * Phase 3.3B â€” typed runtime asset manifest.
+ * Phase 3.3B — typed runtime asset manifest.
  *
  * These types describe the JSON emitted by `scripts/build-game-assets.ts`
  * under `apps/game/public/assets/game/phase3-3b/manifests/asset-manifest.json`.

@@ -1,5 +1,5 @@
 /**
- * Phase 3.3B â€” typed pose + rig manifests.
+ * Phase 3.3B — typed pose + rig manifests.
  *
  * Describes `pose-manifest.json` and `rig-manifest.json` emitted by the asset
  * build. The pose manifest drives authored battle-state interpolation; the rig

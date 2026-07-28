@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { PRODUCT_NAME } from '@armz-clash/config';
 import { GameHeader } from '../components/game-shell';
 import { getGamePublicConfig } from '../lib/public';
+import { PremiumAssetProvider } from '../features/demo/assets/PremiumAssetProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-dvh antialiased">
         <div className="flex min-h-dvh flex-col">
           <GameHeader config={config} />
-          {children}
+          <PremiumAssetProvider>{children}</PremiumAssetProvider>
         </div>
       </body>
     </html>
