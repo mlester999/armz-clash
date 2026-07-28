@@ -1,64 +1,83 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { Button, Cluster, ControlBar } from '@armz-clash/ui';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Button, ControlBar, IconButton } from '@armz-clash/ui';
 import type { DemoBattlePayload } from '../api';
 import { BattleRenderer } from '../renderer/BattleRenderer';
-import { ArmzPortrait, AutomatonPortrait } from '../art/ArmzPortrait';
+import { AutomatonArt, PremiumArt, RookieArt } from '../art/PremiumArt';
+import { GameIcon } from '../../../components/game-icons';
 
 function formatCooldown(seconds: number): string {
-  const m = Math.floor(seconds / 60);
-  const s = seconds % 60;
-  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  const minutes = Math.floor(seconds / 60);
+  const remainder = seconds % 60;
+  return `${String(minutes).padStart(2, '0')}:${String(remainder).padStart(2, '0')}`;
 }
 
-const EVENT_LABELS: Record<string, string> = {
-  intro: 'Arena intro',
-  lock: 'Locking grip',
-  grip: 'Grip locked',
-  first_pressure: 'First pressure',
-  pressure: 'Pressure building',
-  momentum: 'Momentum swing',
-  strain: 'Strain phase',
-  critical: 'Critical force',
-  recovery: 'Second wind recovery',
-  counter: 'Counter',
-  push: 'Pushing',
-  push_heavy: 'Heavy push',
-  decisive: 'Decisive push',
-  winning_slam: 'Victory slam',
-  defeated: 'Pinned',
-  victory: 'Victory',
-  defeat: 'Defeat',
+const EVENT_LABELS: Record<string, { title: string; cue: string }> = {
+  idle: { title: 'Contenders ready', cue: 'Hold the center' },
+  approach: { title: 'Hands approaching', cue: 'Grip alignment' },
+  grip: { title: 'Grip locked', cue: 'Pressure live' },
+  strain_light: { title: 'Testing pressure', cue: 'Control shifting' },
+  strain_heavy: { title: 'Maximum tension', cue: 'Hold the line' },
+  push_light: { title: 'Forward pressure', cue: 'Momentum building' },
+  push_heavy: { title: 'Heavy drive', cue: 'Table reacting' },
+  counter: { title: 'Counter!', cue: 'Momentum reversed' },
+  critical: { title: 'Critical surge!', cue: 'Decisive pressure' },
+  recovery: { title: 'Recovery', cue: 'Form restored' },
+  fatigue: { title: 'Fatigue setting in', cue: 'Grip discipline' },
+  winning_slam: { title: 'Final slam!', cue: 'Pin confirmed' },
+  defeated: { title: 'Final slam!', cue: 'Pin confirmed' },
 };
 
 export function BattleStage({
   battle,
   reducedMotion,
+  initialResult = false,
+  onReducedMotionChange,
+  onResultReady,
   onReplay,
   onCollection,
   onHome,
 }: {
   battle: DemoBattlePayload;
   reducedMotion: boolean;
+  initialResult?: boolean;
+  onReducedMotionChange: (next: boolean) => void;
+  onResultReady: () => void;
   onReplay: () => void;
   onCollection: () => void;
   onHome: () => void;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
+  const resultTitleRef = useRef<HTMLHeadingElement>(null);
   const rendererRef = useRef<BattleRenderer | null>(null);
-  const [playerStr, setPlayerStr] = useState(100);
-  const [opponentStr, setOpponentStr] = useState(100);
-  const [done, setDone] = useState(false);
-  const [finalSynced, setFinalSynced] = useState(false);
+  const [playerControl, setPlayerControl] = useState(
+    initialResult ? battle.playerFinalStrength : 100,
+  );
+  const [opponentControl, setOpponentControl] = useState(
+    initialResult ? battle.opponentFinalStrength : 100,
+  );
+  const [done, setDone] = useState(initialResult);
+  const [finalSynced, setFinalSynced] = useState(initialResult);
   const [muted, setMuted] = useState(true);
   const [musicOn, setMusicOn] = useState(false);
-  const [eventLabel, setEventLabel] = useState('Preparing arena\u2026');
+  const [event, setEvent] = useState(EVENT_LABELS.idle!);
   const [cooldown, setCooldown] = useState(battle.session.replayAvailableInSeconds);
   const [resultAnnounced, setResultAnnounced] = useState(false);
 
   useEffect(() => {
-    if (!hostRef.current) return;
+    window.scrollTo(0, 0);
+  }, [battle.battleId]);
+
+  useEffect(() => {
+    const storedMuted = window.localStorage.getItem('armz-clash:sfx-muted');
+    const storedMusic = window.localStorage.getItem('armz-clash:music-on');
+    if (storedMuted !== null) setMuted(storedMuted === 'true');
+    if (storedMusic !== null) setMusicOn(storedMusic === 'true');
+  }, []);
+
+  useEffect(() => {
+    if (initialResult || !hostRef.current) return;
     const palette = battle.armz.palette ?? {
       skinTone: 'c48a6a',
       primaryCloth: '3d2b22',
@@ -79,18 +98,24 @@ export function BattleStage({
       sfxEnabled: !muted,
       musicEnabled: musicOn,
       onComplete: () => {
-        setPlayerStr(battle.playerFinalStrength);
-        setOpponentStr(battle.opponentFinalStrength);
+        setPlayerControl(battle.playerFinalStrength);
+        setOpponentControl(battle.opponentFinalStrength);
         setFinalSynced(true);
         setDone(true);
+        onResultReady();
       },
-      onStrength: (p, o) => {
-        setPlayerStr(p);
-        setOpponentStr(o);
+      onStrength: (player, opponent) => {
+        setPlayerControl(player);
+        setOpponentControl(opponent);
       },
-      onEvent: (ev) => {
-        const key = ev.animationCue || ev.type;
-        setEventLabel(EVENT_LABELS[key] ?? key.replace(/_/g, ' '));
+      onEvent: (timelineEvent) => {
+        const key = timelineEvent.animationCue || timelineEvent.type;
+        setEvent(
+          EVENT_LABELS[key] ?? {
+            title: key.replaceAll('_', ' '),
+            cue: timelineEvent.side ? `${timelineEvent.side} momentum` : 'Control shifting',
+          },
+        );
       },
     });
     rendererRef.current = renderer;
@@ -99,8 +124,9 @@ export function BattleStage({
       renderer.destroy();
       rendererRef.current = null;
     };
+    // Battle identity intentionally owns the renderer lifecycle.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [battle.battleId]);
+  }, [battle.battleId, initialResult]);
 
   useEffect(() => {
     rendererRef.current?.setMuted(muted);
@@ -112,38 +138,61 @@ export function BattleStage({
   }, [musicOn]);
 
   useEffect(() => {
-    if (cooldown <= 0) return;
-    const id = window.setInterval(() => setCooldown((c) => Math.max(0, c - 1)), 1000);
-    return () => window.clearInterval(id);
-  }, [cooldown]);
+    rendererRef.current?.setReducedMotion(reducedMotion);
+  }, [reducedMotion]);
 
-  const skipToResult = useCallback(() => {
-    rendererRef.current?.pause();
-    setPlayerStr(battle.playerFinalStrength);
-    setOpponentStr(battle.opponentFinalStrength);
-    setFinalSynced(true);
-    setDone(true);
-  }, [battle.playerFinalStrength, battle.opponentFinalStrength]);
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setCooldown((current) => {
+        if (current <= 1) {
+          window.clearInterval(id);
+          return 0;
+        }
+        return current - 1;
+      });
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, []);
 
   const isVictory = battle.outcome === 'victory';
-
-  // Result integrity: victory requires opponentFinalControl===0 && playerFinalControl>0
-  // Defeat requires playerFinalControl===0 && opponentFinalControl>0
   const integrityValid = isVictory
     ? battle.opponentFinalStrength === 0 && battle.playerFinalStrength > 0
     : battle.playerFinalStrength === 0 && battle.opponentFinalStrength > 0;
   const showResult = done && finalSynced && integrityValid;
 
-  // Screen-reader announcement: once when finalSynced completes.
   useEffect(() => {
-    if (finalSynced && !resultAnnounced) {
-      setResultAnnounced(true);
-    }
-  }, [finalSynced, resultAnnounced]);
+    if (!showResult) return;
+    if (!resultAnnounced) setResultAnnounced(true);
+    window.requestAnimationFrame(() => resultTitleRef.current?.focus({ preventScroll: true }));
+  }, [showResult, resultAnnounced]);
+
+  const skipToResult = useCallback(() => {
+    rendererRef.current?.pause();
+    setPlayerControl(battle.playerFinalStrength);
+    setOpponentControl(battle.opponentFinalStrength);
+    setFinalSynced(true);
+    setDone(true);
+    onResultReady();
+  }, [battle.opponentFinalStrength, battle.playerFinalStrength, onResultReady]);
+
+  const toggleMuted = () => {
+    setMuted((current) => {
+      const next = !current;
+      window.localStorage.setItem('armz-clash:sfx-muted', String(next));
+      return next;
+    });
+  };
+
+  const toggleMusic = () => {
+    setMusicOn((current) => {
+      const next = !current;
+      window.localStorage.setItem('armz-clash:music-on', String(next));
+      return next;
+    });
+  };
 
   return (
-    <div className="space-y-3" data-testid="demo-battle-stage">
-      {/* Screen-reader result announcement (once) */}
+    <section className="phase34-battle-stage" data-testid="demo-battle-stage">
       <div aria-live="assertive" aria-atomic="true" className="sr-only" role="status">
         {resultAnnounced && showResult
           ? isVictory
@@ -152,245 +201,206 @@ export function BattleStage({
           : ''}
       </div>
 
-      {/* Fighter HUD Headers */}
-      <div className="grid gap-2 sm:grid-cols-2">
-        {/* Player panel */}
-        <div className="flex items-center gap-3 rounded-[var(--armz-radius-lg)] border border-[rgba(94,200,255,0.25)] bg-[linear-gradient(135deg,rgba(94,200,255,0.06),rgba(7,11,18,0.9))] p-3">
-          <div className="h-12 w-12 shrink-0 overflow-hidden rounded-[var(--armz-radius-md)] border border-[rgba(94,200,255,0.3)]">
-            <ArmzPortrait
-              presetKey={battle.armz.presetKey}
-              displayName={battle.armz.displayName}
-              palette={battle.armz.palette}
-              size="sm"
-            />
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <h3 className="truncate text-sm font-bold">{battle.armz.displayName}</h3>
-              <span className="shrink-0 rounded-full border border-[rgba(94,200,255,0.3)] bg-[rgba(94,200,255,0.08)] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[var(--armz-cyan)]">
-                Common
-              </span>
+      <div className="phase34-battle-arena" data-testid="demo-battle-canvas-host">
+        <div ref={hostRef} className="phase34-battle-canvas" />
+        {initialResult ? <div className="phase34-battle-restored-bg" aria-hidden /> : null}
+
+        <div className="phase34-battle-hud" aria-label="Battle Control HUD">
+          <article className="phase34-hud-fighter phase34-hud-fighter--player">
+            <div className="phase34-hud-portrait">
+              <RookieArt role="portrait" alt="Rookie Brawler portrait" />
             </div>
-            <ControlBar label="" value={playerStr} tone="player" />
+            <div className="phase34-hud-fighter__body">
+              <header>
+                <div>
+                  <span>Your ARMZ</span>
+                  <strong>{battle.armz.displayName}</strong>
+                </div>
+                <b>{playerControl}</b>
+              </header>
+              <ControlBar label="Control" value={playerControl} tone="player" />
+            </div>
+          </article>
+
+          <div className="phase34-battle-event" aria-live="polite" aria-atomic="true">
+            <span>{event.cue}</span>
+            <strong>{event.title}</strong>
+            <i aria-hidden />
           </div>
-          <span className="shrink-0 text-lg font-bold tabular-nums text-[var(--armz-cyan)]">
-            {playerStr}
-          </span>
+
+          <article className="phase34-hud-fighter phase34-hud-fighter--opponent">
+            <div className="phase34-hud-portrait">
+              <AutomatonArt role="portrait" alt="Practice Automaton portrait" />
+            </div>
+            <div className="phase34-hud-fighter__body">
+              <header>
+                <div>
+                  <span>Easy</span>
+                  <strong>{battle.opponent.displayName}</strong>
+                </div>
+                <b>{opponentControl}</b>
+              </header>
+              <ControlBar label="Control" value={opponentControl} tone="opponent" />
+            </div>
+          </article>
         </div>
 
-        {/* Opponent panel */}
-        <div className="flex items-center gap-3 rounded-[var(--armz-radius-lg)] border border-[rgba(224,122,74,0.25)] bg-[linear-gradient(135deg,rgba(224,122,74,0.06),rgba(7,11,18,0.9))] p-3">
-          <div className="h-12 w-12 shrink-0 overflow-hidden rounded-[var(--armz-radius-md)] border border-[rgba(224,122,74,0.3)]">
-            <AutomatonPortrait size="sm" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <h3 className="truncate text-sm font-bold">{battle.opponent.displayName}</h3>
-              <span className="shrink-0 rounded-full border border-[rgba(224,122,74,0.3)] bg-[rgba(224,122,74,0.08)] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[var(--armz-enemy)]">
-                Easy
-              </span>
-            </div>
-            <ControlBar label="" value={opponentStr} tone="opponent" />
-          </div>
-          <span className="shrink-0 text-lg font-bold tabular-nums text-[var(--armz-enemy)]">
-            {opponentStr}
-          </span>
-        </div>
-      </div>
-
-      {/* Event indicator + controls */}
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <p
-          className="rounded-full border border-[var(--armz-border)] bg-[rgba(0,0,0,0.4)] px-3.5 py-1 text-sm font-semibold capitalize tracking-wide text-[var(--armz-text-secondary)]"
-          aria-live="polite"
-        >
-          {eventLabel}
-        </p>
-        <Cluster gap="sm">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setMuted((m) => !m)}
+        <div className="phase34-battle-controls" aria-label="Battle presentation controls">
+          <IconButton
+            label={`Sound effects ${muted ? 'off' : 'on'}`}
+            onClick={toggleMuted}
             aria-pressed={!muted}
-            aria-label={`Sound effects ${muted ? 'off' : 'on'}`}
+            data-testid="battle-sfx-toggle"
           >
-            SFX {muted ? 'Off' : 'On'}
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setMusicOn((m) => !m)}
+            <GameIcon name="sound" />
+          </IconButton>
+          <IconButton
+            label={`Music ${musicOn ? 'on' : 'off'}`}
+            onClick={toggleMusic}
             aria-pressed={musicOn}
-            aria-label={`Music ${musicOn ? 'on' : 'off'}`}
+            data-testid="battle-music-toggle"
           >
-            Music {musicOn ? 'On' : 'Off'}
-          </Button>
-          {!done && (
-            <Button variant="secondary" size="sm" onClick={skipToResult}>
-              Skip to result
-            </Button>
-          )}
-        </Cluster>
-      </div>
+            <GameIcon name="music" />
+          </IconButton>
+          <IconButton
+            label={`Reduced motion ${reducedMotion ? 'on' : 'off'}`}
+            onClick={() => onReducedMotionChange(!reducedMotion)}
+            aria-pressed={reducedMotion}
+            data-testid="battle-motion-toggle"
+          >
+            <GameIcon name="motion" />
+          </IconButton>
+          {!done ? (
+            <IconButton label="Skip to result" onClick={skipToResult} data-testid="battle-skip">
+              <GameIcon name="skip" />
+            </IconButton>
+          ) : null}
+        </div>
 
-      {/* Battle Arena + In-Viewport Result Overlay */}
-      <div
-        className="relative aspect-[16/10] w-full overflow-hidden rounded-[var(--armz-radius-xl)] border border-[rgba(212,175,106,0.28)] bg-[#070b12] shadow-[var(--armz-shadow-glow)]"
-        data-testid="demo-battle-canvas-host"
-      >
-        <div ref={hostRef} className="absolute inset-0" />
+        {!showResult ? (
+          <p className="phase34-battle-art-note">Temporary battle rig · final owner art pending</p>
+        ) : null}
 
-        {/* Cinematic Result Overlay: fills the arena viewport, no scrolling needed */}
-        {showResult && (
+        {showResult ? (
           <div
-            className="absolute inset-0 z-20 flex flex-col overflow-hidden p-4 sm:p-6 bg-[rgba(7,11,18,0.92)] backdrop-blur-sm"
+            className={`phase34-result phase34-result--${isVictory ? 'victory' : 'defeat'}`}
             data-testid="demo-battle-result"
             role="dialog"
             aria-modal="true"
-            aria-label={isVictory ? 'Victory result' : 'Defeat result'}
+            aria-labelledby="battle-result-title"
           >
-            {/* Cinematic background accents */}
-            <div className="pointer-events-none absolute inset-0" aria-hidden>
-              {isVictory ? (
-                <>
-                  <div className="absolute inset-0 bg-[radial-gradient(600px_360px_at_50%_0%,rgba(94,200,255,0.18),transparent_60%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(400px_200px_at_50%_100%,rgba(212,175,106,0.1),transparent_60%)]" />
-                </>
-              ) : (
-                <>
-                  <div className="absolute inset-0 bg-[radial-gradient(600px_360px_at_50%_0%,rgba(240,113,120,0.14),transparent_60%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(400px_200px_at_50%_100%,rgba(100,100,120,0.08),transparent_60%)]" />
-                </>
-              )}
+            <div className="phase34-result__accent" aria-hidden>
+              <PremiumArt
+                assetId={isVictory ? 'result/victory-accent' : 'result/defeat-accent'}
+                alt=""
+              />
             </div>
 
-            <div className="relative z-10 m-auto flex w-full max-w-md flex-col items-center text-center">
-              <p className="armz-kicker">Simulated Result</p>
-
-              {/* Animated title */}
+            <header className="phase34-result__header">
+              <p>Simulated result · final state synchronized</p>
               <h2
-                className={`armz-display text-4xl sm:text-5xl animate-[fadeInUp_0.4s_ease-out] ${isVictory ? 'text-[var(--armz-cyan)]' : 'text-[var(--armz-danger)]'}`}
+                id="battle-result-title"
+                ref={resultTitleRef}
+                tabIndex={-1}
+                className="armz-display"
               >
-                {isVictory ? 'VICTORY' : 'DEFEAT'}
+                {isVictory ? 'Victory' : 'Defeat'}
               </h2>
-
-              {/* Fighter result art references */}
-              <div className="mt-3 flex items-center justify-center gap-4">
-                <div
-                  className={`flex flex-col items-center gap-1 ${isVictory ? '' : 'opacity-60'}`}
-                >
-                  <div className="h-14 w-14 overflow-hidden rounded-full border-2 border-[rgba(94,200,255,0.4)]">
-                    <ArmzPortrait
-                      presetKey={battle.armz.presetKey}
-                      displayName={battle.armz.displayName}
-                      palette={battle.armz.palette}
-                      size="sm"
-                    />
-                  </div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--armz-cyan)]">
-                    {isVictory ? 'Winner' : ''}
-                  </span>
-                </div>
-                <span className="text-lg font-bold text-[var(--armz-text-muted)]">vs</span>
-                <div
-                  className={`flex flex-col items-center gap-1 ${!isVictory ? '' : 'opacity-60'}`}
-                >
-                  <div className="h-14 w-14 overflow-hidden rounded-full border-2 border-[rgba(224,122,74,0.4)]">
-                    <AutomatonPortrait size="sm" />
-                  </div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--armz-enemy)]">
-                    {!isVictory ? 'Winner' : ''}
-                  </span>
-                </div>
-              </div>
-
-              <p className="mt-2 text-sm text-[var(--armz-text-secondary)]">
+              <span>
                 {isVictory
-                  ? `${battle.armz.displayName} pinned the Practice Automaton in a simulated Easy clash.`
-                  : 'The Practice Automaton held the line. Train again after the cooldown.'}
-              </p>
+                  ? 'Rookie Brawler owns the table.'
+                  : 'The Automaton held the line. Reset and return.'}
+              </span>
+            </header>
 
-              {/* Final Control snapshot */}
-              <div className="mt-3 flex w-full justify-center gap-3">
-                <div className="rounded-[var(--armz-radius-md)] border border-[rgba(94,200,255,0.25)] bg-[rgba(94,200,255,0.06)] px-3 py-2">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]">
-                    Your Control
-                  </p>
-                  <p className="text-lg font-bold tabular-nums text-[var(--armz-cyan)]">
-                    {battle.playerFinalStrength}
-                  </p>
-                </div>
-                <div className="rounded-[var(--armz-radius-md)] border border-[rgba(224,122,74,0.25)] bg-[rgba(224,122,74,0.06)] px-3 py-2">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--armz-text-muted)]">
-                    Opponent Control
-                  </p>
-                  <p className="text-lg font-bold tabular-nums text-[var(--armz-enemy)]">
-                    {battle.opponentFinalStrength}
-                  </p>
-                </div>
+            <div className="phase34-result__body">
+              <div className={`phase34-result-fighter ${isVictory ? 'is-winner' : 'is-loser'}`}>
+                <RookieArt
+                  role={isVictory ? 'result-victory' : 'result-defeat'}
+                  alt={`Rookie Brawler ${isVictory ? 'victory' : 'defeat'} art`}
+                  showStatus
+                  imageClassName="phase34-result-fighter__image"
+                />
+                <strong>Rookie Brawler</strong>
+                <span>{isVictory ? 'Winner' : 'Pinned'}</span>
               </div>
 
-              {/* Reward card (victory only) */}
-              {isVictory && battle.reward && (
-                <div className="mt-3 w-full rounded-[var(--armz-radius-md)] border border-[rgba(212,175,106,0.3)] bg-[rgba(212,175,106,0.06)] p-3 text-left">
-                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--armz-accent)]">
-                    Simulated Reward
-                  </p>
-                  <p className="mt-1 text-2xl font-bold text-[var(--armz-accent)]">
-                    {battle.reward.display}
-                  </p>
-                  <ul className="mt-2 grid gap-1 text-xs text-[var(--armz-text-muted)] sm:grid-cols-2">
-                    <li>Simulated only</li>
-                    <li>No monetary value</li>
-                    <li>Not claimable</li>
-                    <li>Not withdrawable</li>
-                  </ul>
+              <div className="phase34-result-summary">
+                <div className="phase34-result-control">
+                  <div>
+                    <span>Your Control</span>
+                    <strong>{battle.playerFinalStrength}</strong>
+                  </div>
+                  <b>–</b>
+                  <div>
+                    <span>Opponent</span>
+                    <strong>{battle.opponentFinalStrength}</strong>
+                  </div>
                 </div>
-              )}
 
-              {/* Defeat: respectful training feedback, no fake reward */}
-              {!isVictory && (
-                <div className="mt-3 w-full rounded-[var(--armz-radius-md)] border border-[rgba(100,120,140,0.25)] bg-[rgba(100,120,140,0.06)] p-3 text-left">
-                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--armz-text-secondary)]">
-                    Training Feedback
-                  </p>
-                  <p className="mt-1 text-sm text-[var(--armz-text-muted)]">
-                    The Practice Automaton is designed to test your grip strength. Return after the
-                    cooldown to try again.
-                  </p>
-                </div>
-              )}
+                {isVictory && battle.reward ? (
+                  <div className="phase34-reward-card">
+                    <span>Simulated reward</span>
+                    <strong>{battle.reward.display}</strong>
+                    <ul>
+                      <li>No monetary value</li>
+                      <li>Not claimable</li>
+                      <li>Not withdrawable</li>
+                      <li>Not transferable</li>
+                    </ul>
+                  </div>
+                ) : (
+                  <div className="phase34-training-card">
+                    <span>Training feedback</span>
+                    <strong>Protect the center grip.</strong>
+                    <p>
+                      Watch the reversal cue and keep your Control above zero through the final
+                      drive.
+                    </p>
+                  </div>
+                )}
 
-              <p className="mt-2 text-xs text-[var(--armz-text-muted)]">
-                Battle ID {battle.battleId.slice(0, 8)}
-                {'\u2026'} {'\u00b7'} duration {(battle.durationMs / 1000).toFixed(1)}s {'\u00b7'}{' '}
-                server-authoritative
-              </p>
+                <p className="phase34-result-meta">
+                  Battle {battle.battleId.slice(0, 8)}… · {(battle.durationMs / 1000).toFixed(1)}s ·
+                  server-authoritative
+                </p>
+              </div>
 
-              {/* Action buttons - primary action immediately visible */}
-              <Cluster className="mt-3 justify-center">
-                <Button
-                  onClick={onReplay}
-                  disabled={cooldown > 0 || battle.session.battlesRemaining <= 0}
-                  data-testid="demo-replay"
-                >
-                  {cooldown > 0
-                    ? `Replay in ${formatCooldown(cooldown)}`
-                    : battle.session.battlesRemaining <= 0
-                      ? 'Battle limit reached'
-                      : 'Replay Easy fight'}
-                </Button>
-                <Button variant="secondary" onClick={onCollection}>
-                  Demo Collection
-                </Button>
-                <Button variant="ghost" onClick={onHome}>
-                  Return Home
-                </Button>
-              </Cluster>
+              <div className={`phase34-result-fighter ${isVictory ? 'is-loser' : 'is-winner'}`}>
+                <AutomatonArt
+                  role={isVictory ? 'result-defeat' : 'result-victory'}
+                  alt={`Practice Automaton ${isVictory ? 'defeat' : 'victory'} art`}
+                  showStatus
+                  imageClassName="phase34-result-fighter__image"
+                />
+                <strong>Practice Automaton</strong>
+                <span>{isVictory ? 'Defeated' : 'Winner'}</span>
+              </div>
+            </div>
+
+            <div className="phase34-result-actions">
+              <Button
+                onClick={onReplay}
+                disabled={cooldown > 0 || battle.session.battlesRemaining <= 0}
+                data-testid="demo-replay"
+              >
+                <GameIcon name="replay" />
+                {cooldown > 0
+                  ? `Replay ${formatCooldown(cooldown)}`
+                  : battle.session.battlesRemaining <= 0
+                    ? 'Battle limit reached'
+                    : 'Replay'}
+              </Button>
+              <Button variant="secondary" onClick={onCollection}>
+                <GameIcon name="collection" /> Collection
+              </Button>
+              <Button variant="ghost" onClick={onHome}>
+                <GameIcon name="arena" /> Return to Arena
+              </Button>
             </div>
           </div>
-        )}
+        ) : null}
       </div>
-    </div>
+    </section>
   );
 }

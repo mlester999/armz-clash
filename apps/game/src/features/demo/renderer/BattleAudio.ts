@@ -1,5 +1,5 @@
 /**
- * Phase 3.3B â€” runtime Web Audio synthesis for battle SFX + ambience.
+ * Phase 3.3B — runtime Web Audio synthesis for battle SFX + ambience.
  *
  * All sounds are synthesized live via the Web Audio API (no downloaded or
  * copyrighted audio). Respects autoplay restrictions: no sound before user

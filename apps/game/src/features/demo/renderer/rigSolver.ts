@@ -1,5 +1,5 @@
 /**
- * Phase 3.3B â€” pure forward-kinematics solver for the sprite rigs.
+ * Phase 3.3B — pure forward-kinematics solver for the sprite rigs.
  *
  * No PixiJS dependency so the math can be unit-tested in a node environment.
  * The SpriteRig renderer applies the transforms produced here to PixiJS Sprites.

@@ -1,5 +1,5 @@
 /**
- * Phase 3.3B â€” battle asset preloader + authored pose resolver.
+ * Phase 3.3B — battle asset preloader + authored pose resolver.
  *
  * Loads the generated manifests and textures before the battle countdown
  * begins, and resolves server animation cues into authored pose definitions
@@ -11,8 +11,11 @@ import type { Texture } from 'pixi.js';
 import {
   getAssetEntry,
   loadGameManifests,
+  loadPremiumAssetManifest,
+  resolvePremiumAsset,
   resolveTextureUrl,
   type ManifestBundle,
+  type PremiumAssetManifest,
   type PoseDefinition,
   type ViewportClass,
 } from '@armz-clash/game-core';
@@ -23,6 +26,24 @@ export type BattleAssetBundle = {
   textures: Map<string, Texture>;
   textureSizes: Map<string, { width: number; height: number }>;
   viewport: ViewportClass;
+  premiumManifest: PremiumAssetManifest | null;
+};
+
+const PREMIUM_RUNTIME_IDS: Record<string, string> = {
+  'arena/background': 'arena/background',
+  'arena/table': 'arena/table',
+  'arena/elbow-pad': 'arena/elbow-pad',
+  'arena/pin-pad': 'arena/pin-pad',
+  'effects/grip-lock': 'effects/grip-flash',
+  'effects/push-streak': 'effects/momentum-streak',
+  'effects/counter-burst': 'effects/pressure-ring',
+  'effects/critical-impact': 'effects/critical-impact',
+  'effects/recovery-cue': 'effects/recovery-glow',
+  'effects/final-slam': 'effects/slam-impact',
+  'effects/victory-sweep': 'effects/victory-accent',
+  'effects/defeat-dim': 'effects/defeat-accent',
+  'rookie-brawler/battle-side': 'rookie-brawler/battle-side',
+  'practice-automaton/battle-side': 'practice-automaton/battle-side',
 };
 
 export function classifyViewport(w: number, h: number): ViewportClass {
@@ -134,7 +155,29 @@ export async function preloadBattleAssets(
   });
   await Promise.all(loadPromises);
 
-  return { manifests, textures, textureSizes, viewport };
+  let premiumManifest: PremiumAssetManifest | null = null;
+  try {
+    premiumManifest = await loadPremiumAssetManifest();
+    await Promise.all(
+      Object.entries(PREMIUM_RUNTIME_IDS).map(async ([premiumId, runtimeId]) => {
+        const entry = premiumManifest?.assets[premiumId];
+        if (!entry || entry.availability !== 'final') return;
+        const resolved = resolvePremiumAsset(entry, viewport, format);
+        if (!resolved.url) return;
+        try {
+          const texture = await Assets.load(resolved.url);
+          textures.set(runtimeId, texture);
+          textureSizes.set(runtimeId, { width: entry.width, height: entry.height });
+        } catch {
+          // A declared final file that fails to load never suppresses the Phase 3.3B fallback.
+        }
+      }),
+    );
+  } catch {
+    premiumManifest = null;
+  }
+
+  return { manifests, textures, textureSizes, viewport, premiumManifest };
 }
 
 // ---------------------------------------------------------------------------
@@ -157,10 +200,10 @@ function poseToInput(p: PoseDefinition): PoseInput {
  * control differential, and side. Returns a PoseInput ready for the FK solver.
  *
  * Advantage / critical / counter poses are selected dynamically:
- *  - diff > 0.15 â†’ player advantage (or strong advantage if > 0.35)
- *  - diff < -0.15 â†’ opponent advantage
- *  - critical cue â†’ critical pose for the leading side
- *  - counter cue â†’ counter pose for the acting side
+ *  - diff > 0.15 → player advantage (or strong advantage if > 0.35)
+ *  - diff < -0.15 → opponent advantage
+ *  - critical cue → critical pose for the leading side
+ *  - counter cue → counter pose for the acting side
  */
 export function resolvePose(
   poses: readonly PoseDefinition[],

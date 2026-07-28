@@ -1,5 +1,5 @@
 /**
- * Phase 3.3B â€” sprite-based fighter rig.
+ * Phase 3.3B — sprite-based fighter rig.
  *
  * Replaces the procedural PixiJS Graphics anatomy with textured Sprite layers
  * loaded from the generated asset manifest. PixiJS Graphics are NOT used here

@@ -102,9 +102,9 @@ const CAMERA_PRESETS: Record<
   ViewportClass,
   { baseZoom: number; focusY: number; criticalZoom: number }
 > = {
-  desktop: { baseZoom: 1.0, focusY: 0.62, criticalZoom: 1.12 },
-  tablet: { baseZoom: 0.92, focusY: 0.58, criticalZoom: 1.05 },
-  mobile: { baseZoom: 0.82, focusY: 0.55, criticalZoom: 0.95 },
+  desktop: { baseZoom: 1.08, focusY: 0.55, criticalZoom: 1.2 },
+  tablet: { baseZoom: 1.02, focusY: 0.53, criticalZoom: 1.14 },
+  mobile: { baseZoom: 0.96, focusY: 0.5, criticalZoom: 1.06 },
 };
 
 export class BattleRenderer {
@@ -170,6 +170,9 @@ export class BattleRenderer {
   private assetBundle: BattleAssetBundle | null = null;
   private playerRig: SpriteRig | null = null;
   private opponentRig: SpriteRig | null = null;
+  private playerBattleSide: Sprite | null = null;
+  private opponentBattleSide: Sprite | null = null;
+  private usePremiumBattleSides = false;
   private arenaSprites: Sprite[] = [];
   private effectSprites: EffectSprite[] = [];
   private audio: BattleAudio;
@@ -322,6 +325,16 @@ export class BattleRenderer {
     this.audio.setMusicEnabled(enabled);
   }
 
+  setReducedMotion(enabled: boolean): void {
+    this.reducedMotion = enabled;
+    if (enabled) {
+      this.shake = 0;
+      this.cameraShakeX = 0;
+      this.cameraShakeY = 0;
+      this.particles = [];
+    }
+  }
+
   destroy(): void {
     this.destroyed = true;
     cancelAnimationFrame(this.raf);
@@ -330,6 +343,10 @@ export class BattleRenderer {
     this.playerRig = null;
     this.opponentRig?.destroy();
     this.opponentRig = null;
+    this.playerBattleSide?.destroy({ texture: false, textureSource: false });
+    this.playerBattleSide = null;
+    this.opponentBattleSide?.destroy({ texture: false, textureSource: false });
+    this.opponentBattleSide = null;
     for (const s of this.arenaSprites) s.destroy({ texture: false, textureSource: false });
     this.arenaSprites = [];
     for (const e of this.effectSprites) e.sprite.destroy({ texture: false, textureSource: false });
@@ -346,17 +363,17 @@ export class BattleRenderer {
     const w = this.app!.screen.width;
     const h = this.app!.screen.height;
     const cx = w / 2;
-    const tableY = h * 0.72;
-    const tableW = Math.min(w * 0.88, 720);
-    const tableH = h * 0.1;
+    const tableY = h * 0.76;
+    const tableW = Math.min(w * 0.86, 1120);
+    const tableH = Math.max(48, h * 0.105);
     const elbowPadW = tableW * 0.13;
     const elbowPadH = tableH * 0.4;
     const playerElbowX = cx - tableW * 0.3;
     const opponentElbowX = cx + tableW * 0.3;
     const elbowY = tableY - tableH * 0.2;
-    const forearmLen = Math.min(h * 0.36, 220);
+    const forearmLen = Math.min(h * 0.44, 310);
     const gripCenterX = cx;
-    const gripCenterY = elbowY - forearmLen * 0.8;
+    const gripCenterY = elbowY - forearmLen * 0.72;
     const pinPadW = tableW * 0.09;
     const pinPadH = tableH * 0.55;
     const playerPinX = cx - tableW * 0.42;
@@ -484,6 +501,32 @@ export class BattleRenderer {
   private buildFighterRigs(): void {
     if (!this.assetBundle || !this.layers) return;
     const { manifests, textures, textureSizes } = this.assetBundle;
+    const playerBattleTexture = textures.get('rookie-brawler/battle-side');
+    const opponentBattleTexture = textures.get('practice-automaton/battle-side');
+    const playerEntry = this.assetBundle.premiumManifest?.assets['rookie-brawler/battle-side'];
+    const opponentEntry =
+      this.assetBundle.premiumManifest?.assets['practice-automaton/battle-side'];
+    if (
+      playerBattleTexture &&
+      opponentBattleTexture &&
+      playerEntry?.availability === 'final' &&
+      opponentEntry?.availability === 'final'
+    ) {
+      this.playerBattleSide = new Sprite(playerBattleTexture);
+      this.opponentBattleSide = new Sprite(opponentBattleTexture);
+      this.playerBattleSide.anchor.set(
+        playerEntry.elbowPoint?.x ?? 0.5,
+        playerEntry.elbowPoint?.y ?? 0.68,
+      );
+      this.opponentBattleSide.anchor.set(
+        opponentEntry.elbowPoint?.x ?? 0.5,
+        opponentEntry.elbowPoint?.y ?? 0.68,
+      );
+      this.layers.playerArm.addChild(this.playerBattleSide);
+      this.layers.opponentArm.addChild(this.opponentBattleSide);
+      this.usePremiumBattleSides = true;
+      return;
+    }
     const rigManifest = manifests.rig;
     if (this.playerFighterId) {
       const parts = rigManifest.fighters[this.playerFighterId];
@@ -696,7 +739,33 @@ export class BattleRenderer {
       s.forearmLen * 0.08,
     );
 
-    if (this.useSpriteRigs && this.playerRig && this.opponentRig && this.assetBundle) {
+    if (
+      this.usePremiumBattleSides &&
+      this.playerBattleSide &&
+      this.opponentBattleSide &&
+      this.assetBundle?.premiumManifest
+    ) {
+      const playerEntry = this.assetBundle.premiumManifest.assets['rookie-brawler/battle-side'];
+      const opponentEntry =
+        this.assetBundle.premiumManifest.assets['practice-automaton/battle-side'];
+      if (playerEntry && opponentEntry) {
+        this.updatePremiumBattleSide(
+          this.playerBattleSide,
+          playerEntry,
+          { x: s.playerElbowX, y: s.elbowY },
+          gripPt,
+        );
+        this.updatePremiumBattleSide(
+          this.opponentBattleSide,
+          opponentEntry,
+          { x: s.opponentElbowX, y: s.elbowY },
+          gripPt,
+        );
+      }
+      this.playerG.clear();
+      this.opponentG.clear();
+      this.gripG.clear();
+    } else if (this.useSpriteRigs && this.playerRig && this.opponentRig && this.assetBundle) {
       const poses = this.assetBundle.manifests.poses.poses;
       const cueToPose = this.assetBundle.manifests.poses.cueToPose ?? {};
       const playerPose = resolvePose(poses, cueToPose, this.cue, -diff, undefined, true);
@@ -747,6 +816,28 @@ export class BattleRenderer {
       });
       this.drawGrip(handX, handY, angle, strain);
     }
+  }
+
+  private updatePremiumBattleSide(
+    sprite: Sprite,
+    entry: NonNullable<BattleAssetBundle['premiumManifest']>['assets'][string],
+    targetElbow: { x: number; y: number },
+    targetGrip: { x: number; y: number },
+  ): void {
+    const elbow = entry.elbowPoint ?? { x: 0.5, y: 0.68 };
+    const grip = entry.gripPoint ?? { x: 0.5, y: 0.2 };
+    const sourceDx = (grip.x - elbow.x) * entry.width;
+    const sourceDy = (grip.y - elbow.y) * entry.height;
+    const targetDx = targetGrip.x - targetElbow.x;
+    const targetDy = targetGrip.y - targetElbow.y;
+    const sourceLength = Math.max(1, Math.hypot(sourceDx, sourceDy));
+    const targetLength = Math.max(1, Math.hypot(targetDx, targetDy));
+    const scale = targetLength / sourceLength;
+    sprite.anchor.set(elbow.x, elbow.y);
+    sprite.position.set(targetElbow.x, targetElbow.y);
+    sprite.scale.set(scale);
+    sprite.rotation = Math.atan2(targetDy, targetDx) - Math.atan2(sourceDy, sourceDx);
+    sprite.alpha = 1;
   }
 
   private drawProceduralArm(

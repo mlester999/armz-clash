@@ -197,7 +197,9 @@ export function simulateDemoBattle(input: {
     side: 'both',
   }));
 
-  const rounds = rng.intInclusive(5, 7);
+  // Six rounds is the hard presentation ceiling. A seventh exchange could push
+  // rare counter/recovery/reward timelines beyond the accepted 14s maximum.
+  const rounds = rng.intInclusive(5, 6);
   // Bias mid-fight exchanges toward the pre-rolled outcome without making bars static
   const playerLeadBias = playerWins ? 6200 : 3800;
 
