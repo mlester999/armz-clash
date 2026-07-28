@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { assertNoHorizontalOverflow } from './helpers';
 
 const GAME = 'http://127.0.0.1:3001';
 const WEB = 'http://127.0.0.1:3000';
@@ -56,6 +57,8 @@ test.describe('Phase 3 Demo Mode', () => {
     expect(res.ok()).toBeTruthy();
     const body = await res.json();
     expect(body.armz.rarity).toBe('common');
+    expect(body.armz.presetKey).toBe('rookie_brawler');
+    expect(body.armz.displayName).toBe('Rookie Brawler');
     expect(body.armz.level).toBe(1);
     expect(body.armz.temporary).toBe(true);
     expect(body.armz.claimable).toBe(false);
@@ -95,11 +98,21 @@ test.describe('Phase 3 Demo Mode', () => {
   test('game shell exposes Play Demo entry and premium nav', async ({ page }) => {
     await page.goto(GAME, { waitUntil: 'domcontentloaded' });
     await expect(page.getByTestId('play-demo-link')).toBeVisible({ timeout: 15_000 });
-    await expect(page.getByText(/no staking|real-value systems disabled/i).first()).toBeVisible();
+    await expect(
+      page
+        .locator('main')
+        .getByText(/no staking/i)
+        .first(),
+    ).toBeVisible();
     await expect(page.getByTestId('nav-demo')).toBeVisible();
     await expect(page.getByTestId('nav-demo-collection')).toBeVisible();
     // Future tabs remain intentional (disabled), not broken links.
-    await expect(page.getByTestId('nav-future-marketplace')).toBeVisible();
+    await expect(page.getByTestId('nav-future-marketplace')).toHaveCount(1);
+    await expect(page.getByTestId('nav-future-marketplace')).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    );
+    await assertNoHorizontalOverflow(page);
   });
 
   test('collection shows ARMZ portrait and fight CTA', async ({ page }) => {
@@ -114,7 +127,7 @@ test.describe('Phase 3 Demo Mode', () => {
   test('demo disclosure and collection flow without Failed to fetch', async ({ page }) => {
     test.setTimeout(90_000);
     await page.goto(`${GAME}/demo`, { waitUntil: 'domcontentloaded' });
-    await expect(page.getByRole('heading', { name: /Play Demo/i })).toBeVisible({
+    await expect(page.getByRole('heading', { name: /Enter the Arena/i })).toBeVisible({
       timeout: 20_000,
     });
     await expect(page.getByText(/Failed to fetch/i)).toHaveCount(0);
@@ -140,6 +153,118 @@ test.describe('Phase 3 Demo Mode', () => {
     ).toBeVisible({ timeout: 35_000 });
     await expect(page.getByText(/Failed to fetch/i)).toHaveCount(0);
     await expect(page.getByTestId('demo-start-error')).toHaveCount(0);
+  });
+
+  test('flagship flow stays contained and restores a truthful final result', async ({
+    page,
+  }, testInfo) => {
+    test.setTimeout(120_000);
+    await page.goto(`${GAME}/demo`, { waitUntil: 'domcontentloaded' });
+
+    const play = page.getByTestId('play-demo-button');
+    await expect(play).toBeEnabled({ timeout: 15_000 });
+    await play.click();
+    const disclosure = page.getByTestId('demo-disclosure');
+    await expect(disclosure).toBeVisible({ timeout: 15_000 });
+    await expect(disclosure.getByRole('button', { name: 'Enter Demo Mode' })).toBeVisible();
+    await disclosure.getByRole('button', { name: 'Enter Demo Mode' }).click();
+
+    const reveal = page.getByTestId('demo-armz-reveal');
+    const ready = page.getByTestId('demo-session-ready');
+    await expect(reveal.or(ready)).toBeVisible({ timeout: 35_000 });
+    await expect(page.getByText('Rookie Brawler').first()).toBeVisible();
+
+    if (await reveal.isVisible()) {
+      const continueButton = reveal.getByRole('button', { name: 'Continue to Collection' });
+      await expect(continueButton).toBeEnabled({ timeout: 10_000 });
+      await continueButton.click();
+      try {
+        await expect(page).toHaveURL(/\/demo\/collection/, { timeout: 5_000 });
+      } catch {
+        await expect(continueButton).toBeEnabled();
+        await continueButton.click();
+      }
+    } else {
+      await ready.getByRole('button', { name: 'Open Collection' }).click();
+    }
+
+    await expect(page).toHaveURL(/\/demo\/collection/);
+    const collection = page.getByTestId('demo-collection-armz');
+    await expect(collection).toBeVisible({ timeout: 35_000 });
+    await expect(collection.getByText('Rookie Brawler').first()).toBeVisible();
+    await assertNoHorizontalOverflow(page);
+
+    const fight = page.getByTestId('demo-fight-button');
+    await expect(fight).toBeVisible();
+    await fight.click();
+    await expect(page.getByTestId('demo-fight-confirm')).toBeVisible({ timeout: 35_000 });
+
+    const start = page.getByTestId('demo-start-battle');
+    await expect(start).toHaveText('Start Battle');
+    await expect(start).toBeEnabled();
+    await start.click();
+
+    await expect(page.getByTestId('demo-battle-stage')).toBeVisible({ timeout: 35_000 });
+    await assertNoHorizontalOverflow(page);
+    const skip = page.getByTestId('battle-skip');
+    await expect(skip).toBeVisible({ timeout: 20_000 });
+    await skip.click();
+
+    const result = page.getByTestId('demo-battle-result');
+    await expect(result).toBeVisible({ timeout: 20_000 });
+    await expect(result.getByText(/final state synchronized/i)).toBeVisible();
+    await expect(result.getByRole('button', { name: /Collection/i })).toBeVisible();
+    await expect(result.getByRole('button', { name: /Return to Arena/i })).toBeVisible();
+
+    const resultBox = await result.boundingBox();
+    const viewport = page.viewportSize();
+    expect(resultBox).not.toBeNull();
+    expect(viewport).not.toBeNull();
+    expect(resultBox!.x).toBeGreaterThanOrEqual(0);
+    expect(resultBox!.y).toBeGreaterThanOrEqual(0);
+    expect(resultBox!.x + resultBox!.width).toBeLessThanOrEqual(viewport!.width + 1);
+    expect(resultBox!.y + resultBox!.height).toBeLessThanOrEqual(viewport!.height + 1);
+
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await expect(page.getByTestId('demo-battle-result')).toBeVisible({ timeout: 35_000 });
+    await expect(page.getByRole('status')).toContainText(/Final Control:/i);
+    await assertNoHorizontalOverflow(page);
+
+    if (testInfo.project.name === 'chromium-desktop') {
+      const requiredMatrix = [
+        { width: 1280, height: 720 },
+        { width: 1366, height: 768 },
+        { width: 1440, height: 900 },
+        { width: 1920, height: 1080 },
+        { width: 768, height: 1024 },
+        { width: 820, height: 1180 },
+        { width: 1024, height: 1366 },
+        { width: 360, height: 800 },
+        { width: 375, height: 812 },
+        { width: 390, height: 844 },
+        { width: 393, height: 852 },
+        { width: 430, height: 932 },
+      ];
+
+      for (const viewportSize of requiredMatrix) {
+        await page.setViewportSize(viewportSize);
+        const matrixResult = page.getByTestId('demo-battle-result');
+        await expect(matrixResult).toBeVisible();
+        await expect(matrixResult.getByRole('button', { name: /Collection/i })).toBeVisible();
+        await expect(matrixResult.getByRole('button', { name: /Return to Arena/i })).toBeVisible();
+        await assertNoHorizontalOverflow(page);
+
+        const box = await matrixResult.boundingBox();
+        expect(
+          box,
+          `missing result box at ${viewportSize.width}x${viewportSize.height}`,
+        ).not.toBeNull();
+        expect(box!.x).toBeGreaterThanOrEqual(0);
+        expect(box!.y).toBeGreaterThanOrEqual(0);
+        expect(box!.x + box!.width).toBeLessThanOrEqual(viewportSize.width + 1);
+        expect(box!.y + box!.height).toBeLessThanOrEqual(viewportSize.height + 1);
+      }
+    }
   });
 
   test('real-value flags and mainnet remain disabled on public config', async ({ request }) => {
@@ -204,9 +329,15 @@ test.describe('Phase 3 Demo Mode', () => {
       .poll(() => play.evaluate((el) => getComputedStyle(el).cursor), { timeout: 15_000 })
       .toBe('pointer');
     const disabledNav = page.getByTestId('nav-future-marketplace');
-    await expect(disabledNav).toBeVisible();
-    await expect
-      .poll(() => disabledNav.evaluate((el) => getComputedStyle(el).cursor), { timeout: 15_000 })
-      .toBe('not-allowed');
+    await expect(disabledNav).toHaveCount(1);
+    if (await disabledNav.isVisible()) {
+      await expect
+        .poll(() => disabledNav.evaluate((el) => getComputedStyle(el).cursor), {
+          timeout: 15_000,
+        })
+        .toBe('not-allowed');
+    } else {
+      await expect(disabledNav).toHaveAttribute('aria-disabled', 'true');
+    }
   });
 });

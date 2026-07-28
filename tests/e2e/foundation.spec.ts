@@ -83,10 +83,16 @@ test.describe('Armz Clash Phase 2 foundation', () => {
   test('game shell loads without fake balances', async ({ page }, testInfo) => {
     await page.goto(GAME, { waitUntil: 'domcontentloaded' });
     await expectBrandVisible(page);
-    // Phase 3.1 shell rebuild: hero heading is "Enter the Demo Arena".
-    await expect(page.getByRole('heading', { name: /Enter the Demo Arena/i })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: /Own the table\. Win the clash\./i }),
+    ).toBeVisible();
     await expect(page.getByTestId('play-demo-link')).toBeVisible();
-    await expect(page.getByText(/Real-value disabled/i).first()).toBeVisible();
+    await expect(
+      page
+        .locator('main')
+        .getByText(/real-value systems remain intentionally locked/i)
+        .first(),
+    ).toBeVisible();
 
     // Session panel may show checking / not signed in / signed in; never fake balances.
     await expect(
@@ -134,7 +140,12 @@ test.describe('Armz Clash Phase 2 foundation', () => {
 
   test('informational no-staking copy is allowed on game shell', async ({ page }) => {
     await page.goto(GAME, { waitUntil: 'domcontentloaded' });
-    await expect(page.getByText(/no staking/i).first()).toBeVisible();
+    await expect(
+      page
+        .locator('main')
+        .getByText(/no staking/i)
+        .first(),
+    ).toBeVisible();
     await assertNoStakingProductSurface(page);
   });
 
