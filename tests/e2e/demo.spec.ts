@@ -204,7 +204,10 @@ test.describe('Phase 3 Demo Mode', () => {
     await expect(start).toBeEnabled();
     await start.click();
 
-    await expect(page.getByTestId('demo-battle-stage')).toBeVisible({ timeout: 35_000 });
+    const battleStage = page.getByTestId('demo-battle-stage');
+    await expect(battleStage).toBeVisible({ timeout: 35_000 });
+    await expect(battleStage).toHaveAttribute('data-battle-asset-mode', 'legacy-fallback');
+    await expect(page.getByText(/Temporary Phase 3\.3B layered rig/i)).toBeVisible();
     await assertNoHorizontalOverflow(page);
     const skip = page.getByTestId('battle-skip');
     await expect(skip).toBeVisible({ timeout: 20_000 });
