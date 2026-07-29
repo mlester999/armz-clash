@@ -116,10 +116,15 @@ test.describe('Phase 3 Demo Mode', () => {
   });
 
   test('collection shows ARMZ portrait and fight CTA', async ({ page }) => {
-    test.setTimeout(90_000);
-    // Collection page creates/restores a demo session client-side.
+    test.setTimeout(120_000);
+    // Collection page creates/restores a demo session client-side. GitHub's
+    // cold Next.js route + first API hydration can exceed the default expect
+    // window, so keep the loading assertion explicit and allow it to resolve.
     await page.goto(`${GAME}/demo/collection`, { waitUntil: 'domcontentloaded' });
-    await expect(page.getByTestId('demo-collection-armz')).toBeVisible({ timeout: 30_000 });
+    await expect(
+      page.getByTestId('collection-loading').or(page.getByTestId('demo-collection-armz')),
+    ).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByTestId('demo-collection-armz')).toBeVisible({ timeout: 75_000 });
     await expect(page.getByTestId('armz-portrait').first()).toBeVisible();
     await expect(page.getByTestId('demo-fight-button')).toBeVisible();
   });
