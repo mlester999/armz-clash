@@ -1,7 +1,7 @@
 # Phase 3.4 Battle Presentation
 
-**Engineering status:** implemented
-**Final battle art:** BLOCKED — owner battle-side, arena, table, pad, and effect files are missing
+**Engineering status:** superseded by the implemented Phase 3.4A contract repair
+**Final battle art:** BLOCKED — layered rig, arena, complete table, pad, and effect files are missing
 **Owner visual acceptance:** PENDING OWNER TEST
 
 ## Composition
@@ -19,7 +19,15 @@ The camera presets keep:
 
 Desktop emphasizes table width and both silhouettes. Tablet uses the same central grip with tighter side cropping. Mobile rotates emphasis vertically, enlarges the forearms, and keeps the event cue below the two compact fighter HUD cards.
 
-When both final `battle-side` assets exist, the renderer uses their typed grip/elbow points and pose transforms. If either is absent, both fighters remain on the Phase 3.3B sprite rig so the scene never mixes a final fighter with a visibly unrelated fallback. The current repository uses that temporary fallback and labels it accordingly.
+Phase 3.4A removes final `battle-side` art. Each fighter now has four required articulated layers and
+two optional polish layers. The premium renderer activates only when all eight required layers for
+both fighters are final and loaded. Both rigs share one world-space grip, keep their elbows planted,
+and independently articulate upper arm, forearm, wrist, and hand. If the pair is incomplete, both
+fighters remain on the Phase 3.3B layered rig. The current repository uses and labels that fallback.
+
+The background now preserves source aspect ratio with focal-point-aware cover cropping. The table is
+an atomic `table-surface` + `table-frame` pack, so complete final table art removes both legacy table
+textures instead of mixing a final surface with an old frame.
 
 ## HUD
 
@@ -81,7 +89,10 @@ The one-million simulation gate checks duration bounds, timeline ordering, event
 | Final slam         | Pin-pad impact, table shock, final hold            | Decisive slam           |
 | Victory/defeat     | Lighting sweep or respectful dim                   | Outcome sting           |
 
-The current legacy effect sprites remain temporary. Final effect slots are defined in the Phase 3.4 manifest and upgrade automatically when owner files are present.
+VFX spawns now carry direction, rotation, flip, scale, intensity, opacity, lifetime, velocity, blend
+mode, z-index, origin, and optional destination. Player/opponent pressure travel toward the correct
+pin; counter reverses momentum; final slam is substantially larger than normal push. Current legacy
+effect textures remain temporary and inherit the new directional spawn behavior.
 
 ## Audio implementation
 
@@ -108,7 +119,9 @@ This implementation is honest original synthesis; it is not a mastered premium s
 - Disconnects audio resources
 - Clears callback references
 
-Only final/critical assets are loaded for the battle. Large route-independent art is not packed into a global atlas. Responsive 1×/2× files avoid forcing desktop resolution onto phones.
+Only needed battle assets are loaded. The layered pair and table pair commit atomically after all
+minimum textures load; slow or failed loads leave the complete fallback active. Large route-independent
+art is not packed into a global atlas. Responsive 1×/2× files avoid forcing desktop resolution onto phones.
 
 ## Truth boundary
 
@@ -122,4 +135,8 @@ Result UI is mounted only after `done && finalSynced && integrityValid`. See [PH
 
 ## Current limitation
 
-The battle camera, HUD, cue routing, persistence, and final-asset hooks are implemented. The displayed forearms, table, arena, and effects are still the visibly labeled Phase 3.3B fallback because the final owner pack is **0/27**. Premium battle-art completion is therefore **BLOCKED**, and visual acceptance remains **PENDING OWNER TEST**. Phase 4 has not started.
+The repaired rig, pose, shared-grip, pin-arc, responsive arena, atomic table, directional VFX, HUD,
+cue routing, persistence, and final-asset hooks are implemented. The displayed fighter layers, table,
+arena, and effects are still Phase 3.3B fallbacks because the final owner pack is **0/33 required**.
+Premium battle-art completion is **BLOCKED**, visual acceptance is **PENDING OWNER TEST**, and Phase 4
+has not started.

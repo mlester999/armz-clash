@@ -1,7 +1,7 @@
 # Phase 3.4 Premium Rebuild
 
-**Implementation status:** PASSED LOCALLY
-**Final premium asset gate:** BLOCKED — 0/27 owner assets supplied
+**Implementation status:** superseded by Phase 3.4A contract repair
+**Final premium asset gate:** BLOCKED — 0/33 required Phase 3.4A owner assets supplied
 **Owner visual acceptance:** PENDING OWNER TEST
 **Phase 4:** Not started
 
@@ -9,7 +9,10 @@
 
 Phase 3.4 resets the owner-reviewable experience around one coherent flagship matchup: **Rookie Brawler versus Practice Automaton**. It replaces the dashboard-like flow with a dense, cinematic game presentation while preserving the existing server-authoritative simulation, short battle pacing, Demo Mode safety, and real-value feature boundaries.
 
-The implementation is ready to consume transparent owner-generated PNG/WebP artwork. Legacy Phase 3.3B raster textures and the sprite rig remain visibly labeled temporary fallbacks because no owner-approved final pack was attached or present in the repository.
+The original implementation is preserved as historical Phase 3.4 UI context. Phase 3.4A now consumes
+layered battle rigs rather than final flat `battle-side` sprites, uses an atomic table surface/frame,
+and applies explicit acceptance tiers. Legacy Phase 3.3B textures and layered rigs remain visibly
+temporary because no owner-approved final pack is present.
 
 ## Baseline audit
 
@@ -43,7 +46,8 @@ The running Phase 3.3B build was inspected before implementation across landing,
 - `apps/game/src/features/demo/art/ArmzPortrait.tsx`
 - Its procedural portrait regression test
 
-The renderer’s old sprite rig was not deleted because it is the required battle fallback until final battle-side art arrives. It is labeled temporary in both manifest and UI.
+The renderer’s Phase 3.3B layered rig remains the required compatibility fallback until all eight
+minimum final rig layers arrive and load successfully for both fighters.
 
 ## Design system
 
@@ -116,11 +120,14 @@ All primary surfaces render through typed Phase 3.4 asset IDs. At runtime:
 1. A compiled missing-final manifest prevents hydration or fetch failure from breaking the UI.
 2. The generated manifest upgrades individual slots only when the matching owner source exists.
 3. Critical landing assets are preloaded for the active viewport.
-4. Battle loading maps final arena/effect/battle-side assets into Pixi when available.
+4. Battle loading atomically maps complete paired layered rigs and table packs, then independently
+   upgrades arena, pad, and production VFX slots.
 5. Missing slots resolve only to declared legacy fallbacks or an explicit owner-slot panel.
 6. Every fallback can be identified through `data-asset-status="temporary-placeholder"` and visible status copy where appropriate.
 
-Current status is **0/27 final**. Therefore the implementation/pipeline can pass engineering gates, but premium-art completion is **BLOCKED** and owner visual acceptance is **PENDING OWNER TEST**.
+Current Phase 3.4A status is **0/33 required final** and **0/38 total final**. Tier A requires 21,
+Tier B requires 12, and Tier C contains 5 optional slots. Engineering gates can pass while final-art
+completion remains **BLOCKED** and owner visual acceptance remains **PENDING OWNER TEST**.
 
 ## Scope boundaries preserved
 

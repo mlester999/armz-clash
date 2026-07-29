@@ -1,7 +1,7 @@
 # Phase 3.4 Result UX and Integrity
 
 **Implementation status:** implemented
-**Final result artwork:** BLOCKED — owner files missing
+**Final result artwork:** BLOCKED — Phase 3.4A owner files missing
 **Owner visual acceptance:** PENDING OWNER TEST
 
 ## Non-negotiable result gate
@@ -113,4 +113,8 @@ Automated E2E checks assert the result bounding box is fully inside the current 
 
 ## Current art limitation
 
-The result flow and layout are implemented, but Rookie Brawler victory/defeat, Practice Automaton victory/defeat, and result accent files have not been supplied. The UI therefore displays declared, clearly labeled Phase 3.3B fallbacks. Final result-art quality is **BLOCKED**; owner acceptance remains **PENDING OWNER TEST**. Phase 4 has not started.
+The result flow and layout are unchanged by the contract repair. Rookie Brawler victory/defeat,
+Practice Automaton victory/defeat, and both Tier B result accents remain missing and use declared
+Phase 3.3B fallbacks. Skip now applies the authoritative final pin pose before this same
+`done && finalSynced && integrityValid` result mounts. Final result-art quality is **BLOCKED**; owner
+acceptance remains **PENDING OWNER TEST**. Phase 4 has not started.

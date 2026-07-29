@@ -1,5 +1,8 @@
 # Phase 3.4 Final Report Template
 
+> Superseded for active work by [PHASE3_4A_FINAL_REPORT_TEMPLATE.md](PHASE3_4A_FINAL_REPORT_TEMPLATE.md).
+> The old 27-slot gate must not be used for Phase 3.4A acceptance.
+
 Use only these classifications:
 
 - `PASSED LOCALLY`

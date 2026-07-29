@@ -2,11 +2,11 @@
 
 **ARMZ CLASH** — premium browser-based Solana arm-wrestling game.
 
-**Current phase: Phase 3.4 — premium asset-driven flagship vertical slice**
+**Current phase: Phase 3.4A — premium battle-asset contract repair**
 
 This repository contains the Armz Clash monorepo and a complete simulated Demo Mode loop built around Rookie Brawler versus Practice Automaton. Phase 3.4 includes the premium shell, reveal, collection, versus screen, battle HUD, responsive camera, and truthful result flow. Wallet authentication is Devnet-only when configured; minting, real rewards, claims, marketplace settlement, mainnet, and staking are **not active**.
 
-> **Asset gate:** the Phase 3.4 contract contains 27 owner-art slots. No owner-approved final PNG/WebP files were supplied with this phase, so the current manifest reports **0/27 final** and the running game labels every legacy fallback as temporary. The integration and drop-in build pipeline are ready; final visual acceptance remains **PENDING OWNER TEST** after the owner asset pack is supplied.
+> **Asset gate:** Phase 3.4A replaces the flat fighter sprites with paired layered rigs, repairs arena/table composition, and adds directional VFX. The revised manifest contains **21 Tier A required**, **12 Tier B required**, and **5 Tier C optional** slots: **33 required / 38 declared**. No owner-approved final PNG/WebP files are present, so the current state is **0/33 required final**. Final visual acceptance remains **PENDING OWNER TEST**.
 
 ## Safety posture
 
@@ -78,7 +78,7 @@ pnpm build:assets
 pnpm assets:validate
 ```
 
-Owner files belong under `apps/game/assets/phase3-4/final/` using the exact stems in [docs/PHASE3_4_ASSET_PIPELINE.md](docs/PHASE3_4_ASSET_PIPELINE.md). The builder emits responsive WebP/PNG variants, hashes, and honest runtime/version manifests; missing files never become `final` silently.
+Owner files belong under `apps/game/assets/phase3-4/final/` using the exact stems in [docs/PHASE3_4A_IMAGE_GENERATION_HANDOFF.md](docs/PHASE3_4A_IMAGE_GENERATION_HANDOFF.md). The builder emits responsive WebP/PNG variants, hashes, acceptance counts, and battle rig/pose manifests; missing files never become `final` silently.
 
 See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) and [docs/REOWN_SETUP.md](docs/REOWN_SETUP.md).
 
@@ -165,12 +165,20 @@ The temporary game token ticker is centralized as **ARMZ** (`$ARMZ` display) in 
 - [docs/PHASE3_4_RESULT_UX.md](docs/PHASE3_4_RESULT_UX.md)
 - [docs/PHASE3_4_OWNER_ACCEPTANCE.md](docs/PHASE3_4_OWNER_ACCEPTANCE.md)
 - [docs/PHASE3_4_FINAL_REPORT_TEMPLATE.md](docs/PHASE3_4_FINAL_REPORT_TEMPLATE.md)
+- [docs/PHASE3_4A_CONTRACT_REPAIR.md](docs/PHASE3_4A_CONTRACT_REPAIR.md)
+- [docs/PHASE3_4A_LAYERED_RIG.md](docs/PHASE3_4A_LAYERED_RIG.md)
+- [docs/PHASE3_4A_POSE_MANIFEST.md](docs/PHASE3_4A_POSE_MANIFEST.md)
+- [docs/PHASE3_4A_ARENA_AND_TABLE.md](docs/PHASE3_4A_ARENA_AND_TABLE.md)
+- [docs/PHASE3_4A_DIRECTIONAL_VFX.md](docs/PHASE3_4A_DIRECTIONAL_VFX.md)
+- [docs/PHASE3_4A_IMAGE_GENERATION_HANDOFF.md](docs/PHASE3_4A_IMAGE_GENERATION_HANDOFF.md)
+- [docs/PHASE3_4A_OWNER_ACCEPTANCE.md](docs/PHASE3_4A_OWNER_ACCEPTANCE.md)
+- [docs/PHASE3_4A_FINAL_REPORT_TEMPLATE.md](docs/PHASE3_4A_FINAL_REPORT_TEMPLATE.md)
 - [docs/PHASE3_3B_QWEN_ONLY_ASSET_PIPELINE.md](docs/PHASE3_3B_QWEN_ONLY_ASSET_PIPELINE.md)
 - [docs/PHASE3_3B_OWNER_ACCEPTANCE.md](docs/PHASE3_3B_OWNER_ACCEPTANCE.md)
 
 ## Current limitations
 
-- Owner-approved final visual assets are not present: 0/27 final, 27/27 temporary/missing-final
+- Owner-approved final visual assets are not present: 0/33 required final, 0/38 total final
 - No real minting, real rewards, claims, marketplace settlement, mainnet, or staking
 - Hosted Supabase validation pending owner credentials
 - Phase 3.4 owner visual acceptance: **PENDING OWNER TEST**
@@ -178,4 +186,6 @@ The temporary game token ticker is centralized as **ARMZ** (`$ARMZ` display) in 
 
 ## Next phase
 
-Supply and integrate the owner-approved Phase 3.4 PNG/WebP pack, rerun the complete acceptance matrix, and obtain owner approval. **Phase 4 must not start before that approval.**
+Generate Tier A and Tier B using the Phase 3.4A handoff, integrate the owner-approved PNG/WebP pack,
+rerun the complete acceptance matrix, and obtain owner approval. **Phase 4 must not start before that
+approval.**
