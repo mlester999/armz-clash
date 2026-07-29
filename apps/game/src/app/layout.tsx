@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="min-h-dvh antialiased">
-        <div className="flex min-h-dvh flex-col">
+        <div className="phase34-app-shell flex min-h-dvh flex-col">
           <GameHeader config={config} />
           <PremiumAssetProvider>{children}</PremiumAssetProvider>
         </div>

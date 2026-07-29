@@ -1664,11 +1664,22 @@ body {
 }
 
 .phase34-battle-page {
+  flex: 1 1 0%;
   width: 100%;
-  height: calc(100svh - var(--armz-header-h));
-  min-height: 34rem;
+  height: auto;
+  min-height: 0;
   overflow: hidden;
   padding: 0.55rem var(--armz-page-x) 0.75rem;
+}
+
+.phase34-app-shell:has(> .phase34-battle-page) {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.phase34-app-shell:has(> .phase34-battle-page) > .phase34-header {
+  flex: none;
 }
 
 .phase34-battle-stage,
@@ -2533,8 +2544,8 @@ body {
   }
 
   .phase34-battle-page {
-    height: calc(100svh - var(--armz-mobile-header-h) - var(--armz-mobile-nav-h));
-    min-height: 31rem;
+    height: auto;
+    min-height: 0;
     padding: 0.35rem 0.35rem 0.45rem;
   }
 }
@@ -3118,6 +3129,14 @@ body {
     padding-bottom: calc(var(--armz-mobile-nav-h) + var(--armz-safe-bottom));
   }
 
+  body:has(.phase34-battle-page) {
+    padding-bottom: 0;
+  }
+
+  .phase34-app-shell:has(> .phase34-battle-page) {
+    padding-bottom: calc(var(--armz-mobile-nav-h) + var(--armz-safe-bottom));
+  }
+
   .phase34-header {
     min-height: var(--armz-header-h);
   }
@@ -3171,6 +3190,14 @@ body {
 
 @media (max-width: 767px) {
   body {
+    padding-bottom: calc(var(--armz-mobile-nav-h) + var(--armz-safe-bottom));
+  }
+
+  body:has(.phase34-battle-page) {
+    padding-bottom: 0;
+  }
+
+  .phase34-app-shell:has(> .phase34-battle-page) {
     padding-bottom: calc(var(--armz-mobile-nav-h) + var(--armz-safe-bottom));
   }
 
