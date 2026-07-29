@@ -14,7 +14,14 @@ import { format as formatWithPrettier } from 'prettier';
 import sharp from 'sharp';
 import {
   PHASE3_4_ASSET_SLOTS,
+  PHASE3_4_BATTLE_POSES,
+  PHASE3_4_BATTLE_RIGS,
+  PHASE3_4_DEPRECATED_FINAL_ASSET_IDS,
   PHASE3_4_MANIFEST_VERSION,
+  PHASE3_4_REQUIRED_ASSET_SLOTS,
+  PHASE3_4_TIER_A_ASSET_IDS,
+  PHASE3_4_TIER_B_ASSET_IDS,
+  PHASE3_4_TIER_C_ASSET_IDS,
   type PremiumAssetEntry,
   type PremiumAssetManifest,
   type PremiumAssetSourceSet,
@@ -126,6 +133,8 @@ async function main(): Promise<void> {
         density: [1, 2],
         viewportUsage: [...contract.viewportUsage],
         poseUsage: [...contract.poseUsage],
+        productionCallSites: [...contract.productionCallSites],
+        visualMatchAssetIds: [...contract.visualMatchAssetIds],
         availability: 'final',
         final,
         pngFallback,
@@ -139,6 +148,8 @@ async function main(): Promise<void> {
         density: [1, 2],
         viewportUsage: [...contract.viewportUsage],
         poseUsage: [...contract.poseUsage],
+        productionCallSites: [...contract.productionCallSites],
+        visualMatchAssetIds: [...contract.visualMatchAssetIds],
         availability: 'missing-final',
         final,
         pngFallback,
@@ -150,34 +161,91 @@ async function main(): Promise<void> {
   }
 
   const missingFinalAssetCount = PHASE3_4_ASSET_SLOTS.length - finalAssetCount;
-  const ownerAssetStatus = missingFinalAssetCount === 0 ? 'ready' : 'awaiting-owner-assets';
+  const finalIds = new Set(
+    Object.values(assets)
+      .filter((entry) => entry.availability === 'final')
+      .map((entry) => entry.assetId),
+  );
+  const integratedIn = (ids: readonly string[]) =>
+    ids.filter((assetId) => finalIds.has(assetId)).length;
+  const tierAIntegratedAssetCount = integratedIn(PHASE3_4_TIER_A_ASSET_IDS);
+  const tierBIntegratedAssetCount = integratedIn(PHASE3_4_TIER_B_ASSET_IDS);
+  const tierCIntegratedAssetCount = integratedIn(PHASE3_4_TIER_C_ASSET_IDS);
+  const acceptanceCounts = {
+    tierARequiredAssetCount: PHASE3_4_TIER_A_ASSET_IDS.length,
+    tierAIntegratedAssetCount,
+    tierAMissingAssetCount: PHASE3_4_TIER_A_ASSET_IDS.length - tierAIntegratedAssetCount,
+    tierBRequiredAssetCount: PHASE3_4_TIER_B_ASSET_IDS.length,
+    tierBIntegratedAssetCount,
+    tierBMissingAssetCount: PHASE3_4_TIER_B_ASSET_IDS.length - tierBIntegratedAssetCount,
+    tierCOptionalAssetCount: PHASE3_4_TIER_C_ASSET_IDS.length,
+    tierCIntegratedAssetCount,
+    tierCMissingAssetCount: PHASE3_4_TIER_C_ASSET_IDS.length - tierCIntegratedAssetCount,
+  };
+  const requiredFinalAssetCount = PHASE3_4_REQUIRED_ASSET_SLOTS.length;
+  const integratedRequiredFinalAssetCount = PHASE3_4_REQUIRED_ASSET_SLOTS.filter((entry) =>
+    finalIds.has(entry.assetId),
+  ).length;
+  const missingRequiredFinalAssetCount =
+    requiredFinalAssetCount - integratedRequiredFinalAssetCount;
+  const ownerAssetStatus =
+    acceptanceCounts.tierAMissingAssetCount > 0
+      ? 'awaiting-tier-a-assets'
+      : acceptanceCounts.tierBMissingAssetCount > 0
+        ? 'awaiting-tier-b-assets'
+        : 'ready';
   const manifest: PremiumAssetManifest = {
     version: PHASE3_4_MANIFEST_VERSION,
     generatedBy: 'scripts/build-phase34-assets.ts',
     finalAssetCount,
     missingFinalAssetCount,
+    requiredFinalAssetCount,
+    integratedRequiredFinalAssetCount,
+    missingRequiredFinalAssetCount,
+    optionalAssetCount: PHASE3_4_TIER_C_ASSET_IDS.length,
     fallbackVersion: 'phase3-3b-v1',
     ownerAssetStatus,
+    deprecatedFinalAssetIds: [...PHASE3_4_DEPRECATED_FINAL_ASSET_IDS],
+    ...acceptanceCounts,
     assets,
   };
   const versionManifest: PremiumAssetVersionManifest = {
     manifestVersion: PHASE3_4_MANIFEST_VERSION,
     fallbackVersion: 'phase3-3b-v1',
     ownerAssetStatus,
-    requiredFinalAssetCount: PHASE3_4_ASSET_SLOTS.length,
+    requiredFinalAssetCount,
+    optionalAssetCount: PHASE3_4_TIER_C_ASSET_IDS.length,
     integratedFinalAssetCount: finalAssetCount,
+    integratedRequiredFinalAssetCount,
+    ...acceptanceCounts,
     files,
   };
 
-  const [assetManifestJson, versionManifestJson] = await Promise.all([
-    formatWithPrettier(JSON.stringify(manifest), { parser: 'json' }),
-    formatWithPrettier(JSON.stringify(versionManifest), { parser: 'json' }),
-  ]);
+  const [assetManifestJson, versionManifestJson, rigManifestJson, poseManifestJson] =
+    await Promise.all([
+      formatWithPrettier(JSON.stringify(manifest), { parser: 'json' }),
+      formatWithPrettier(JSON.stringify(versionManifest), { parser: 'json' }),
+      formatWithPrettier(
+        JSON.stringify({ version: PHASE3_4_MANIFEST_VERSION, fighters: PHASE3_4_BATTLE_RIGS }),
+        { parser: 'json' },
+      ),
+      formatWithPrettier(
+        JSON.stringify({
+          version: PHASE3_4_MANIFEST_VERSION,
+          poses: Object.values(PHASE3_4_BATTLE_POSES),
+        }),
+        { parser: 'json' },
+      ),
+    ]);
   writeFileSync(path.join(MANIFEST_ROOT, 'asset-manifest.json'), assetManifestJson);
   writeFileSync(path.join(MANIFEST_ROOT, 'version-manifest.json'), versionManifestJson);
+  writeFileSync(path.join(MANIFEST_ROOT, 'battle-rig-manifest.json'), rigManifestJson);
+  writeFileSync(path.join(MANIFEST_ROOT, 'battle-pose-manifest.json'), poseManifestJson);
 
   process.stdout.write(
-    `Phase 3.4 assets: ${finalAssetCount}/${PHASE3_4_ASSET_SLOTS.length} final; ${missingFinalAssetCount} awaiting owner files.\n`,
+    `Phase 3.4A assets: ${integratedRequiredFinalAssetCount}/${requiredFinalAssetCount} required final; ` +
+      `${tierAIntegratedAssetCount}/${PHASE3_4_TIER_A_ASSET_IDS.length} Tier A; ` +
+      `${finalAssetCount}/${PHASE3_4_ASSET_SLOTS.length} total slots integrated.\n`,
   );
 }
 

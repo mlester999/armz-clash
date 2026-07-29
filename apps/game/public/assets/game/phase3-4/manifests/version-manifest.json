@@ -1,8 +1,19 @@
 {
-  "manifestVersion": "phase3-4-owner-drop-v1",
+  "manifestVersion": "phase3-4a-layered-owner-drop-v1",
   "fallbackVersion": "phase3-3b-v1",
-  "ownerAssetStatus": "awaiting-owner-assets",
-  "requiredFinalAssetCount": 27,
+  "ownerAssetStatus": "awaiting-tier-a-assets",
+  "requiredFinalAssetCount": 33,
+  "optionalAssetCount": 5,
   "integratedFinalAssetCount": 0,
+  "integratedRequiredFinalAssetCount": 0,
+  "tierARequiredAssetCount": 21,
+  "tierAIntegratedAssetCount": 0,
+  "tierAMissingAssetCount": 21,
+  "tierBRequiredAssetCount": 12,
+  "tierBIntegratedAssetCount": 0,
+  "tierBMissingAssetCount": 12,
+  "tierCOptionalAssetCount": 5,
+  "tierCIntegratedAssetCount": 0,
+  "tierCMissingAssetCount": 5,
   "files": {}
 }

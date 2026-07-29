@@ -3,4 +3,7 @@ export * from './pose-manifest.types';
 export * from './manifest-loader';
 export * from './premium-asset-manifest.types';
 export * from './phase34-asset-contract';
+export * from './phase34-battle-rig-contract';
+export * from './phase34-battle-pose-contract';
+export * from './phase34-battle-geometry';
 export * from './premium-manifest-loader';
