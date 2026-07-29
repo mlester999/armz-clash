@@ -64,6 +64,9 @@ export function BattleStage({
   const [event, setEvent] = useState(EVENT_LABELS.idle!);
   const [cooldown, setCooldown] = useState(battle.session.replayAvailableInSeconds);
   const [resultAnnounced, setResultAnnounced] = useState(false);
+  const [battleAssetMode, setBattleAssetMode] = useState<'premium-layered' | 'legacy-fallback'>(
+    'legacy-fallback',
+  );
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -117,6 +120,7 @@ export function BattleStage({
           },
         );
       },
+      onAssetMode: setBattleAssetMode,
     });
     rendererRef.current = renderer;
     void renderer.mount();
@@ -167,13 +171,17 @@ export function BattleStage({
   }, [showResult, resultAnnounced]);
 
   const skipToResult = useCallback(() => {
-    rendererRef.current?.pause();
+    rendererRef.current?.applyAuthoritativeFinalPose(
+      battle.outcome,
+      battle.playerFinalStrength,
+      battle.opponentFinalStrength,
+    );
     setPlayerControl(battle.playerFinalStrength);
     setOpponentControl(battle.opponentFinalStrength);
     setFinalSynced(true);
     setDone(true);
     onResultReady();
-  }, [battle.opponentFinalStrength, battle.playerFinalStrength, onResultReady]);
+  }, [battle.opponentFinalStrength, battle.outcome, battle.playerFinalStrength, onResultReady]);
 
   const toggleMuted = () => {
     setMuted((current) => {
@@ -192,7 +200,11 @@ export function BattleStage({
   };
 
   return (
-    <section className="phase34-battle-stage" data-testid="demo-battle-stage">
+    <section
+      className="phase34-battle-stage"
+      data-testid="demo-battle-stage"
+      data-battle-asset-mode={battleAssetMode}
+    >
       <div aria-live="assertive" aria-atomic="true" className="sr-only" role="status">
         {resultAnnounced && showResult
           ? isVictory
@@ -277,8 +289,10 @@ export function BattleStage({
           ) : null}
         </div>
 
-        {!showResult ? (
-          <p className="phase34-battle-art-note">Temporary battle rig · final owner art pending</p>
+        {!showResult && battleAssetMode === 'legacy-fallback' ? (
+          <p className="phase34-battle-art-note">
+            Temporary Phase 3.3B layered rig · final paired owner rig pending
+          </p>
         ) : null}
 
         {showResult ? (

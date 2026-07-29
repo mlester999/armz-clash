@@ -11,18 +11,39 @@
  */
 
 import { Application, Container, Graphics, Sprite } from 'pixi.js';
-import type { ViewportClass } from '@armz-clash/game-core';
+import {
+  PHASE3_4_ARENA_VIEWPORT_FOCUS,
+  PHASE3_4_BATTLE_RIGS,
+  getPremiumAssetSlot,
+  layoutFocalCover,
+  quadraticPinArc,
+  selectPhase34BattlePoseId,
+  validatePhase34RigFrame,
+  type Phase34BattlePose,
+  type ViewportClass,
+} from '@armz-clash/game-core';
 import { SpriteRig } from './SpriteRig';
+import { PremiumLayeredRig } from './PremiumLayeredRig';
 import { BattleAudio, type AudioCue } from './BattleAudio';
 import {
   preloadBattleAssets,
-  resolvePose,
   classifyViewport,
   fighterIdForPreset,
   fighterIdForOpponent,
   type BattleAssetBundle,
 } from './battleAssets';
 import { computeGripPoint } from './rigSolver';
+import {
+  Phase34PoseController,
+  authoritativeFinalPoseId,
+  phase34SidePoseToRigInput,
+} from './phase34PoseRuntime';
+import {
+  createDirectionalVfxPlan,
+  momentumDirection,
+  type BattleDirection,
+  type DirectionalVfxPlan,
+} from './directionalVfx';
 
 export type TimelineEvent = {
   index: number;
@@ -63,6 +84,7 @@ export type BattleRendererOptions = {
   onComplete?: () => void;
   onEvent?: (ev: TimelineEvent) => void;
   onStrength?: (player: number, opponent: number) => void;
+  onAssetMode?: (mode: 'premium-layered' | 'legacy-fallback') => void;
 };
 
 function hex(n: string): number {
@@ -96,6 +118,18 @@ type EffectSprite = {
   vx: number;
   vy: number;
   growRate: number;
+  baseAlpha: number;
+};
+
+const EFFECT_RUNTIME_IDS: Record<string, string> = {
+  'effects/grip-lock': 'effects/grip-flash',
+  'effects/push-streak': 'effects/momentum-streak',
+  'effects/counter-burst': 'effects/pressure-ring',
+  'effects/critical-impact': 'effects/critical-impact',
+  'effects/recovery-cue': 'effects/recovery-glow',
+  'effects/final-slam': 'effects/slam-impact',
+  'effects/victory-sweep': 'effects/victory-accent',
+  'effects/defeat-dim': 'effects/defeat-accent',
 };
 
 const CAMERA_PRESETS: Record<
@@ -120,6 +154,7 @@ export class BattleRenderer {
   private onComplete?: () => void;
   private onEvent?: (ev: TimelineEvent) => void;
   private onStrength?: (player: number, opponent: number) => void;
+  private onAssetMode?: (mode: 'premium-layered' | 'legacy-fallback') => void;
   private raf = 0;
   private startTs = 0;
   private paused = false;
@@ -163,16 +198,14 @@ export class BattleRenderer {
   private particles: Particle[] = [];
   private flashIntensity = 0;
   private slamFlash = 0;
-  private momentumDir = 0;
+  private momentumDir: BattleDirection = 0;
   private prevDiff = 0;
   private recoveryGlow = 0;
   private ambientPhase = 0;
   private assetBundle: BattleAssetBundle | null = null;
-  private playerRig: SpriteRig | null = null;
-  private opponentRig: SpriteRig | null = null;
-  private playerBattleSide: Sprite | null = null;
-  private opponentBattleSide: Sprite | null = null;
-  private usePremiumBattleSides = false;
+  private playerRig: SpriteRig | PremiumLayeredRig | null = null;
+  private opponentRig: SpriteRig | PremiumLayeredRig | null = null;
+  private usePremiumLayeredRigs = false;
   private arenaSprites: Sprite[] = [];
   private effectSprites: EffectSprite[] = [];
   private audio: BattleAudio;
@@ -186,6 +219,15 @@ export class BattleRenderer {
   private useSpriteRigs = false;
   private prevCueForAudio = '';
   private rootContainer: Container | null = null;
+  private poseController = new Phase34PoseController();
+  private currentElapsedMs = 0;
+  private finalOutcome: 'victory' | 'defeat' | null = null;
+  private pinArcStart: { x: number; y: number } | null = null;
+  private pinArcProgress = 0;
+  private lastLayoutWidth = 0;
+  private lastLayoutHeight = 0;
+  private rigDiagnosticWarned = false;
+  private activeEventIndex = -1;
 
   constructor(opts: BattleRendererOptions) {
     this.host = opts.host;
@@ -199,6 +241,7 @@ export class BattleRenderer {
     this.onComplete = opts.onComplete;
     this.onEvent = opts.onEvent;
     this.onStrength = opts.onStrength;
+    this.onAssetMode = opts.onAssetMode;
     this.playerName = opts.playerName;
     this.opponentName = opts.opponentName;
     this.playerPresetKey = opts.playerPresetKey ?? 'rookie_brawler';
@@ -220,6 +263,10 @@ export class BattleRenderer {
       resolution: Math.min(window.devicePixelRatio || 1, 2),
       autoDensity: true,
     });
+    if (this.destroyed) {
+      app.destroy(true, { children: true });
+      return;
+    }
     this.app = app;
     this.host.replaceChildren(app.canvas as HTMLCanvasElement);
     (app.canvas as HTMLCanvasElement).setAttribute('role', 'img');
@@ -244,6 +291,7 @@ export class BattleRenderer {
       overlay: new Container(),
     };
     Object.values(this.layers).forEach((c) => root.addChild(c));
+    this.layers.vfx.sortableChildren = true;
 
     this.bgG = new Graphics();
     this.crowdG = new Graphics();
@@ -274,16 +322,20 @@ export class BattleRenderer {
     if (this.useSpriteRigs) {
       this.drawLoadingIndicator(true);
       try {
-        this.assetBundle = await preloadBattleAssets(
+        const bundle = await preloadBattleAssets(
           this.playerFighterId,
           this.opponentFighterId,
           this.viewport,
         );
+        if (this.destroyed) return;
+        this.assetBundle = bundle;
         this.buildArenaSprites();
         this.buildFighterRigs();
       } catch {
+        if (this.destroyed) return;
         this.useSpriteRigs = false;
         this.assetBundle = null;
+        this.onAssetMode?.('legacy-fallback');
       }
       this.drawLoadingIndicator(false);
     }
@@ -335,6 +387,26 @@ export class BattleRenderer {
     }
   }
 
+  /** Apply the authoritative terminal pin before React mounts the result overlay. */
+  applyAuthoritativeFinalPose(
+    outcome: 'victory' | 'defeat',
+    playerFinalStrength: number,
+    opponentFinalStrength: number,
+  ): void {
+    this.playerStr = playerFinalStrength;
+    this.opponentStr = opponentFinalStrength;
+    this.finalOutcome = outcome;
+    this.pinArcProgress = 1;
+    const scene = this.app ? this.scene : null;
+    this.pinArcStart = scene ? { x: scene.gripCenterX, y: scene.gripCenterY } : null;
+    this.poseController.force(authoritativeFinalPoseId(outcome), this.currentElapsedMs);
+    if (this.app) {
+      this.drawArms();
+      this.drawVfxOverlay();
+    }
+    this.pause();
+  }
+
   destroy(): void {
     this.destroyed = true;
     cancelAnimationFrame(this.raf);
@@ -343,10 +415,6 @@ export class BattleRenderer {
     this.playerRig = null;
     this.opponentRig?.destroy();
     this.opponentRig = null;
-    this.playerBattleSide?.destroy({ texture: false, textureSource: false });
-    this.playerBattleSide = null;
-    this.opponentBattleSide?.destroy({ texture: false, textureSource: false });
-    this.opponentBattleSide = null;
     for (const s of this.arenaSprites) s.destroy({ texture: false, textureSource: false });
     this.arenaSprites = [];
     for (const e of this.effectSprites) e.sprite.destroy({ texture: false, textureSource: false });
@@ -356,6 +424,10 @@ export class BattleRenderer {
       this.app.destroy(true, { children: true });
       this.app = null;
     }
+    this.onComplete = undefined;
+    this.onEvent = undefined;
+    this.onStrength = undefined;
+    this.onAssetMode = undefined;
     this.host.replaceChildren();
   }
 
@@ -419,112 +491,126 @@ export class BattleRenderer {
   private buildArenaSprites(): void {
     if (!this.assetBundle || !this.layers) return;
     const { textures } = this.assetBundle;
-    const s = this.scene;
     const arenaIds = [
       'arena/background',
       'arena/crowd',
       'arena/lighting',
       'arena/banners',
+      'arena/table-frame',
       'arena/table',
       'arena/elbow-pad',
       'arena/pin-pad',
-      'arena/table-frame',
     ];
     for (const id of arenaIds) {
       const tex = textures.get(id);
       if (!tex) continue;
       const sprite = new Sprite(tex);
       sprite.label = id;
-      if (id === 'arena/background') {
-        sprite.width = s.w;
-        sprite.height = s.h;
+      if (id === 'arena/background' || id === 'arena/lighting' || id === 'arena/banners') {
         this.layers.bg.addChild(sprite);
-      } else if (id === 'arena/table') {
-        sprite.width = s.tableW;
-        sprite.height = s.tableH * 1.5;
-        sprite.x = s.cx - s.tableW / 2;
-        sprite.y = s.tableY - s.tableH * 0.25;
-        this.layers.table.addChild(sprite);
-      } else if (id === 'arena/table-frame') {
-        sprite.width = s.tableW * 1.05;
-        sprite.height = s.tableH * 2;
-        sprite.x = s.cx - s.tableW * 0.525;
-        sprite.y = s.tableY + s.tableH * 0.5;
-        this.layers.table.addChild(sprite);
-      } else if (id === 'arena/elbow-pad') {
-        sprite.width = s.elbowPadW;
-        sprite.height = s.elbowPadH;
-        sprite.x = s.playerElbowX - s.elbowPadW / 2;
-        sprite.y = s.elbowY - s.elbowPadH / 2;
-        this.layers.table.addChild(sprite);
-        const pad2 = new Sprite(tex);
-        pad2.width = s.elbowPadW;
-        pad2.height = s.elbowPadH;
-        pad2.x = s.opponentElbowX - s.elbowPadW / 2;
-        pad2.y = s.elbowY - s.elbowPadH / 2;
-        this.layers.table.addChild(pad2);
-        this.arenaSprites.push(pad2);
-      } else if (id === 'arena/pin-pad') {
-        sprite.width = s.pinPadW;
-        sprite.height = s.pinPadH;
-        sprite.x = s.playerPinX - s.pinPadW / 2;
-        sprite.y = s.tableY - s.pinPadH;
-        this.layers.table.addChild(sprite);
-        const pad2 = new Sprite(tex);
-        pad2.width = s.pinPadW;
-        pad2.height = s.pinPadH;
-        pad2.x = s.opponentPinX - s.pinPadW / 2;
-        pad2.y = s.tableY - s.pinPadH;
-        this.layers.table.addChild(pad2);
-        this.arenaSprites.push(pad2);
       } else if (id === 'arena/crowd') {
+        this.layers.crowd.addChild(sprite);
+      } else {
+        this.layers.table.addChild(sprite);
+      }
+      this.arenaSprites.push(sprite);
+      if (id === 'arena/elbow-pad' || id === 'arena/pin-pad') {
+        const pad2 = new Sprite(tex);
+        pad2.label = `${id}:opponent`;
+        this.layers.table.addChild(pad2);
+        this.arenaSprites.push(pad2);
+      }
+    }
+    this.layoutArenaSprites(true);
+  }
+
+  private layoutArenaSprites(force = false): void {
+    if (!this.assetBundle || !this.app) return;
+    const s = this.scene;
+    if (!force && s.w === this.lastLayoutWidth && s.h === this.lastLayoutHeight) return;
+    this.lastLayoutWidth = s.w;
+    this.lastLayoutHeight = s.h;
+    this.viewport = classifyViewport(s.w, s.h);
+
+    for (const sprite of this.arenaSprites) {
+      const id = sprite.label;
+      const baseId = id.replace(':opponent', '');
+      const sourceSize = this.assetBundle.textureSizes.get(baseId) ?? {
+        width: Math.max(1, sprite.texture.width),
+        height: Math.max(1, sprite.texture.height),
+      };
+      if (id === 'arena/background') {
+        const entry = this.assetBundle.premiumManifest?.assets['arena/background'];
+        const sourceFocal = entry?.focalPoint ?? { x: 0.5, y: 0.42 };
+        const viewportFocus =
+          entry?.responsiveFocalPoints?.[this.viewport] ??
+          PHASE3_4_ARENA_VIEWPORT_FOCUS[this.viewport];
+        const layout = layoutFocalCover(
+          sourceSize.width,
+          sourceSize.height,
+          s.w,
+          s.h,
+          sourceFocal,
+          viewportFocus,
+        );
+        sprite.position.set(layout.x, layout.y);
+        sprite.width = layout.width;
+        sprite.height = layout.height;
+      } else if (id === 'arena/crowd') {
+        sprite.position.set(0, s.h * 0.15);
         sprite.width = s.w;
         sprite.height = s.h * 0.35;
-        sprite.y = s.h * 0.15;
         sprite.alpha = 0.7;
-        this.layers.crowd.addChild(sprite);
       } else if (id === 'arena/lighting') {
+        sprite.position.set(0, 0);
         sprite.width = s.w;
         sprite.height = s.h * 0.6;
         sprite.alpha = 0.5;
-        this.layers.bg.addChild(sprite);
       } else if (id === 'arena/banners') {
+        sprite.position.set(0, 0);
         sprite.width = s.w;
         sprite.height = s.h * 0.3;
         sprite.alpha = 0.6;
-        this.layers.bg.addChild(sprite);
+      } else if (id === 'arena/table') {
+        sprite.width = s.tableW;
+        sprite.height = s.tableW * (sourceSize.height / sourceSize.width);
+        sprite.position.set(s.cx - sprite.width / 2, s.tableY - s.tableH * 0.28);
+      } else if (id === 'arena/table-frame') {
+        sprite.width = s.tableW * 1.05;
+        sprite.height = sprite.width * (sourceSize.height / sourceSize.width);
+        sprite.position.set(s.cx - sprite.width / 2, s.tableY + s.tableH * 0.45);
+      } else if (baseId === 'arena/elbow-pad') {
+        sprite.width = s.elbowPadW;
+        sprite.height = s.elbowPadH;
+        const x = id.endsWith(':opponent') ? s.opponentElbowX : s.playerElbowX;
+        sprite.position.set(x - sprite.width / 2, s.elbowY - sprite.height / 2);
+      } else if (baseId === 'arena/pin-pad') {
+        sprite.width = s.pinPadW;
+        sprite.height = s.pinPadH;
+        const x = id.endsWith(':opponent') ? s.opponentPinX : s.playerPinX;
+        sprite.position.set(x - sprite.width / 2, s.tableY - sprite.height);
       }
-      this.arenaSprites.push(sprite);
     }
   }
 
   private buildFighterRigs(): void {
     if (!this.assetBundle || !this.layers) return;
     const { manifests, textures, textureSizes } = this.assetBundle;
-    const playerBattleTexture = textures.get('rookie-brawler/battle-side');
-    const opponentBattleTexture = textures.get('practice-automaton/battle-side');
-    const playerEntry = this.assetBundle.premiumManifest?.assets['rookie-brawler/battle-side'];
-    const opponentEntry =
-      this.assetBundle.premiumManifest?.assets['practice-automaton/battle-side'];
-    if (
-      playerBattleTexture &&
-      opponentBattleTexture &&
-      playerEntry?.availability === 'final' &&
-      opponentEntry?.availability === 'final'
-    ) {
-      this.playerBattleSide = new Sprite(playerBattleTexture);
-      this.opponentBattleSide = new Sprite(opponentBattleTexture);
-      this.playerBattleSide.anchor.set(
-        playerEntry.elbowPoint?.x ?? 0.5,
-        playerEntry.elbowPoint?.y ?? 0.68,
-      );
-      this.opponentBattleSide.anchor.set(
-        opponentEntry.elbowPoint?.x ?? 0.5,
-        opponentEntry.elbowPoint?.y ?? 0.68,
-      );
-      this.layers.playerArm.addChild(this.playerBattleSide);
-      this.layers.opponentArm.addChild(this.opponentBattleSide);
-      this.usePremiumBattleSides = true;
+    if (this.assetBundle.premiumRigPairReady) {
+      this.playerRig = new PremiumLayeredRig({
+        contract: PHASE3_4_BATTLE_RIGS['rookie-brawler'],
+        textures,
+        textureSizes,
+      });
+      this.opponentRig = new PremiumLayeredRig({
+        contract: PHASE3_4_BATTLE_RIGS['practice-automaton'],
+        textures,
+        textureSizes,
+      });
+      this.layers.playerArm.addChild(this.playerRig.container);
+      this.layers.opponentArm.addChild(this.opponentRig.container);
+      this.usePremiumLayeredRigs = true;
+      this.onAssetMode?.('premium-layered');
       return;
     }
     const rigManifest = manifests.rig;
@@ -542,35 +628,64 @@ export class BattleRenderer {
         this.layers.opponentArm.addChild(this.opponentRig.container);
       }
     }
+    this.onAssetMode?.('legacy-fallback');
   }
 
-  private spawnEffectSprite(assetId: string, x: number, y: number, count = 1): void {
+  private spawnDirectionalEffect(plan: DirectionalVfxPlan): void {
     if (this.reducedMotion || !this.assetBundle || !this.layers) return;
-    const tex = this.assetBundle.textures.get(assetId);
+    const runtimeId = EFFECT_RUNTIME_IDS[plan.assetId] ?? plan.assetId;
+    const tex = this.assetBundle.textures.get(runtimeId);
     if (!tex) return;
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < plan.count; i++) {
       const sprite = new Sprite(tex);
-      const size = 30 + Math.random() * 40;
+      const size = plan.displaySize * (0.92 + Math.random() * 0.16);
       sprite.width = size;
       sprite.height = size;
       sprite.anchor.set(0.5);
-      sprite.x = x + (Math.random() - 0.5) * 30;
-      sprite.y = y + (Math.random() - 0.5) * 20;
-      sprite.alpha = 0.8;
+      sprite.x = plan.origin.x + (Math.random() - 0.5) * Math.min(20, size * 0.12);
+      sprite.y = plan.origin.y + (Math.random() - 0.5) * Math.min(14, size * 0.08);
+      sprite.rotation = plan.rotation;
+      if (plan.flipX) sprite.scale.x = -Math.abs(sprite.scale.x);
+      sprite.alpha = plan.opacity;
+      sprite.blendMode = plan.blendMode;
+      sprite.zIndex = plan.zIndex;
       this.layers.vfx.addChild(sprite);
       this.effectSprites.push({
         sprite,
         life: 1,
-        maxLife: 0.5 + Math.random() * 0.5,
-        vx: (Math.random() - 0.5) * 3,
-        vy: -1 - Math.random() * 2,
-        growRate: 1 + Math.random() * 0.5,
+        maxLife: plan.lifetimeSeconds,
+        vx: plan.velocity.x,
+        vy: plan.velocity.y,
+        growRate: plan.intensity === 'final' ? 0.35 : 0.16,
+        baseAlpha: plan.opacity,
       });
     }
-    if (this.effectSprites.length > 40) {
-      const removed = this.effectSprites.splice(0, this.effectSprites.length - 30);
+    if (this.effectSprites.length > 32) {
+      const removed = this.effectSprites.splice(0, this.effectSprites.length - 24);
       for (const e of removed) e.sprite.destroy({ texture: false, textureSource: false });
     }
+  }
+
+  private spawnTimelineEffect(
+    assetId: string,
+    side: string | undefined,
+    intensity: number,
+    origin: { x: number; y: number },
+    destination: { x: number; y: number } | null = null,
+  ): void {
+    const metadata = getPremiumAssetSlot(assetId)?.vfx;
+    if (!metadata) return;
+    this.spawnDirectionalEffect(
+      createDirectionalVfxPlan({
+        assetId,
+        metadata,
+        intensityBasisPoints: intensity,
+        side,
+        previousDirection: this.momentumDir,
+        origin,
+        destination,
+      }),
+    );
   }
 
   private updateEffectSprites(dt: number): void {
@@ -580,12 +695,12 @@ export class BattleRenderer {
         e.sprite.destroy({ texture: false, textureSource: false });
         return false;
       }
-      e.sprite.x += e.vx;
-      e.sprite.y += e.vy;
-      e.sprite.alpha = e.life * 0.8;
-      const grow = 1 + (1 - e.life) * e.growRate * 0.01;
-      e.sprite.width *= grow;
-      e.sprite.height *= grow;
+      e.sprite.x += e.vx * dt;
+      e.sprite.y += e.vy * dt;
+      e.sprite.alpha = e.life * e.baseAlpha;
+      const grow = 1 + e.growRate * dt;
+      e.sprite.scale.x *= grow;
+      e.sprite.scale.y *= grow;
       return true;
     });
   }
@@ -728,60 +843,71 @@ export class BattleRenderer {
   private drawArms(): void {
     if (!this.app || !this.playerG || !this.opponentG || !this.gripG) return;
     const s = this.scene;
+    const authoredPose = this.poseController.sample(this.currentElapsedMs);
+    const controlDiff = (this.playerStr - this.opponentStr) / 100;
+    const maxSway = s.tableW * 0.28;
+    const gripPt = this.sharedGripForPose(authoredPose, controlDiff, maxSway);
+    const normalizedGrip = Math.max(-1, Math.min(1, (gripPt.x - s.gripCenterX) / maxSway));
+    this.targetGripAngle = normalizedGrip * 0.55;
+    this.gripAngle += (this.targetGripAngle - this.gripAngle) * 0.12;
     const angle = this.gripAngle;
     const strain = Math.abs(angle) / 0.55;
-    const diff = (this.opponentStr - this.playerStr) / 100;
-    const maxSway = s.tableW * 0.28;
-    const gripPt = computeGripPoint(
-      { x: s.gripCenterX, y: s.gripCenterY },
-      -diff,
-      maxSway,
-      s.forearmLen * 0.08,
-    );
 
-    if (
-      this.usePremiumBattleSides &&
-      this.playerBattleSide &&
-      this.opponentBattleSide &&
-      this.assetBundle?.premiumManifest
-    ) {
-      const playerEntry = this.assetBundle.premiumManifest.assets['rookie-brawler/battle-side'];
-      const opponentEntry =
-        this.assetBundle.premiumManifest.assets['practice-automaton/battle-side'];
-      if (playerEntry && opponentEntry) {
-        this.updatePremiumBattleSide(
-          this.playerBattleSide,
-          playerEntry,
-          { x: s.playerElbowX, y: s.elbowY },
-          gripPt,
-        );
-        this.updatePremiumBattleSide(
-          this.opponentBattleSide,
-          opponentEntry,
-          { x: s.opponentElbowX, y: s.elbowY },
-          gripPt,
-        );
-      }
-      this.playerG.clear();
-      this.opponentG.clear();
-      this.gripG.clear();
-    } else if (this.useSpriteRigs && this.playerRig && this.opponentRig && this.assetBundle) {
-      const poses = this.assetBundle.manifests.poses.poses;
-      const cueToPose = this.assetBundle.manifests.poses.cueToPose ?? {};
-      const playerPose = resolvePose(poses, cueToPose, this.cue, -diff, undefined, true);
-      const opponentPose = resolvePose(poses, cueToPose, this.cue, -diff, undefined, false);
+    if (this.useSpriteRigs && this.playerRig && this.opponentRig && this.assetBundle) {
+      const playerPose = phase34SidePoseToRigInput(authoredPose.player, authoredPose);
+      const opponentPose = phase34SidePoseToRigInput(authoredPose.opponent, authoredPose);
+      const playerElbow = { x: s.playerElbowX, y: s.elbowY };
+      const opponentElbow = { x: s.opponentElbowX, y: s.elbowY };
       this.playerRig.update({
-        elbow: { x: s.playerElbowX, y: s.elbowY },
+        elbow: playerElbow,
         grip: gripPt,
         pose: playerPose,
         mirror: false,
       });
       this.opponentRig.update({
-        elbow: { x: s.opponentElbowX, y: s.elbowY },
+        elbow: opponentElbow,
         grip: gripPt,
         pose: opponentPose,
         mirror: true,
       });
+      if (
+        this.usePremiumLayeredRigs &&
+        this.playerRig instanceof PremiumLayeredRig &&
+        this.opponentRig instanceof PremiumLayeredRig
+      ) {
+        const playerSolution = this.playerRig.getLastSolution();
+        const opponentSolution = this.opponentRig.getLastSolution();
+        if (playerSolution && opponentSolution) {
+          const transforms = [
+            ...Object.values(playerSolution.transforms),
+            ...Object.values(opponentSolution.transforms),
+          ].flatMap((transform) => [
+            transform.x,
+            transform.y,
+            transform.rotation,
+            transform.scaleX,
+            transform.scaleY,
+          ]);
+          const diagnostics = validatePhase34RigFrame({
+            sharedGrip: gripPt,
+            playerGrip: playerSolution.joints.grip,
+            opponentGrip: opponentSolution.joints.grip,
+            playerElbow: playerSolution.joints.elbow,
+            playerExpectedElbow: playerElbow,
+            opponentElbow: opponentSolution.joints.elbow,
+            opponentExpectedElbow: opponentElbow,
+            transformValues: transforms,
+          });
+          if (
+            !diagnostics.valid &&
+            !this.rigDiagnosticWarned &&
+            process.env.NODE_ENV !== 'production'
+          ) {
+            this.rigDiagnosticWarned = true;
+            console.warn('[Phase 3.4A] Layered-rig invariant warning', diagnostics);
+          }
+        }
+      }
       this.playerG.clear();
       this.opponentG.clear();
       this.gripG.clear();
@@ -818,26 +944,29 @@ export class BattleRenderer {
     }
   }
 
-  private updatePremiumBattleSide(
-    sprite: Sprite,
-    entry: NonNullable<BattleAssetBundle['premiumManifest']>['assets'][string],
-    targetElbow: { x: number; y: number },
-    targetGrip: { x: number; y: number },
-  ): void {
-    const elbow = entry.elbowPoint ?? { x: 0.5, y: 0.68 };
-    const grip = entry.gripPoint ?? { x: 0.5, y: 0.2 };
-    const sourceDx = (grip.x - elbow.x) * entry.width;
-    const sourceDy = (grip.y - elbow.y) * entry.height;
-    const targetDx = targetGrip.x - targetElbow.x;
-    const targetDy = targetGrip.y - targetElbow.y;
-    const sourceLength = Math.max(1, Math.hypot(sourceDx, sourceDy));
-    const targetLength = Math.max(1, Math.hypot(targetDx, targetDy));
-    const scale = targetLength / sourceLength;
-    sprite.anchor.set(elbow.x, elbow.y);
-    sprite.position.set(targetElbow.x, targetElbow.y);
-    sprite.scale.set(scale);
-    sprite.rotation = Math.atan2(targetDy, targetDx) - Math.atan2(sourceDy, sourceDx);
-    sprite.alpha = 1;
+  private sharedGripForPose(
+    pose: Phase34BattlePose,
+    controlDiff: number,
+    maxSway: number,
+  ): { x: number; y: number } {
+    const s = this.scene;
+    const center = { x: s.gripCenterX, y: s.gripCenterY };
+    if (pose.gripTarget.mode === 'player-pin' || pose.gripTarget.mode === 'opponent-pin') {
+      const destination = {
+        x: pose.gripTarget.mode === 'player-pin' ? s.playerPinX : s.opponentPinX,
+        y: s.tableY - s.pinPadH * 0.55,
+      };
+      const start =
+        this.pinArcStart ?? computeGripPoint(center, controlDiff, maxSway, s.forearmLen * 0.08);
+      return quadraticPinArc(start, destination, this.pinArcProgress, s.forearmLen * 0.08);
+    }
+    if (pose.gripTarget.mode === 'center') return center;
+    return computeGripPoint(
+      center,
+      controlDiff,
+      maxSway,
+      s.forearmLen * 0.08 * Math.max(0.25, pose.gripTarget.y),
+    );
   }
 
   private drawProceduralArm(
@@ -994,6 +1123,8 @@ export class BattleRenderer {
 
   private update(elapsed: number): void {
     if (!this.app || this.completed) return;
+    this.currentElapsedMs = elapsed;
+    this.layoutArenaSprites();
     const tl = this.timeline;
     if (tl.length === 0) return;
 
@@ -1013,18 +1144,15 @@ export class BattleRenderer {
       this.playerStr = lastEvent.playerStrengthAfter;
       this.opponentStr = lastEvent.opponentStrengthAfter;
       this.onStrength?.(this.playerStr, this.opponentStr);
-      this.completed = true;
-      this.slamFlash = 1;
-      this.targetCameraZoom = CAMERA_PRESETS[this.viewport].baseZoom * 0.9;
-      this.shake = 1;
-      this.audio.playCue('final_slam', 10000);
-      this.spawnBurst(this.scene.gripCenterX, this.scene.gripCenterY, 20, 0xd4af6a);
-      this.spawnEffectSprite(
-        'effects/slam-impact',
-        this.scene.gripCenterX,
-        this.scene.gripCenterY,
-        3,
+      this.finalOutcome ??= this.opponentStr === 0 ? 'victory' : 'defeat';
+      this.poseController.force(
+        this.finalOutcome === 'victory' ? 'opponentDefeatHold' : 'playerDefeatHold',
+        elapsed,
       );
+      this.pinArcProgress = 1;
+      this.drawArms();
+      this.completed = true;
+      this.targetCameraZoom = CAMERA_PRESETS[this.viewport].baseZoom * 0.9;
       this.onComplete?.();
       this.pause();
       return;
@@ -1041,9 +1169,41 @@ export class BattleRenderer {
       );
       this.onStrength?.(Math.round(this.playerStr), Math.round(this.opponentStr));
 
-      // Cue change detection.
       const cue = activeEvent.animationCue;
-      if (cue !== this.cue) {
+      const controlDiff = (this.playerStr - this.opponentStr) / 100;
+      const isFinalEvent = activeEvent.type === 'final_slam';
+      if (isFinalEvent && this.activeEventIndex !== activeEvent.index) {
+        this.finalOutcome = activeEvent.side === 'opponent' ? 'defeat' : 'victory';
+        const scene = this.scene;
+        this.pinArcStart = computeGripPoint(
+          { x: scene.gripCenterX, y: scene.gripCenterY },
+          controlDiff,
+          scene.tableW * 0.28,
+          scene.forearmLen * 0.08,
+        );
+      }
+      if (isFinalEvent) {
+        this.pinArcProgress = this.reducedMotion ? Math.min(1, t * 2.5) : easeInOut(t);
+      } else if (this.finalOutcome) {
+        this.pinArcProgress = 1;
+      }
+
+      const poseId = selectPhase34BattlePoseId({
+        animationCue: cue,
+        eventType: activeEvent.type,
+        side: activeEvent.side,
+        intensity: activeEvent.intensity,
+        controlDiff,
+        latchedOutcome: this.finalOutcome,
+      });
+      this.poseController.setTarget(poseId, elapsed);
+      const sampledPose = this.poseController.sample(elapsed);
+      this.targetCameraZoom = CAMERA_PRESETS[this.viewport].baseZoom * sampledPose.cameraCue.zoom;
+
+      // Event change detection is intentionally index-based: victory/defeat may
+      // reuse the final-slam animation cue but still needs one distinct handoff.
+      if (this.activeEventIndex !== activeEvent.index) {
+        this.activeEventIndex = activeEvent.index;
         this.cue = cue;
         this.onEvent?.(activeEvent);
 
@@ -1056,31 +1216,70 @@ export class BattleRenderer {
         // VFX triggers.
         const vfx = activeEvent.vfxCue;
         const s = this.scene;
+        const origin = { x: s.gripCenterX, y: s.gripCenterY };
         if (vfx === 'grip_spark') {
-          this.spawnEffectSprite('effects/grip-flash', s.gripCenterX, s.gripCenterY, 2);
+          this.spawnTimelineEffect(
+            'effects/grip-lock',
+            activeEvent.side,
+            activeEvent.intensity,
+            origin,
+          );
           this.spawnBurst(s.gripCenterX, s.gripCenterY, 6, 0xf0d9a0);
         } else if (vfx === 'dust_light') {
           this.spawnBurst(s.gripCenterX, s.gripCenterY + 20, 4, 0x8a7a6a);
         } else if (vfx === 'dust_heavy') {
           this.spawnBurst(s.gripCenterX, s.gripCenterY + 20, 8, 0x8a7a6a);
-          this.spawnEffectSprite('effects/pressure-ring', s.gripCenterX, s.gripCenterY, 1);
+          this.spawnTimelineEffect(
+            'effects/counter-burst',
+            activeEvent.side,
+            activeEvent.intensity,
+            origin,
+          );
         } else if (vfx === 'critical_flash') {
-          this.spawnEffectSprite('effects/critical-impact', s.gripCenterX, s.gripCenterY, 2);
+          this.spawnTimelineEffect(
+            'effects/critical-impact',
+            activeEvent.side,
+            activeEvent.intensity,
+            origin,
+          );
           this.spawnBurst(s.gripCenterX, s.gripCenterY, 10, 0x5ec8ff);
           this.targetCameraZoom = CAMERA_PRESETS[this.viewport].criticalZoom;
           this.flashIntensity = 0.6;
         } else if (vfx === 'energy_trail') {
-          this.spawnEffectSprite('effects/momentum-streak', s.gripCenterX, s.gripCenterY, 2);
+          this.spawnTimelineEffect(
+            cue === 'counter' ? 'effects/counter-burst' : 'effects/push-streak',
+            activeEvent.side,
+            activeEvent.intensity,
+            origin,
+          );
         } else if (vfx === 'final_impact') {
-          this.spawnEffectSprite('effects/slam-impact', s.gripCenterX, s.gripCenterY, 3);
+          const destination = {
+            x: activeEvent.side === 'opponent' ? s.playerPinX : s.opponentPinX,
+            y: s.tableY - s.pinPadH * 0.55,
+          };
+          this.spawnTimelineEffect(
+            'effects/final-slam',
+            activeEvent.side,
+            activeEvent.intensity,
+            origin,
+            destination,
+          );
           this.spawnBurst(s.gripCenterX, s.gripCenterY, 15, 0xd4af6a);
           this.shake = 1;
           this.flashIntensity = 0.8;
         } else if (vfx === 'victory_particles') {
-          this.spawnEffectSprite('effects/victory-accent', s.gripCenterX, s.gripCenterY - 30, 3);
+          this.spawnTimelineEffect(
+            'effects/victory-sweep',
+            activeEvent.side,
+            activeEvent.intensity,
+            { x: s.gripCenterX, y: s.gripCenterY - 30 },
+          );
           this.spawnBurst(s.gripCenterX, s.gripCenterY, 12, 0x5ec8ff);
         } else if (vfx === 'defeat_particles') {
-          this.spawnEffectSprite('effects/defeat-accent', s.gripCenterX, s.gripCenterY - 30, 2);
+          this.spawnTimelineEffect('effects/defeat-dim', activeEvent.side, activeEvent.intensity, {
+            x: s.gripCenterX,
+            y: s.gripCenterY - 30,
+          });
           this.spawnBurst(s.gripCenterX, s.gripCenterY, 8, 0xe07a4a);
         }
 
@@ -1090,32 +1289,33 @@ export class BattleRenderer {
         } else if (cue === 'recovery') {
           this.targetCameraZoom = CAMERA_PRESETS[this.viewport].baseZoom;
           this.recoveryGlow = 1;
-          this.spawnEffectSprite('effects/recovery-glow', s.gripCenterX, s.gripCenterY, 1);
+          this.spawnTimelineEffect(
+            'effects/recovery-cue',
+            activeEvent.side,
+            activeEvent.intensity,
+            origin,
+          );
         } else if (cue === 'winning_slam' || cue === 'defeated') {
           this.targetCameraZoom = CAMERA_PRESETS[this.viewport].baseZoom * 1.05;
         }
       }
     }
 
-    // Compute diff and momentum.
-    const diff = (this.opponentStr - this.playerStr) / 100;
-    this.targetGripAngle = diff * 0.55;
-    this.gripAngle += (this.targetGripAngle - this.gripAngle) * 0.12;
-
     // Momentum detection.
-    const momentumDelta = diff - this.prevDiff;
-    if (Math.abs(momentumDelta) > 0.02) {
-      this.momentumDir = momentumDelta > 0 ? 1 : -1;
+    const controlDiff = (this.playerStr - this.opponentStr) / 100;
+    const nextDirection = momentumDirection(this.prevDiff, controlDiff);
+    if (nextDirection !== 0 && Math.abs(controlDiff - this.prevDiff) > 0.02) {
+      this.momentumDir = nextDirection;
       if (!this.reducedMotion) {
-        this.spawnEffectSprite(
-          'effects/momentum-streak',
-          this.scene.gripCenterX,
-          this.scene.gripCenterY,
-          1,
+        this.spawnTimelineEffect(
+          'effects/push-streak',
+          nextDirection === 1 ? 'player' : 'opponent',
+          3200,
+          { x: this.scene.gripCenterX, y: this.scene.gripCenterY },
         );
       }
     }
-    this.prevDiff = diff;
+    this.prevDiff = controlDiff;
 
     // Strain phase for visual effects.
     this.strainPhase += 0.05;

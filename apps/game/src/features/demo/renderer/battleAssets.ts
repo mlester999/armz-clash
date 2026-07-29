@@ -9,7 +9,10 @@
 import { Assets } from 'pixi.js';
 import type { Texture } from 'pixi.js';
 import {
+  PHASE3_4_OPTIONAL_RIG_ASSET_IDS,
+  PHASE3_4_REQUIRED_RIG_ASSET_IDS,
   getAssetEntry,
+  isCompletePremiumRigPair,
   loadGameManifests,
   loadPremiumAssetManifest,
   resolvePremiumAsset,
@@ -27,11 +30,12 @@ export type BattleAssetBundle = {
   textureSizes: Map<string, { width: number; height: number }>;
   viewport: ViewportClass;
   premiumManifest: PremiumAssetManifest | null;
+  premiumRigPairReady: boolean;
+  premiumTablePackReady: boolean;
 };
 
 const PREMIUM_RUNTIME_IDS: Record<string, string> = {
   'arena/background': 'arena/background',
-  'arena/table': 'arena/table',
   'arena/elbow-pad': 'arena/elbow-pad',
   'arena/pin-pad': 'arena/pin-pad',
   'effects/grip-lock': 'effects/grip-flash',
@@ -42,9 +46,25 @@ const PREMIUM_RUNTIME_IDS: Record<string, string> = {
   'effects/final-slam': 'effects/slam-impact',
   'effects/victory-sweep': 'effects/victory-accent',
   'effects/defeat-dim': 'effects/defeat-accent',
-  'rookie-brawler/battle-side': 'rookie-brawler/battle-side',
-  'practice-automaton/battle-side': 'practice-automaton/battle-side',
 };
+
+const PREMIUM_TABLE_PACK = {
+  'arena/table-surface': 'arena/table',
+  'arena/table-frame': 'arena/table-frame',
+} as const;
+
+export const PREMIUM_TABLE_PACK_ASSET_IDS = Object.keys(PREMIUM_TABLE_PACK) as Array<
+  keyof typeof PREMIUM_TABLE_PACK
+>;
+
+export function canActivatePremiumTablePack(
+  manifest: PremiumAssetManifest | null,
+  loadedAssetIds: ReadonlySet<string>,
+): boolean {
+  return PREMIUM_TABLE_PACK_ASSET_IDS.every(
+    (assetId) => manifest?.assets[assetId]?.availability === 'final' && loadedAssetIds.has(assetId),
+  );
+}
 
 export function classifyViewport(w: number, h: number): ViewportClass {
   if (w < 768) return 'mobile';
@@ -148,7 +168,7 @@ export async function preloadBattleAssets(
     try {
       const tex = await Assets.load(url);
       textures.set(id, tex);
-      textureSizes.set(id, { width: entry.width, height: entry.height });
+      textureSizes.set(id, { width: tex.width, height: tex.height });
     } catch {
       // Texture load failed; the renderer will skip this sprite gracefully.
     }
@@ -156,28 +176,113 @@ export async function preloadBattleAssets(
   await Promise.all(loadPromises);
 
   let premiumManifest: PremiumAssetManifest | null = null;
+  let premiumRigPairReady = false;
+  let premiumTablePackReady = false;
   try {
     premiumManifest = await loadPremiumAssetManifest();
+    const loadPremiumTexture = async (premiumId: string) => {
+      const entry = premiumManifest?.assets[premiumId];
+      if (!entry || entry.availability !== 'final') return null;
+      const resolved = resolvePremiumAsset(entry, viewport, format);
+      if (!resolved.url) return null;
+      try {
+        const texture = await Assets.load(resolved.url);
+        return { texture, width: texture.width, height: texture.height };
+      } catch {
+        return null;
+      }
+    };
+
     await Promise.all(
       Object.entries(PREMIUM_RUNTIME_IDS).map(async ([premiumId, runtimeId]) => {
-        const entry = premiumManifest?.assets[premiumId];
-        if (!entry || entry.availability !== 'final') return;
-        const resolved = resolvePremiumAsset(entry, viewport, format);
-        if (!resolved.url) return;
-        try {
-          const texture = await Assets.load(resolved.url);
-          textures.set(runtimeId, texture);
-          textureSizes.set(runtimeId, { width: entry.width, height: entry.height });
-        } catch {
-          // A declared final file that fails to load never suppresses the Phase 3.3B fallback.
-        }
+        const loaded = await loadPremiumTexture(premiumId);
+        if (!loaded) return;
+        textures.set(runtimeId, loaded.texture);
+        textureSizes.set(runtimeId, { width: loaded.width, height: loaded.height });
       }),
     );
+
+    const tableEntriesFinal = PREMIUM_TABLE_PACK_ASSET_IDS.every(
+      (assetId) => premiumManifest?.assets[assetId]?.availability === 'final',
+    );
+    if (tableEntriesFinal) {
+      const loadedTableEntries = await Promise.all(
+        PREMIUM_TABLE_PACK_ASSET_IDS.map(async (assetId) => ({
+          assetId,
+          loaded: await loadPremiumTexture(assetId),
+        })),
+      );
+      const loadedAssetIds = new Set(
+        loadedTableEntries.filter((entry) => entry.loaded !== null).map((entry) => entry.assetId),
+      );
+      if (canActivatePremiumTablePack(premiumManifest, loadedAssetIds)) {
+        for (const { assetId, loaded } of loadedTableEntries) {
+          const runtimeId = PREMIUM_TABLE_PACK[assetId as keyof typeof PREMIUM_TABLE_PACK];
+          textures.set(runtimeId, loaded!.texture);
+          textureSizes.set(runtimeId, { width: loaded!.width, height: loaded!.height });
+        }
+        premiumTablePackReady = true;
+      }
+    }
+
+    const availability = Object.fromEntries(
+      Object.entries(premiumManifest.assets).map(([assetId, entry]) => [
+        assetId,
+        entry.availability,
+      ]),
+    );
+    if (isCompletePremiumRigPair(availability)) {
+      const loadedRequiredLayers = await Promise.all(
+        PHASE3_4_REQUIRED_RIG_ASSET_IDS.map(async (assetId) => ({
+          assetId,
+          loaded: await loadPremiumTexture(assetId),
+        })),
+      );
+      if (loadedRequiredLayers.every((entry) => entry.loaded !== null)) {
+        for (const { assetId, loaded } of loadedRequiredLayers) {
+          textures.set(assetId, loaded!.texture);
+          textureSizes.set(assetId, { width: loaded!.width, height: loaded!.height });
+        }
+        const loadedOptionalLayers = await Promise.all(
+          PHASE3_4_OPTIONAL_RIG_ASSET_IDS.map(async (assetId) => ({
+            assetId,
+            loaded: await loadPremiumTexture(assetId),
+          })),
+        );
+        for (const { assetId, loaded } of loadedOptionalLayers) {
+          if (!loaded) continue;
+          textures.set(assetId, loaded.texture);
+          textureSizes.set(assetId, { width: loaded.width, height: loaded.height });
+        }
+        premiumRigPairReady = true;
+      }
+    }
+
+    if (process.env.NODE_ENV !== 'production') {
+      if (!premiumRigPairReady) {
+        console.warn(
+          '[Phase 3.4A] Complete paired premium layered rigs are unavailable; using the Phase 3.3B layered fallback.',
+        );
+      }
+      if (!premiumTablePackReady) {
+        console.warn(
+          '[Phase 3.4A] Complete premium table surface/frame pack is unavailable; using the atomic Phase 3.3B table fallback.',
+        );
+      }
+    }
   } catch {
     premiumManifest = null;
   }
 
-  return { manifests, textures, textureSizes, viewport, premiumManifest };
+  return {
+    manifests,
+    textures,
+    textureSizes,
+    viewport,
+    premiumManifest,
+    premiumRigPairReady,
+    premiumTablePackReady,
+  };
 }
 
 // ---------------------------------------------------------------------------

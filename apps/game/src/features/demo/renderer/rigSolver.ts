@@ -25,6 +25,8 @@ export type RigPartInput = {
   parent?: string;
   offset?: Vec2;
   overlayScale?: number;
+  rotationLimits?: { min: number; max: number };
+  scaleLimits?: { min: number; max: number };
   z: number;
 };
 
@@ -91,6 +93,10 @@ export function smoothstep(t: number): number {
 
 export function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
 }
 
 function lerpBone(
@@ -224,6 +230,19 @@ export function solveRig(
     }
   };
 
+  const constrainedBonePose = (part: RigPartInput): BonePoseInput => {
+    const authored = bonePoseFor(part.kind);
+    return {
+      ...authored,
+      rot: part.rotationLimits
+        ? clamp(authored.rot ?? 0, part.rotationLimits.min, part.rotationLimits.max)
+        : authored.rot,
+      scale: part.scaleLimits
+        ? clamp(authored.scale ?? 1, part.scaleLimits.min, part.scaleLimits.max)
+        : authored.scale,
+    };
+  };
+
   const layerVisible = (assetId: string, kind: string): boolean => {
     const l = pose.layers;
     if (assetId.endsWith('/wraps')) return Boolean(l.wraps);
@@ -241,7 +260,7 @@ export function solveRig(
   // First pass: articulated bones + joints.
   for (const part of parts) {
     if (part.kind === 'overlay') continue;
-    const bp = bonePoseFor(part.kind);
+    const bp = constrainedBonePose(part);
     const baseLen = baseLengths[part.assetId] ?? 100;
 
     if (part.kind === 'shoulder' || part.kind === 'elbow' || part.kind === 'wrist') {
